@@ -77,3 +77,11 @@ tests/ fixtures/ (APIレスポンス録画) golden/ (record→wikitext 期待値
 - `pnpm vitest`：ID 正規化（チェックディジット等）、変換（和暦・氏名・巻号）、録画フィクスチャ→CiteRecord、CiteRecord→wikitext ゴールデン（ja/2 × book/journal/web/news/thesis × 3一節モード）。
 - 実描画検証スクリプト：生成 wikitext を jawiki `action=parse`（読み取りのみ）に投げ、CS1/CS-ja のエラー表示クラス・エラーカテゴリが出ないことを確認。
 - 手動 E2E：`pnpm dev` で Chrome にロード → 利用者サンドボックスの編集画面で DOI（JaLC/Crossref 各1）、CRID、NDL書誌ID、ISBN を挿入→「プレビュー」で表示確認（保存はしない）。サイドパネル/ポップアップ、キャッシュ再利用（2回目にネットワーク要求が出ないこと）を確認。
+
+## 進捗（2026-10-04）
+- P0〜P4 を実装済み。単体テスト 125 件、Chromium での E2E スモークテスト（API・編集画面は偽物に差し替え）が通る。
+- 未検証（開発環境から ja.wikipedia.org と各 API に接続できなかったため）:
+  - 実 API での取得、および生成 wikitext の `action=parse` による実描画確認
+  - CS-ja が著者・年から CITEREF アンカーを自動生成するか。分からないため、Sfn 形式では ja 系に `ref={{SfnRef|…}}` を常に付けている（2 系は著者がいないときだけ）
+  - `{{NDLDC|pid}}` を id= に置いたときの表示。新聞記事文庫は `{{新聞記事文庫}}` を使わず url= に Handle の URL を書いている
+- 未着手: VisualEditor 対応、Firefox、WARP/Wayback、撤回・OA 表示、旧来の `{{Cite ○○}}`（|和書）の補完
