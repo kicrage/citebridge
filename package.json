@@ -1,0 +1,32 @@
+{
+  "name": "citebridge",
+  "description": "Wikipedia 出典テンプレート（Cite ○○ ja / Cite ○○2）生成・編集補助拡張",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wxt",
+    "build": "wxt build",
+    "zip": "wxt zip",
+    "compile": "vue-tsc --noEmit",
+    "postinstall": "wxt prepare",
+    "test": "vitest run",
+    "gen:profiles": "tsx scripts/gen-profiles.ts"
+  },
+  "dependencies": {
+    "@wikimedia/codex": "^2.6.0",
+    "@wikimedia/codex-design-tokens": "^2.6.0",
+    "@wikimedia/codex-icons": "^2.6.0",
+    "dexie": "^4.4.6",
+    "fast-xml-parser": "^5.11.2",
+    "vue": "^3.5.43"
+  },
+  "devDependencies": {
+    "@wxt-dev/module-vue": "^1.0.3",
+    "tsx": "^4.23.15",
+    "typescript": "~5.9",
+    "vitest": "^5.0.3",
+    "vue-tsc": "^3.3.12",
+    "wxt": "^0.21.4"
+  }
+}

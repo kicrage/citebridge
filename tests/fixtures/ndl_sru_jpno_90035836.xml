@@ -1,0 +1,987 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+  <version>1.2</version>
+  <numberOfRecords>1</numberOfRecords>
+  <extraResponseData>
+    <facets>
+      <lst name="REPOSITORY_NO">
+        <int name="R100000002">1</int>
+      </lst>
+      <lst name="NDC">
+        <int name="9">1</int>
+      </lst>
+      <lst name="ISSUED_DATE">
+        <int name="1990">1</int>
+      </lst>
+      <lst name="LIBRARY">
+        <int name="さいたま市立中央図書館">1</int>
+        <int name="サピエ図書館">1</int>
+        <int name="三重県立図書館">1</int>
+        <int name="兵庫県立図書館">1</int>
+        <int name="千葉市中央図書館">1</int>
+        <int name="名古屋市図書館">1</int>
+        <int name="和歌山県立図書館">1</int>
+        <int name="国立国会図書館">1</int>
+        <int name="堺市立中央図書館">1</int>
+        <int name="大分県立図書館">1</int>
+        <int name="大阪市立図書館">1</int>
+        <int name="大阪府立中央図書館">1</int>
+        <int name="奈良県立図書情報館">1</int>
+        <int name="山口県立山口図書館">1</int>
+        <int name="山梨県立図書館">1</int>
+        <int name="岐阜県図書館">1</int>
+        <int name="川崎市立図書館">1</int>
+        <int name="広島市立中央図書館">1</int>
+        <int name="広島県立図書館">1</int>
+        <int name="徳島県立図書館">1</int>
+        <int name="愛媛県立図書館">1</int>
+        <int name="札幌市中央図書館">1</int>
+        <int name="東京都立多摩図書館">1</int>
+        <int name="栃木県立図書館">1</int>
+        <int name="横浜市立図書館">1</int>
+        <int name="相模原市立図書館">1</int>
+        <int name="県立長野図書館">1</int>
+        <int name="石川県立図書館">1</int>
+        <int name="神奈川県立図書館">1</int>
+        <int name="福井県立図書館">1</int>
+        <int name="群馬県立図書館">1</int>
+        <int name="長崎県立長崎図書館">1</int>
+        <int name="静岡市立中央図書館">1</int>
+        <int name="香川県立図書館">1</int>
+        <int name="高知県立図書館">1</int>
+      </lst>
+    </facets>
+  </extraResponseData>
+  <records>
+    <record>
+      <recordSchema>info:srw/schema/1/dc-v1.1</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+          <dcndl:BibAdminResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I000002041889">
+            <dcndl:catalogingStatus>C7</dcndl:catalogingStatus>
+            <dcndl:catalogingRule>ncr/1977</dcndl:catalogingRule>
+            <dcterms:description>type : book</dcterms:description>
+            <dcndl:bibRecordCategory>R100000002</dcndl:bibRecordCategory>
+            <dcndl:bibRecordSubCategory>111</dcndl:bibRecordSubCategory>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I000002041889#material"/>
+          </dcndl:BibAdminResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I000002041889#material">
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/jpno/90035836"/>
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/bib/000002041889"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/JPNO">90035836</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLBibID">000002041889</dcterms:identifier>
+            <rdfs:seeAlso rdf:resource="http://iss.ndl.go.jp/isbn/4003101014"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/ISBN">4-00-310101-4</dcterms:identifier>
+            <dcterms:title>吾輩は猫である</dcterms:title>
+            <dc:title>
+              <rdf:Description>
+                <rdf:value>吾輩は猫である</rdf:value>
+                <dcndl:transcription>ワガハイ ワ ネコ デ アル</dcndl:transcription>
+              </rdf:Description>
+            </dc:title>
+            <dcndl:seriesTitle>
+              <rdf:Description>
+                <rdf:value>岩波文庫</rdf:value>
+              </rdf:Description>
+            </dcndl:seriesTitle>
+            <dcndl:edition>改版</dcndl:edition>
+            <dcterms:creator>
+              <foaf:Agent rdf:about="http://id.ndl.go.jp/auth/entity/00054222">
+                <foaf:name>夏目, 漱石, 1867-1916</foaf:name>
+                <dcndl:transcription>ナツメ, ソウセキ, 1867-1916</dcndl:transcription>
+              </foaf:Agent>
+            </dcterms:creator>
+            <dc:creator>夏目漱石 作</dc:creator>
+            <dcterms:publisher>
+              <foaf:Agent>
+                <foaf:name>岩波書店</foaf:name>
+                <dcndl:location>東京</dcndl:location>
+              </foaf:Agent>
+            </dcterms:publisher>
+            <dcndl:publicationPlace rdf:datatype="http://purl.org/dc/terms/ISO3166">JP</dcndl:publicationPlace>
+            <dcterms:date>1990.4</dcterms:date>
+            <dcterms:issued rdf:datatype="http://purl.org/dc/terms/W3CDTF">1990</dcterms:issued>
+            <dcterms:subject rdf:resource="http://id.ndl.go.jp/class/ndlc/KH426"/>
+            <dc:subject rdf:datatype="http://ndl.go.jp/dcndl/terms/NDC8">913.6</dc:subject>
+            <dcterms:language rdf:datatype="http://purl.org/dc/terms/ISO639-2">jpn</dcterms:language>
+            <dcndl:price>410円 (税込)</dcndl:price>
+            <dcterms:extent>563p ; 15cm</dcterms:extent>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/Book" rdfs:label="図書"/>
+            <dcterms:audience>一般</dcterms:audience>
+            <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I000002041889"/>
+          </dcndl:BibResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I000002041889#material">
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I09111100915105#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I10111100150906#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I1121647208#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I12211000010140205#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I13131101692721#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I14111100366019#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I14211190350177#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I1422971117#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I14232643024#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I1423476057#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I17111005010212085#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I18111103916857#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I19111009310146496#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I20111000001523577#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I20111000001523577#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I21111102871506#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I22211001100925804#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I23211009410171055#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I24111100577616#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I2711B10078433#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I27211000000191279#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I27211000000191279#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I27211000000191279#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I27211000000191279#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I27211000000191279#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I27211000000191279#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I27221000000066074#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I28111101754650#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I2911111129136#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I30111100516984#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I3411B12062071#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I34211100375966#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I35119810106854#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I36111100301156#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I37111101241643#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I38111100568639#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I39111109732343#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I42111001000696385#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000001-I44111105010266#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I000002041889#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000038-I1246377#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000038-I2981973#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000039-I13503380#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000136-I1971712334769450903#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000137-I00000000000000000214#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000137-I9784003101018#item"/>
+          </dcndl:BibResource>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>札幌市中央図書館</foaf:name>
+                <dcndl:transcription>さっぽろしちゅうおうとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0121</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.sapporo.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1001000260880"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1001000260880</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">5513088806</dcterms:identifier>
+            <dcndl:callNumber>913/ﾅ/</dcndl:callNumber>
+            <dcndl:availability>一般貸出</dcndl:availability>
+            <dcterms:description>配架場所 : 書庫文庫</dcterms:description>
+            <dcterms:description>資料種別 : 一般図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>札幌市中央図書館</foaf:name>
+                <dcndl:transcription>さっぽろしちゅうおうとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0121</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.sapporo.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1001000260880"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1001000260880</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">2210643652</dcterms:identifier>
+            <dcndl:callNumber>913/ﾅ/</dcndl:callNumber>
+            <dcndl:availability>一般貸出</dcndl:availability>
+            <dcterms:description>配架場所 : 文庫</dcterms:description>
+            <dcterms:description>資料種別 : 一般図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>札幌市中央図書館</foaf:name>
+                <dcndl:transcription>さっぽろしちゅうおうとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0121</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.sapporo.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1001000260880"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1001000260880</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">2311521625</dcterms:identifier>
+            <dcndl:callNumber>913/ﾅ/</dcndl:callNumber>
+            <dcndl:availability>一般貸出</dcndl:availability>
+            <dcterms:description>配架場所 : 文庫</dcterms:description>
+            <dcterms:description>資料種別 : 一般図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>札幌市中央図書館</foaf:name>
+                <dcndl:transcription>さっぽろしちゅうおうとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0121</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.sapporo.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1001000260880"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1001000260880</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">2410115303</dcterms:identifier>
+            <dcndl:callNumber>913/ﾅ/</dcndl:callNumber>
+            <dcndl:availability>一般貸出</dcndl:availability>
+            <dcterms:description>配架場所 : 文庫</dcterms:description>
+            <dcterms:description>資料種別 : 一般図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>札幌市中央図書館</foaf:name>
+                <dcndl:transcription>さっぽろしちゅうおうとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0121</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.sapporo.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1001000260880"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1001000260880</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">3311856441</dcterms:identifier>
+            <dcndl:callNumber>913/ﾅ/</dcndl:callNumber>
+            <dcndl:availability>一般貸出</dcndl:availability>
+            <dcterms:description>配架場所 : 文庫</dcterms:description>
+            <dcterms:description>資料種別 : 一般図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>札幌市中央図書館</foaf:name>
+                <dcndl:transcription>さっぽろしちゅうおうとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0121</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.sapporo.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1001000260880"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1001000260880</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">3410099752</dcterms:identifier>
+            <dcndl:callNumber>913/ﾅ/</dcndl:callNumber>
+            <dcndl:availability>一般貸出</dcndl:availability>
+            <dcterms:description>配架場所 : 文庫</dcterms:description>
+            <dcterms:description>資料種別 : 一般図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>札幌市中央図書館</foaf:name>
+                <dcndl:transcription>さっぽろしちゅうおうとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0121</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.sapporo.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1001000260880"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1001000260880</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">4211645223</dcterms:identifier>
+            <dcndl:callNumber>913/ﾅ/</dcndl:callNumber>
+            <dcndl:availability>一般貸出</dcndl:availability>
+            <dcterms:description>配架場所 : 文庫</dcterms:description>
+            <dcterms:description>資料種別 : 一般図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>札幌市中央図書館</foaf:name>
+                <dcndl:transcription>さっぽろしちゅうおうとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0121</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.sapporo.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1001000260880"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1001000260880</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">4310034642</dcterms:identifier>
+            <dcndl:callNumber>913/ﾅ/</dcndl:callNumber>
+            <dcndl:availability>一般貸出</dcndl:availability>
+            <dcterms:description>配架場所 : 文庫</dcterms:description>
+            <dcterms:description>資料種別 : 一般図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>札幌市中央図書館</foaf:name>
+                <dcndl:transcription>さっぽろしちゅうおうとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0121</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.sapporo.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1001000260880"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1001000260880</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">4410115861</dcterms:identifier>
+            <dcndl:callNumber>913/ﾅ/</dcndl:callNumber>
+            <dcndl:availability>一般貸出</dcndl:availability>
+            <dcterms:description>配架場所 : 文庫２</dcterms:description>
+            <dcterms:description>資料種別 : 一般図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>札幌市中央図書館</foaf:name>
+                <dcndl:transcription>さっぽろしちゅうおうとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0121</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.sapporo.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1001000260880"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1001000260880</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">5210076757</dcterms:identifier>
+            <dcndl:callNumber>913/ﾅ/</dcndl:callNumber>
+            <dcndl:availability>一般貸出</dcndl:availability>
+            <dcterms:description>配架場所 : 文庫</dcterms:description>
+            <dcterms:description>資料種別 : 一般図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>札幌市中央図書館</foaf:name>
+                <dcndl:transcription>さっぽろしちゅうおうとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0121</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.sapporo.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1001000260880"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1001000260880</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">7310319350</dcterms:identifier>
+            <dcndl:callNumber>913/ﾅ/</dcndl:callNumber>
+            <dcndl:availability>一般貸出</dcndl:availability>
+            <dcterms:description>配架場所 : 文庫</dcterms:description>
+            <dcterms:description>資料種別 : 一般図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I01211001000260880#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>札幌市中央図書館</foaf:name>
+                <dcndl:transcription>さっぽろしちゅうおうとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0121</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.sapporo.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1001000260880"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1001000260880</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">9311505672</dcterms:identifier>
+            <dcndl:callNumber>913/ﾅ/</dcndl:callNumber>
+            <dcndl:availability>一般貸出</dcndl:availability>
+            <dcterms:description>配架場所 : 文庫</dcterms:description>
+            <dcterms:description>資料種別 : 一般図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I09111100915105#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>栃木県立図書館</foaf:name>
+                <dcndl:transcription>とちぎけんりつとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0911</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="http://www.lib.pref.tochigi.lg.jp/winj/opac/switch-detail-iccap.do?bibid=1100915105"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1100915105</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">1103203954</dcterms:identifier>
+            <dcndl:callNumber>080-89-405</dcndl:callNumber>
+            <dcndl:availability>利用可</dcndl:availability>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I10111100150906#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>群馬県立図書館</foaf:name>
+                <dcndl:transcription>ぐんまけんりつとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1011</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www1.library.pref.gunma.jp/winj/opac/switch-detail-iccap.do?bibid=1100150906"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1100150906</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">00766741</dcterms:identifier>
+            <dcndl:callNumber>F-N58-ﾅ04</dcndl:callNumber>
+            <dcndl:availability>利用可</dcndl:availability>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I1121647208#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>さいたま市立中央図書館</foaf:name>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1121</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.lib.city.saitama.jp/bookdetail?num=647208&amp;ctg=1"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">647208</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">21100740410</dcterms:identifier>
+            <dcndl:callNumber>913.6 ﾅﾂ</dcndl:callNumber>
+            <dcterms:description>配置場所 : １Ｆフロア</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I12211000010140205#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>千葉市中央図書館</foaf:name>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1221</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.chiba.jp/licsxp-opac/WOpacTifSchCmpdDispAction.do"/>
+            <dcndl:availability>帯出可</dcndl:availability>
+            <dcterms:description>開架</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I13131101692721#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>東京都立多摩図書館</foaf:name>
+                <dcndl:transcription>とうきょうとりつたまとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1313</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://catalog.library.metro.tokyo.lg.jp/winj/opac/switch-detail-iccap.do?bibid=1101692721"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1101692721</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">1112471469</dcterms:identifier>
+            <dcndl:callNumber>9136-4785-90</dcndl:callNumber>
+            <dcterms:description>101</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I14111100366019#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>神奈川県立図書館</foaf:name>
+                <dcndl:transcription>カナガワケンリツトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1411</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.klnet.pref.kanagawa.jp/winj/opac/switch-detail-iccap.do?bibid=1100366019"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1100366019</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">20187480</dcterms:identifier>
+            <dcndl:callNumber>ｲ913-ﾅ</dcndl:callNumber>
+            <dcndl:availability>利用可</dcndl:availability>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I14211190350177#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>横浜市立図書館</foaf:name>
+                <dcndl:transcription>ヨコハマシリツトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1421</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://opac.lib.city.yokohama.lg.jp/winj/opac/switch-detail-iccap.do?bibid=1190350177"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1190350177</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">2077531699</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/JPNO">90035836</dcterms:identifier>
+            <dcndl:callNumber>913.6ナ</dcndl:callNumber>
+            <dcndl:availability>-</dcndl:availability>
+            <dcterms:description>中央図書館 B１階ポピュラー・文庫本・‐</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I1422971117#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>川崎市立図書館</foaf:name>
+                <dcndl:transcription>カワサキシリツトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1422</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.kawasaki.jp/bookdetail?num=971117&amp;ctg=1"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">971117</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">430020620547</dcterms:identifier>
+            <dcndl:callNumber>F1 ﾅﾂ</dcndl:callNumber>
+            <dcterms:description>配置場所 : 書庫自動</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I14232643024#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>相模原市立図書館</foaf:name>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1423</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.lib.sagamihara.kanagawa.jp/TOSHOW/asp/WwShousaiKen.aspx?FCode=2643024"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">2643024</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">22156038</dcterms:identifier>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I1423476057#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>相模原市立図書館</foaf:name>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1423</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.lib.sagamihara.kanagawa.jp/TOSHOW/asp/WwShousaiKen.aspx?FCode=476057"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">476057</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">22156038</dcterms:identifier>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I17111005010212085#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>石川県立図書館</foaf:name>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1711</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.pref.ishikawa.lg.jp/wo/opc_srh/srh_detail/1005010212085/"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1005010212085</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">002939338</dcterms:identifier>
+            <dcndl:callNumber>B081.6/53/1494</dcndl:callNumber>
+            <dcndl:availability>貸出可能資料</dcndl:availability>
+            <dcterms:description>配置場所 : F書庫</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I18111103916857#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>福井県立図書館</foaf:name>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1811</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library-archives.pref.fukui.lg.jp/wo/opc_srh/srh_detail/1103916857/"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1103916857</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">1013942568</dcterms:identifier>
+            <dcndl:callNumber>913.6/ﾅﾂﾒ</dcndl:callNumber>
+            <dcndl:availability>貸出用</dcndl:availability>
+            <dcterms:description>配置場所 : 書庫1F9類</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I19111009310146496#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>山梨県立図書館</foaf:name>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">1911</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.lib.pref.yamanashi.jp/licsxp-opac/WOpacMnuTopInitAction.do"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1009310146496</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">0106700081</dcterms:identifier>
+            <dcndl:callNumber>Ｂ９１３．６／ナツ／</dcndl:callNumber>
+            <dcndl:availability>貸可複可閲可</dcndl:availability>
+            <dcterms:description>２階一般</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I20111000001523577#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>県立長野図書館</foaf:name>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2011</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.pref.nagano.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1000001523577"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1000001523577</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">0115159006</dcterms:identifier>
+            <dcndl:callNumber>09/0074/ｱ</dcndl:callNumber>
+            <dcndl:availability>館内</dcndl:availability>
+            <dcterms:description>配架場所 : 開架</dcterms:description>
+            <dcterms:description>資料種別 : 図書一般</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I20111000001523577#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>県立長野図書館</foaf:name>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2011</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.pref.nagano.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1000001523577"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1000001523577</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">0114990021</dcterms:identifier>
+            <dcndl:callNumber>09/0074/</dcndl:callNumber>
+            <dcndl:availability>館内</dcndl:availability>
+            <dcterms:description>配架場所 : 開架</dcterms:description>
+            <dcterms:description>資料種別 : 図書一般</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I21111102871506#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>岐阜県図書館</foaf:name>
+                <dcndl:transcription>ぎふけんとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2111</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="http://www.library.pref.gifu.lg.jp/winj/opac/switch-detail-iccap.do?bibid=1102871506"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1102871506</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">8130347066</dcterms:identifier>
+            <dcndl:callNumber>913.6-ナツ</dcndl:callNumber>
+            <dcndl:availability>持出可能</dcndl:availability>
+            <dcterms:description>所蔵場所 : 文庫閉架</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I22211001100925804#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>静岡市立中央図書館</foaf:name>
+                <dcndl:transcription>シズオカシリツチュウオウトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2221</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.toshokan.city.shizuoka.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1001100925804"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1001100925804</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">106529668</dcterms:identifier>
+            <dcndl:callNumber>B913.6/ﾅﾂﾒ/</dcndl:callNumber>
+            <dcterms:description>配架場所 : 藁／文庫</dcterms:description>
+            <dcterms:description>資料種別 : 一般図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I23211009410171055#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>名古屋市図書館</foaf:name>
+                <dcndl:transcription>ナゴヤシトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2321</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.city.nagoya.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1009410171055"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1009410171055</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">0236690707</dcterms:identifier>
+            <dcndl:callNumber>9136//</dcndl:callNumber>
+            <dcndl:availability>帯出可</dcndl:availability>
+            <dcterms:description>配架場所 : ＳＤ書庫</dcterms:description>
+            <dcterms:description>資料種別 : 一般和書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I24111100577616#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>三重県立図書館</foaf:name>
+                <dcndl:transcription>みえけんりつとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2411</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="http://opac1.library.pref.mie.lg.jp/winj/opac/switch-detail-iccap.do?bibid=1100577616"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1100577616</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">112403092</dcterms:identifier>
+            <dcndl:callNumber>F-ﾅ</dcndl:callNumber>
+            <dcndl:availability>持出可能</dcndl:availability>
+            <dcterms:description>所蔵場所 : 閉架（一般）</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I2711B10078433#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>大阪府立中央図書館</foaf:name>
+                <dcndl:transcription>オオサカフリツチュウオウトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2711</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.pref.osaka.jp/bib/?B10078433"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">B10078433</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">1012193908</dcterms:identifier>
+            <dcndl:callNumber>L11 /359N</dcndl:callNumber>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I27211000000191279#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>大阪市立図書館</foaf:name>
+                <dcndl:transcription>オオサカシリツトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2721</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.oml.city.osaka.lg.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1000000191279"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1000000191279</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">6240734001</dcterms:identifier>
+            <dcndl:callNumber>Fナツメ//文庫本</dcndl:callNumber>
+            <dcndl:availability>帯出可能</dcndl:availability>
+            <dcterms:description>配架場所 : 地域一般</dcterms:description>
+            <dcterms:description>資料種別 : 図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I27211000000191279#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>大阪市立図書館</foaf:name>
+                <dcndl:transcription>オオサカシリツトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2721</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.oml.city.osaka.lg.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1000000191279"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1000000191279</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">6040777093</dcterms:identifier>
+            <dcndl:callNumber>Fナツメ//文庫本</dcndl:callNumber>
+            <dcndl:availability>帯出可能</dcndl:availability>
+            <dcterms:description>配架場所 : 地域一般</dcterms:description>
+            <dcterms:description>資料種別 : 図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I27211000000191279#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>大阪市立図書館</foaf:name>
+                <dcndl:transcription>オオサカシリツトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2721</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.oml.city.osaka.lg.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1000000191279"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1000000191279</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">1047233372</dcterms:identifier>
+            <dcndl:callNumber>Fナツメ/ワカ/</dcndl:callNumber>
+            <dcndl:availability>帯出可能</dcndl:availability>
+            <dcterms:description>配架場所 : 書庫文庫</dcterms:description>
+            <dcterms:description>資料種別 : 図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I27211000000191279#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>大阪市立図書館</foaf:name>
+                <dcndl:transcription>オオサカシリツトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2721</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.oml.city.osaka.lg.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1000000191279"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1000000191279</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">6640387327</dcterms:identifier>
+            <dcndl:callNumber>Fナツメ//文庫本</dcndl:callNumber>
+            <dcndl:availability>帯出可能</dcndl:availability>
+            <dcterms:description>配架場所 : 地域一般</dcterms:description>
+            <dcterms:description>資料種別 : 図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I27211000000191279#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>大阪市立図書館</foaf:name>
+                <dcndl:transcription>オオサカシリツトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2721</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.oml.city.osaka.lg.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1000000191279"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1000000191279</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">6840585712</dcterms:identifier>
+            <dcndl:callNumber>Fナツメ//文庫本</dcndl:callNumber>
+            <dcndl:availability>帯出可能</dcndl:availability>
+            <dcterms:description>配架場所 : 地域一般</dcterms:description>
+            <dcterms:description>資料種別 : 図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I27211000000191279#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>大阪市立図書館</foaf:name>
+                <dcndl:transcription>オオサカシリツトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2721</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.oml.city.osaka.lg.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1000000191279"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1000000191279</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">6340438099</dcterms:identifier>
+            <dcndl:callNumber>Fナツメ//文庫本</dcndl:callNumber>
+            <dcndl:availability>帯出可能</dcndl:availability>
+            <dcterms:description>配架場所 : 地域一般</dcterms:description>
+            <dcterms:description>資料種別 : 図書</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I27221000000066074#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>堺市立中央図書館</foaf:name>
+                <dcndl:transcription>サカイシリツチュウオウトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2722</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.lib-sakai.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1000000066074"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1000000066074</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">519010292</dcterms:identifier>
+            <dcndl:callNumber>B913.6/ﾅﾂﾒ/9</dcndl:callNumber>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I28111101754650#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>兵庫県立図書館</foaf:name>
+                <dcndl:transcription>ヒョウゴケンリツトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2811</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.pref.hyogo.lg.jp/winj/opac/switch-detail-iccap.do?bibid=1101754650"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1101754650</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">103470951</dcterms:identifier>
+            <dcndl:callNumber>X1-31-10-1</dcndl:callNumber>
+            <dcndl:availability>持出可能</dcndl:availability>
+            <dcterms:description>所蔵場所 : 文庫新書ｺｰﾅｰ</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I2911111129136#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>奈良県立図書情報館</foaf:name>
+                <dcndl:transcription>ナラケンリツトショジョウホウカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">2911</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://opacsvr01.library.pref.nara.jp/opac/volume/512784"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">111129136</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">111129136</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NIIBibID">BN04568944</dcterms:identifier>
+            <dcndl:callNumber>080-12-2.10.1</dcndl:callNumber>
+            <dcndl:availability>null</dcndl:availability>
+            <dcterms:description>配置場所 :書庫１</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I30111100516984#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>和歌山県立図書館</foaf:name>
+                <dcndl:transcription>わかやまけんりつとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">3011</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="http://www.lib.wakayama-c.ed.jp/winj/opac/switch-detail-iccap.do?bibid=1100516984"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1100516984</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">316274638</dcterms:identifier>
+            <dcndl:callNumber>-10-1</dcndl:callNumber>
+            <dcndl:availability>利用可</dcndl:availability>
+            <dcterms:description>所蔵場所 : 閲覧室（文庫新書）</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I3411B12062071#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>広島県立図書館</foaf:name>
+                <dcndl:transcription>ヒロシマケンリツトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">3411</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www2.hplibra.pref.hiroshima.jp/bib/?B12062071"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">B12062071</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">1002915054</dcterms:identifier>
+            <dcndl:callNumber>B913.6/90ﾅ/</dcndl:callNumber>
+            <dcndl:availability>貸出可</dcndl:availability>
+            <dcterms:description>書庫5C</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I34211100375966#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>広島市立中央図書館</foaf:name>
+                <dcndl:transcription>ちゅうおうとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">3421</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="http://www.library.city.hiroshima.jp/winj/opac/switch-detail-iccap.do?bibid=1100375966"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1100375966</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">180409527-</dcterms:identifier>
+            <dcndl:callNumber>913.6-なつ</dcndl:callNumber>
+            <dcndl:availability>持出可能</dcndl:availability>
+            <dcterms:description>所蔵場所 : 文庫</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I35119810106854#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>山口県立山口図書館</foaf:name>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">3511</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://library.pref.yamaguchi.lg.jp//wo/opc_srh/srh_detail/9810106854/"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">9810106854</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">006054613</dcterms:identifier>
+            <dcndl:callNumber>/N 58</dcndl:callNumber>
+            <dcndl:availability>貸出・閲覧可</dcndl:availability>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I36111100301156#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>徳島県立図書館</foaf:name>
+                <dcndl:transcription>とくしまけんりつとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">3611</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://alislibopac.bunmori.tokushima.jp/winj/opac/switch-detail-iccap.do?bibid=1100301156"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1100301156</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">00108226012</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/JPNO">90035836</dcterms:identifier>
+            <dcndl:callNumber>F-ﾅﾂ</dcndl:callNumber>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I37111101241643#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>香川県立図書館</foaf:name>
+                <dcndl:transcription>かがわけんりつとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">3711</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.library.pref.kagawa.lg.jp/winj/opac/switch-detail-iccap.do?bibid=1101241643"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1101241643</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">1103220941</dcterms:identifier>
+            <dcndl:callNumber>I9136-N1-8-2</dcndl:callNumber>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I38111100568639#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>愛媛県立図書館</foaf:name>
+                <dcndl:transcription>えひめけんりつとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">3811</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://www.ehimetosyokan.jp/winj/opac/switch-detail-iccap.do?bibid=1100568639"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1100568639</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">5106569410</dcterms:identifier>
+            <dcndl:callNumber>913-ナソ-1990</dcndl:callNumber>
+            <dcterms:description>所蔵場所 : ３階一般図書室</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I39111109732343#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>高知県立図書館</foaf:name>
+                <dcndl:transcription>こうちけんりつとしょかん</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">3911</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://opac.library.kochi.jp/winj/opac/switch-detail-iccap.do?bibid=1109732343"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1109732343</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">1107869016</dcterms:identifier>
+            <dcndl:callNumber>913.6-ﾅﾂﾒ</dcndl:callNumber>
+            <dcterms:description>所蔵場所 : M3書庫</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I42111001000696385#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>長崎県立長崎図書館</foaf:name>
+                <dcndl:transcription>ナガサキケンリツナガサキトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">4211</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://opac.miraionlibrary.jp/licsxp-opac/WOpacMsgNewListToTifTilDetailAction.do?tilcod=1001000696385"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1001000696385</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">5113331088</dcterms:identifier>
+            <dcndl:callNumber>913.6/ﾅｿ/</dcndl:callNumber>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000001-I44111105010266#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>大分県立図書館</foaf:name>
+                <dcndl:transcription>オオイタケンリツトショカン</dcndl:transcription>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">4411</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://library.pref.oita.jp/winj/opac/switch-detail-iccap.do?bibid=1105010266"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuBibID">1105010266</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/somokuSubID">00014558894</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/JPNO">90035836</dcterms:identifier>
+            <dcndl:callNumber>文庫-03-ﾅ</dcndl:callNumber>
+            <dcndl:availability>帯出可</dcndl:availability>
+            <dcterms:description>所蔵場所 : 一般文庫本</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000002-I000002041889#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>国立国会図書館</foaf:name>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0000</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000002-I000002041889"/>
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/bib/000002041889"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLBibID">000002041889</dcterms:identifier>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/JPNO">90035836</dcterms:identifier>
+            <dcndl:callNumber>KH426-E12</dcndl:callNumber>
+            <dcndl:localCallNumber>け56-124</dcndl:localCallNumber>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000038-I1246377#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>サピエ図書館</foaf:name>
+                <dcndl:transcription>サピエトショカン</dcndl:transcription>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://library.sapie.or.jp/cgi-bin/CN1MN1?S00101=J00DTL04&amp;S00222=1246377"/>
+            <dcterms:description>資料形態 : 点字資料</dcterms:description>
+            <dcterms:description>資料形態 : 点字冊子</dcterms:description>
+            <dcterms:description>製作者 : 社会福祉法人日本点字図書館　図書製作部　点字製作課</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000038-I2981973#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>サピエ図書館</foaf:name>
+                <dcndl:transcription>サピエトショカン</dcndl:transcription>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://library.sapie.or.jp/cgi-bin/CN1MN1?S00101=J00DTL04&amp;S00222=2981973"/>
+            <dcterms:description>資料形態 : 点字資料</dcterms:description>
+            <dcterms:description>資料形態 : 点字冊子</dcterms:description>
+            <dcterms:description>製作者 : 千葉点字図書館</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000039-I13503380#item">
+            <rdfs:seeAlso rdf:resource="https://dl.ndl.go.jp/pid/13503380"/>
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/digimeta/13503380"/>
+            <rdfs:seeAlso rdf:resource="https://doi.org/10.11501/13503380"/>
+            <dcndl:callNumber>KH426-E12</dcndl:callNumber>
+            <dcterms:description>資料形態 : テキストデータ</dcterms:description>
+            <dcterms:description>資料形態 : プレーンテキスト</dcterms:description>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000136-I1971712334769450903#item">
+            <rdfs:seeAlso rdf:resource="https://cir.nii.ac.jp/crid/1971712334769450903"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NIIBibID">BN04568944</dcterms:identifier>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000137-I00000000000000000214#item">
+            <rdfs:seeAlso rdf:resource="https://www.books.or.jp/book-details/00000000000000000214"/>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000137-I9784003101018#item">
+            <rdfs:seeAlso rdf:resource="https://www.books.or.jp/book-details/9784003101018"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/JPNO">90035836</dcterms:identifier>
+          </dcndl:Item>
+        </rdf:RDF>
+      </recordData>
+      <recordPosition>1</recordPosition>
+    </record>
+  </records>
+</searchRetrieveResponse>

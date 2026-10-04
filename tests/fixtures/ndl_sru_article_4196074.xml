@@ -1,0 +1,102 @@
+<searchRetrieveResponse xmlns="http://www.loc.gov/zing/srw/">
+  <version>1.2</version>
+  <numberOfRecords>1</numberOfRecords>
+  <extraResponseData>
+    <facets>
+      <lst name="REPOSITORY_NO">
+        <int name="R000000004">1</int>
+      </lst>
+      <lst name="NDC">
+      </lst>
+      <lst name="ISSUED_DATE">
+        <int name="1997">1</int>
+      </lst>
+      <lst name="LIBRARY">
+        <int name="国立国会図書館">1</int>
+      </lst>
+    </facets>
+  </extraResponseData>
+  <records>
+    <record>
+      <recordSchema>info:srw/schema/1/dc-v1.1</recordSchema>
+      <recordPacking>xml</recordPacking>
+      <recordData>
+        <rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcndl="http://ndl.go.jp/dcndl/terms/" xmlns:foaf="http://xmlns.com/foaf/0.1/" xmlns:owl="http://www.w3.org/2002/07/owl#">
+          <dcndl:BibAdminResource rdf:about="https://ndlsearch.ndl.go.jp/books/R000000004-I4196074">
+            <dcndl:catalogingStatus>C7</dcndl:catalogingStatus>
+            <dcterms:description>type : article</dcterms:description>
+            <dcndl:bibRecordCategory>R000000004</dcndl:bibRecordCategory>
+            <dcndl:bibRecordSubCategory>632</dcndl:bibRecordSubCategory>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R000000004-I4196074#material"/>
+          </dcndl:BibAdminResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R000000004-I4196074#material">
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/bib/4196074"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLBibID">4196074</dcterms:identifier>
+            <dcterms:title>漱石とハーンの神秘主義</dcterms:title>
+            <dc:title>
+              <rdf:Description>
+                <rdf:value>漱石とハーンの神秘主義</rdf:value>
+                <dcndl:transcription>ソウセキ ト ハーン ノ シンピ シュギ</dcndl:transcription>
+              </rdf:Description>
+            </dc:title>
+            <dcterms:creator>
+              <foaf:Agent>
+                <foaf:name>近藤 哲</foaf:name>
+              </foaf:Agent>
+            </dcterms:creator>
+            <dc:creator>近藤 哲</dc:creator>
+            <dcterms:publisher>
+              <foaf:Agent>
+                <foaf:name>会津若松 : 会津大学短期大学部</foaf:name>
+              </foaf:Agent>
+            </dcterms:publisher>
+            <dcndl:publicationPlace rdf:datatype="http://purl.org/dc/terms/ISO3166">JP</dcndl:publicationPlace>
+            <dcterms:date>(通号 54) 1997</dcterms:date>
+            <dcterms:issued rdf:datatype="http://purl.org/dc/terms/W3CDTF">1997</dcterms:issued>
+            <dcterms:subject rdf:resource="http://id.ndl.go.jp/class/ndlc/ZV1"/>
+            <dcterms:language rdf:datatype="http://purl.org/dc/terms/ISO639-2">jpn</dcterms:language>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/Article" rdfs:label="記事・論文"/>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/GovernmentPublication" rdfs:label="政府刊行物"/>
+            <dcndl:materialType rdf:resource="http://ndl.go.jp/ndltype/LocalPublication" rdfs:label="地方公共団体刊行物"/>
+            <dcndl:publicationName>会津大学短期大学部研究年報</dcndl:publicationName>
+            <dcndl:issue>54</dcndl:issue>
+            <dcndl:pageRange>11～27</dcndl:pageRange>
+            <dcterms:audience>一般</dcterms:audience>
+            <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R000000004-I4196074"/>
+            <dcterms:isPartOf rdf:resource="https://id.ndl.go.jp/bib/000000091746"/>
+            <dcterms:isPartOf rdf:resource="http://iss.ndl.go.jp/issn/13406329"/>
+            <dcterms:isPartOf rdf:resource="http://iss.ndl.go.jp/issnl/13406329"/>
+          </dcndl:BibResource>
+          <dcndl:BibResource rdf:about="https://ndlsearch.ndl.go.jp/books/R000000004-I4196074#material">
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R000000004-I4196074#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R000000025-I009320002368545#item"/>
+            <dcndl:record rdf:resource="https://ndlsearch.ndl.go.jp/books/R100000136-I1390853649708396416#item"/>
+          </dcndl:BibResource>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R000000004-I4196074#item">
+            <dcndl:holdingAgent>
+              <foaf:Agent>
+                <foaf:name>国立国会図書館</foaf:name>
+                <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLLibCode">0000</dcterms:identifier>
+              </foaf:Agent>
+            </dcndl:holdingAgent>
+            <rdfs:seeAlso rdf:resource="https://ndlsearch.ndl.go.jp/books/R000000004-I4196074"/>
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/bib/4196074"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLBibID">4196074</dcterms:identifier>
+            <dcndl:callNumber>Z22-575</dcndl:callNumber>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R000000025-I009320002368545#item">
+            <rdfs:seeAlso rdf:resource="https://jc.u-aizu.repo.nii.ac.jp/records/32"/>
+            <rdfs:seeAlso rdf:resource="https://doi.org/10.20645/00000025"/>
+          </dcndl:Item>
+          <dcndl:Item rdf:about="https://ndlsearch.ndl.go.jp/books/R100000136-I1390853649708396416#item">
+            <rdfs:seeAlso rdf:resource="https://cir.nii.ac.jp/crid/1390853649708396416"/>
+            <rdfs:seeAlso rdf:resource="http://id.ndl.go.jp/bib/4196074"/>
+            <rdfs:seeAlso rdf:resource="https://doi.org/10.20645/00000025"/>
+            <dcterms:identifier rdf:datatype="http://ndl.go.jp/dcndl/terms/NDLBibID">4196074</dcterms:identifier>
+          </dcndl:Item>
+        </rdf:RDF>
+      </recordData>
+      <recordPosition>1</recordPosition>
+    </record>
+  </records>
+</searchRetrieveResponse>
