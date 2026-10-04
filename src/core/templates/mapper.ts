@@ -247,7 +247,9 @@ export function mapRecord(rec: CiteRecord, opts: MapOptions): MapResult {
   add('location', rec.place);
   // Crossref の publisher は学術出版社名（Elsevier 等）で、雑誌論文の出典には普通書かない
   const periodical = cls === 'journal' || cls === 'magazine' || cls === 'news';
-  if (!(periodical && rec.provenance.publisher === 'crossref')) add('publisher', rec.publisher);
+  // 新聞社名と新聞名が同じ（朝日新聞 / 朝日新聞社 など）なら書かない
+  const samePublisher = !!container && !!rec.publisher && rec.publisher.replace(/社$/, '') === container.replace(/社$/, '');
+  if (!(periodical && rec.provenance.publisher === 'crossref') && !samePublisher) add('publisher', rec.publisher);
   add('date', formatDate(rec.issued, s.dateStyle));
   add('language', langParam(rec));
 

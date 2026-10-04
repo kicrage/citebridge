@@ -11,7 +11,8 @@
     "compile": "vue-tsc --noEmit",
     "postinstall": "wxt prepare",
     "test": "vitest run",
-    "gen:profiles": "tsx scripts/gen-profiles.ts"
+    "gen:profiles": "tsx scripts/gen-profiles.ts",
+    "e2e": "node tests/e2e/smoke.mjs"
   },
   "dependencies": {
     "@wikimedia/codex": "^2.6.0",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@types/node": "^22.20.5",
     "@wxt-dev/module-vue": "^1.0.3",
+    "playwright-core": "1.55",
     "tsx": "^4.23.15",
     "typescript": "~5.9",
     "vitest": "^5.0.3",

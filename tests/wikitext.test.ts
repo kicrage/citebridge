@@ -118,3 +118,40 @@ describe('空欄補完', () => {
     expect(out.slice(t.start)).toBe('{{Cite book2\n| last = 山田\n| title = 本\n| publisher = 例出版\n}}\n');
   });
 });
+
+describe('参考文献節への追記', () => {
+  const text = `本文{{Sfn|山田|2000|p=1}}。\n== 脚注 ==\n{{Reflist}}\n== 参考文献 ==\n=== 書籍 ===\n* {{Cite book ja |last1=山田 |title=本 |ref={{SfnRef|山田|2000}}}}\n\n== 外部リンク ==\n* x\n[[Category:例]]`;
+
+  it('最後の箇条書きの後に足す', async () => {
+    const { insertBibliography } = await import('../src/core/wikitext/sections');
+    const r = insertBibliography(text, '* {{Cite book ja |title=新}}');
+    expect(r.status).toBe('inserted');
+    expect(r.text).toContain('{{SfnRef|山田|2000}}}}\n* {{Cite book ja |title=新}}\n\n== 外部リンク ==');
+  });
+
+  it('既にあれば足さない・節が無ければ知らせる', async () => {
+    const { insertBibliography } = await import('../src/core/wikitext/sections');
+    expect(insertBibliography(text, 'x', { dedupe: ['{{SfnRef|山田|2000}}'] }).status).toBe('exists');
+    expect(insertBibliography('本文のみ', 'x').status).toBe('no-section');
+  });
+});
+
+describe('既存出典の識別子', () => {
+  it('doi・ISBN・id= のテンプレート・URL', async () => {
+    const { lookupIdOf } = await import('../src/core/wikitext/refs');
+    const t = (s: string) => parseTemplateAt(s, 0)!;
+    expect(lookupIdOf(t('{{Cite journal ja |title=x |doi=10.20645/00000025}}'))).toMatchObject({ type: 'doi', value: '10.20645/00000025' });
+    expect(lookupIdOf(t('{{Cite book ja |title=x |isbn=4-00-310101-4}}'))).toMatchObject({ type: 'isbn', value: '9784003101018' });
+    expect(lookupIdOf(t('{{Cite book ja |title=x |id={{NDLDC|1234567}}}}'))).toMatchObject({ type: 'ndldc', value: '1234567' });
+    expect(lookupIdOf(t('{{Cite web ja |title=x |url=https://cir.nii.ac.jp/crid/1390853649708396416}}'))).toMatchObject({ type: 'crid' });
+    expect(lookupIdOf(t('{{Cite book ja |title=x}}'))).toBeUndefined();
+  });
+
+  it('本文が変わっても位置を探し直す', async () => {
+    const { relocate } = await import('../src/core/wikitext/refs');
+    const t = findAllCites(ARTICLE)[1];
+    const edited = '追記した文。' + ARTICLE;
+    expect(relocate(edited, t)?.start).toBe(t.start + '追記した文。'.length);
+    expect(relocate('別の記事', t)).toBeUndefined();
+  });
+});

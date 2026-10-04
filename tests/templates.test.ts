@@ -201,3 +201,11 @@ describe('profiles', () => {
     expect(paramStatus(getTemplate('Cite thesis ja')!, 'degree')).toBe('ok');
   });
 });
+
+describe('mapper: 出版者の重複', () => {
+  it('新聞名と同じ出版者は書かない', () => {
+    const rec = { ...records['news-kobe'], publisher: '大阪朝日新聞' };
+    expect(mapRecord(rec, { family: 'ja' }).call.params.some((p) => p.name === 'publisher')).toBe(false);
+    expect(mapRecord({ ...rec, publisher: '大阪朝日新聞社' }, { family: 'ja' }).call.params.some((p) => p.name === 'publisher')).toBe(false);
+  });
+});

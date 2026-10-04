@@ -1,0 +1,76 @@
+@import '@wikimedia/codex-design-tokens/dist/theme-wikimedia-ui.css';
+@import '@wikimedia/codex-design-tokens/dist/theme-wikimedia-ui-mode-dark.css' screen and (prefers-color-scheme: dark);
+@import '@wikimedia/codex/dist/codex.style.css';
+
+html,
+body {
+  margin: 0;
+  background-color: var(--background-color-base);
+  color: var(--color-base);
+  font-family: var(--font-family-system-sans);
+  font-size: var(--font-size-medium);
+  line-height: var(--line-height-medium);
+}
+
+.cb-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-75);
+}
+
+.cb-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-50);
+}
+
+.cb-grow {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.cb-subtle {
+  color: var(--color-subtle);
+  font-size: var(--font-size-small);
+}
+
+.cb-code textarea,
+textarea.cb-code,
+.cb-mono {
+  font-family: var(--font-family-monospace);
+  font-size: var(--font-size-small);
+}
+
+.cb-section-title {
+  margin: 0;
+  font-size: var(--font-size-medium);
+  font-weight: var(--font-weight-bold);
+}
+
+.cb-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-50);
+}
+
+.cb-item {
+  border: var(--border-width-base) var(--border-style-base) var(--border-color-subtle);
+  border-radius: var(--border-radius-base);
+  padding: var(--spacing-50) var(--spacing-75);
+  background-color: var(--background-color-base);
+}
+
+.cb-item--active {
+  border-color: var(--border-color-progressive);
+}
+
+.cb-quote {
+  margin: 0;
+  padding-left: var(--spacing-75);
+  border-left: var(--border-width-thick) var(--border-style-base) var(--border-color-subtle);
+  white-space: pre-wrap;
+}

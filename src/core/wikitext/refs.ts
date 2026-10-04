@@ -1,7 +1,9 @@
 import type { Family } from '../templates/profiles';
 import type { Param } from '../templates/mapper';
 import { escapeValue, type SerializeStyle } from '../templates/serialize';
-import { findTemplates, paramKey, type ParsedTemplate } from './template';
+import { detectIds, normalizeIsbn } from '../ids/detect';
+import type { DetectedId } from '../ids/types';
+import { findTemplates, paramKey, parseTemplateAt, type ParsedTemplate } from './template';
 
 export type CiteFamily = Family | 'legacy';
 
@@ -187,4 +189,34 @@ export function duplicateRefs(refs: RefEntry[]): RefEntry[][] {
     groups.set(k, [...(groups.get(k) ?? []), r]);
   }
   return [...groups.values()].filter((g) => g.length > 1);
+}
+
+/** 既存の出典テンプレートから、書誌を引き直すための識別子を取り出す（確からしい順） */
+export function lookupIdOf(t: ParsedTemplate): DetectedId | undefined {
+  const ex = existingParams(t);
+  const v = (k: string) => ex.get(k)?.value.trim() || undefined;
+  const exact = (type: DetectedId['type'], value: string): DetectedId => ({ type, value, confidence: 'exact' });
+  if (v('doi')) return exact('doi', v('doi')!);
+  if (v('crid')) return exact('crid', v('crid')!);
+  if (v('naid')) return exact('naid', v('naid')!);
+  const isbn = v('isbn') && normalizeIsbn(v('isbn')!);
+  if (isbn) return exact('isbn', isbn);
+  const id = v('id') ?? '';
+  let m: RegExpExecArray | null;
+  if ((m = /\{\{\s*NDLDC\s*\|\s*(\d+)/i.exec(id))) return exact('ndldc', m[1]);
+  if ((m = /\{\{\s*国立国会図書館書誌ID\s*\|\s*(\d+)/.exec(id))) return exact('ndlbib', m[1]);
+  if ((m = /\{\{\s*全国書誌番号\s*\|\s*(\d+)/.exec(id))) return exact('jpno', m[1]);
+  if (v('ncid')) return exact('ncid', v('ncid')!);
+  if (v('pmid')) return exact('pmid', v('pmid')!);
+  const url = v('url');
+  if (url && /^https?:\/\//.test(url)) return detectIds(url)[0];
+  return undefined;
+}
+
+/** 編集画面の最新テキストの中で、以前に解析したテンプレートの位置を探し直す（本文が編集されていても追従する） */
+export function relocate(text: string, t: ParsedTemplate): ParsedTemplate | undefined {
+  if (text.slice(t.start, t.end) === t.text) return parseTemplateAt(text, t.start);
+  const at = text.indexOf(t.text);
+  if (at < 0 || text.indexOf(t.text, at + 1) >= 0) return undefined; // 見つからない・複数ある
+  return parseTemplateAt(text, at);
 }
