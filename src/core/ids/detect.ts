@@ -152,7 +152,9 @@ export function detectIds(input: string): DetectedId[] {
     }
   }
   // 2) 明示的な接頭辞 `type:value`
-  const pm = /^([^\s:]+?)\s*[:：]\s*(.+)$/.exec(s);
+  // 「ISBN 978-…」「ISBN-13: …」「DOI 10.…」のような空白区切り・桁数付きも受ける
+  const pm = /^([^\s:]+?)\s*[:：]\s*(.+)$/.exec(s.replace(/^(isbn|issn)-?1[03]\b/i, '$1')) ??
+    /^([A-Za-z]{3,6})\s+(\S.*)$/.exec(s);
   if (pm && !/^info$/i.test(pm[1])) {
     const t = PREFIXES[pm[1].toLowerCase()];
     if (t) {

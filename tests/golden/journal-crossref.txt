@@ -1,0 +1,18 @@
+## ja / 一節なし
+<ref>{{Cite journal ja |last1=Kucsko |first1=G. |last2=Maurer |first2=P. C. |last3=Yao |first3=N. Y. |last4=Kubo |first4=M. |last5=Noh |first5=H. J. |last6=Lo |first6=P. K. |last7=Park |first7=H. |last8=Lukin |first8=M. D. |title=Nanometre-scale thermometry in a living cell |journal=Nature |volume=500 |issue=7460 |pages=54-58 |date=2013-07-31 |language=en |doi=10.1038/nature12373}}</ref>
+## ja / pages
+<ref>{{Cite journal ja |last1=Kucsko |first1=G. |last2=Maurer |first2=P. C. |last3=Yao |first3=N. Y. |last4=Kubo |first4=M. |last5=Noh |first5=H. J. |last6=Lo |first6=P. K. |last7=Park |first7=H. |last8=Lukin |first8=M. D. |title=Nanometre-scale thermometry in a living cell |journal=Nature |volume=500 |issue=7460 |page=12 |date=2013-07-31 |language=en |doi=10.1038/nature12373}}</ref>
+## ja / quote
+<ref>{{Cite journal ja |last1=Kucsko |first1=G. |last2=Maurer |first2=P. C. |last3=Yao |first3=N. Y. |last4=Kubo |first4=M. |last5=Noh |first5=H. J. |last6=Lo |first6=P. K. |last7=Park |first7=H. |last8=Lukin |first8=M. D. |title=Nanometre-scale thermometry in a living cell |journal=Nature |volume=500 |issue=7460 |page=12 |date=2013-07-31 |language=en |doi=10.1038/nature12373 |quote=引用する一節。 二行目}}</ref>
+## ja / sfn
+{{Sfn|Kucsko|Maurer|Yao|Kubo|2013|p=12}}
+* {{Cite journal ja |last1=Kucsko |first1=G. |last2=Maurer |first2=P. C. |last3=Yao |first3=N. Y. |last4=Kubo |first4=M. |last5=Noh |first5=H. J. |last6=Lo |first6=P. K. |last7=Park |first7=H. |last8=Lukin |first8=M. D. |title=Nanometre-scale thermometry in a living cell |journal=Nature |volume=500 |issue=7460 |pages=54-58 |date=2013-07-31 |language=en |doi=10.1038/nature12373 |ref={{SfnRef|Kucsko|Maurer|Yao|Kubo|2013}}}}
+## 2 / 一節なし
+<ref>{{Cite journal2 |last1=Kucsko |first1=G. |last2=Maurer |first2=P. C. |last3=Yao |first3=N. Y. |last4=Kubo |first4=M. |last5=Noh |first5=H. J. |last6=Lo |first6=P. K. |last7=Park |first7=H. |last8=Lukin |first8=M. D. |title=Nanometre-scale thermometry in a living cell |journal=Nature |volume=500 |issue=7460 |pages=54-58 |date=2013-07-31 |language=en |doi=10.1038/nature12373}}</ref>
+## 2 / pages
+<ref>{{Cite journal2 |last1=Kucsko |first1=G. |last2=Maurer |first2=P. C. |last3=Yao |first3=N. Y. |last4=Kubo |first4=M. |last5=Noh |first5=H. J. |last6=Lo |first6=P. K. |last7=Park |first7=H. |last8=Lukin |first8=M. D. |title=Nanometre-scale thermometry in a living cell |journal=Nature |volume=500 |issue=7460 |page=12 |date=2013-07-31 |language=en |doi=10.1038/nature12373}}</ref>
+## 2 / quote
+<ref>{{Cite journal2 |last1=Kucsko |first1=G. |last2=Maurer |first2=P. C. |last3=Yao |first3=N. Y. |last4=Kubo |first4=M. |last5=Noh |first5=H. J. |last6=Lo |first6=P. K. |last7=Park |first7=H. |last8=Lukin |first8=M. D. |title=Nanometre-scale thermometry in a living cell |journal=Nature |volume=500 |issue=7460 |page=12 |date=2013-07-31 |language=en |doi=10.1038/nature12373 |quote=引用する一節。 二行目}}</ref>
+## 2 / sfn
+{{Sfn|Kucsko|Maurer|Yao|Kubo|2013|p=12}}
+* {{Cite journal2 |last1=Kucsko |first1=G. |last2=Maurer |first2=P. C. |last3=Yao |first3=N. Y. |last4=Kubo |first4=M. |last5=Noh |first5=H. J. |last6=Lo |first6=P. K. |last7=Park |first7=H. |last8=Lukin |first8=M. D. |title=Nanometre-scale thermometry in a living cell |journal=Nature |volume=500 |issue=7460 |pages=54-58 |date=2013-07-31 |language=en |doi=10.1038/nature12373}}

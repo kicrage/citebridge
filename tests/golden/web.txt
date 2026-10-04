@@ -1,0 +1,18 @@
+## ja / 一節なし
+<ref>{{Cite web ja |title=会社概要 |website=例株式会社 |date=2024-04-01 |url=https://www.example.jp/about |access-date=2026-10-04}}</ref>
+## ja / pages
+<ref>{{Cite web ja |title=会社概要 |website=例株式会社 |page=12 |date=2024-04-01 |url=https://www.example.jp/about |access-date=2026-10-04}}</ref>
+## ja / quote
+<ref>{{Cite web ja |title=会社概要 |website=例株式会社 |page=12 |date=2024-04-01 |url=https://www.example.jp/about |access-date=2026-10-04 |quote=引用する一節。 二行目}}</ref>
+## ja / sfn
+{{Sfn|会社概要|2024|p=12}}
+* {{Cite web ja |title=会社概要 |website=例株式会社 |date=2024-04-01 |url=https://www.example.jp/about |access-date=2026-10-04 |ref={{SfnRef|会社概要|2024}}}}
+## 2 / 一節なし
+<ref>{{Cite web2 |title=会社概要 |website=例株式会社 |date=2024-04-01 |url=https://www.example.jp/about |access-date=2026-10-04}}</ref>
+## 2 / pages
+<ref>{{Cite web2 |title=会社概要 |website=例株式会社 |page=12 |date=2024-04-01 |url=https://www.example.jp/about |access-date=2026-10-04}}</ref>
+## 2 / quote
+<ref>{{Cite web2 |title=会社概要 |website=例株式会社 |page=12 |date=2024-04-01 |url=https://www.example.jp/about |access-date=2026-10-04 |quote=引用する一節。 二行目}}</ref>
+## 2 / sfn
+{{Sfn|会社概要|2024|p=12}}
+* {{Cite web2 |title=会社概要 |website=例株式会社 |date=2024-04-01 |url=https://www.example.jp/about |access-date=2026-10-04 |ref={{SfnRef|会社概要|2024}}}}
