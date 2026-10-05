@@ -103,8 +103,9 @@ function fromUrl(u: URL): DetectedId[] {
   }
   if (host === 'ndlsearch.ndl.go.jp' || host === 'iss.ndl.go.jp') {
     // R100000002 = 図書の NDL 書誌、R000000004 = 雑誌記事索引
-    // R100000002 / R000000004 の I 番号は NDL 書誌ID。デジタル化資料（R100000039 など）は書誌IDではないので URL として扱う
-    if ((m = /^\/(?:[a-z]{2}\/)?books\/R(?:100000002|000000004)-I(\d+)/.exec(path))) return [exact('ndlbib', m[1])];
+    // R100000002 の I 番号は NDL 書誌ID。R000000004（雑誌記事索引）の I 番号は別の体系で、図書の書誌IDと番号が衝突する
+    if ((m = /^\/(?:[a-z]{2}\/)?books\/R100000002-I(\d+)/.exec(path))) return [exact('ndlbib', m[1])];
+    if ((m = /^\/(?:[a-z]{2}\/)?books\/R000000004-I(\d+)/.exec(path))) return [exact('ndlarticle', m[1])];
     // R100000039-I{PID}: デジタル化資料。I 番号は書誌IDではなく PID そのもの（0 埋めの形は実在しない）
     if ((m = /^\/(?:[a-z]{2}\/)?books\/R100000039-I([1-9]\d{4,9})(?:\D|$)/.exec(path))) return [exact('ndldc', m[1])];
   }

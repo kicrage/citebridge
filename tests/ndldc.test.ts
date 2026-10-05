@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { detectIds } from '../src/core/ids/detect';
-import { fetchNdldc, parseNdldcOai, stripExif } from '../src/core/sources/ndl';
+import { fetchNdldc, parseNdldcOai, parseNdlSru, stripExif } from '../src/core/sources/ndl';
 import { resolveId } from '../src/core/sources/resolve';
 import { NotFoundError } from '../src/core/sources/http';
 import { fakeContext, fixture } from './helpers';
@@ -123,5 +123,22 @@ describe('fetchNdldc / resolveId', () => {
     await expect(resolveId(detectIds('pid:99999999999')[0], ctx)).rejects.toThrow(/oaipmh/);
     expect(ctx.calls).toHaveLength(1);
     expect(ctx.calls[0]).toContain('oaipmh');
+  });
+});
+
+describe('NDL の DOI（10.11501/{PID}）と叢書名', () => {
+  it('JaLC を引かず、PID として OAI-PMH で取得する', async () => {
+    const ctx = fakeContext([[/dl\.ndl\.go\.jp\/api\/oaipmh.*pid\/3437686$/, 'ndldc_oai_3437686.xml']]);
+    const { record } = await resolveId(detectIds('10.11501/3437686')[0], ctx);
+    expect(ctx.calls).toHaveLength(1);
+    expect(ctx.calls[0]).toContain('oaipmh');
+    expect(record.ids.ndldc).toBe('3437686');
+    expect(record.authors).toEqual([{ literal: '紫式部' }]);
+    expect(record.title?.ja).toBe('校異源氏物語');
+  });
+
+  it('叢書名に付く巻次（「 ; ア7-5」）は series に入れない', () => {
+    const xml = fixture('ndl_sru_jpno_90035836.xml').replace('<dcndl:seriesTitle>', '<dcndl:seriesTitle>').replace('岩波文庫', '岩波文庫 ; 緑 90-1');
+    expect(parseNdlSru(xml)?.series).toBe('岩波文庫');
   });
 });

@@ -31,7 +31,7 @@ async function settle(steps: Step[], errors: ResolveResult['errors']): Promise<S
   return ok;
 }
 
-async function viaDoi(doi: string, ctx: SourceContext, errors: ResolveResult['errors']) {
+async function viaDoi(doi: string, ctx: SourceContext, errors: ResolveResult['errors'], opts: { skipCinii?: boolean } = {}) {
   let ra: string | undefined;
   try {
     ra = await fetchDoiRa(doi, ctx);
@@ -42,7 +42,9 @@ async function viaDoi(doi: string, ctx: SourceContext, errors: ResolveResult['er
     const res = await settle(
       [
         { source: 'jalc', run: () => fetchJalc(doi, ctx) },
-        { source: 'cinii', run: async () => { const c = await findCrid(doi, ctx); return c ? fetchCinii(c, ctx) : undefined; } },
+        ...(opts.skipCinii
+          ? []
+          : [{ source: 'cinii' as const, run: async () => { const c = await findCrid(doi, ctx); return c ? fetchCinii(c, ctx) : undefined; } }]),
       ],
       errors,
     );
@@ -57,8 +59,13 @@ async function viaDoi(doi: string, ctx: SourceContext, errors: ResolveResult['er
   return { results: res, order: ['user', 'citoid', 'crossref', 'jalc', 'page'] as SourceId[] };
 }
 
+const NDL_DOI = /^10\.11501\/(\d+)$/;
+
 /** 識別子からメタデータを取得し、統合済みレコードを返す */
 export async function resolveId(id: DetectedId, ctx: SourceContext): Promise<ResolveResult> {
+  // 10.11501/{PID} は NDL デジタルコレクションの DOI。JaLC 経由だと著者を姓名に割る・巻次が題名に混ざるなど質が落ちるので OAI-PMH で引く
+  const ndlDoi = id.type === 'doi' ? NDL_DOI.exec(id.value) : null;
+  if (ndlDoi) return resolveId({ type: 'ndldc', value: ndlDoi[1], confidence: 'exact' }, ctx);
   const errors: ResolveResult['errors'] = [];
   let results: SourceResult[] = [];
   let order: SourceId[] = ['user', 'cinii', 'jalc', 'crossref', 'ndl', 'citoid', 'page'];
@@ -76,14 +83,16 @@ export async function resolveId(id: DetectedId, ctx: SourceContext): Promise<Res
       results = await settle([{ source: 'cinii', run: () => fetchCinii(crid, ctx) }], errors);
       const doi = results[0]?.record.ids?.doi;
       const isbn = results[0]?.record.ids?.isbn;
-      if (doi) results.push(...(await viaDoi(doi, ctx, errors)).results);
+      // CiNii は取得済みなので DOI からの再検索はしない
+      if (doi) results.push(...(await viaDoi(doi, ctx, errors, { skipCinii: true })).results);
       else if (isbn) results.push(...(await settle([{ source: 'ndl', run: () => fetchNdl('isbn', isbn, ctx) }], errors)));
       if (id.type !== 'crid') for (const r of results) if (r.source === 'cinii') r.record.ids = { ...r.record.ids, [id.type]: id.value };
       break;
     }
     case 'isbn':
     case 'jpno':
-    case 'ndlbib': {
+    case 'ndlbib':
+    case 'ndlarticle': {
       results = await settle([{ source: 'ndl', run: () => fetchNdl(id.type as 'isbn', id.value, ctx) }], errors);
       if (!results.length && id.type === 'isbn')
         results = await settle([{ source: 'citoid', run: () => fetchCitoid(id.value, ctx) }], errors);

@@ -6,6 +6,7 @@ import { parseJalc } from '../src/core/sources/jalc';
 import { parseNdlSru } from '../src/core/sources/ndl';
 import { parsePageSnapshot } from '../src/core/sources/pagemeta';
 import { resolveId } from '../src/core/sources/resolve';
+import { generate } from '../src/core/templates/generate';
 import { detectIds } from '../src/core/ids/detect';
 import { mergeResults } from '../src/core/merge/merge';
 import { pick } from '../src/core/model/record';
@@ -187,5 +188,34 @@ describe('resolveId（録画レスポンス）', () => {
 
   it('どのソースからも取れなければ例外', async () => {
     await expect(resolveId(detectIds('10.9999/none')[0], fakeContext([]))).rejects.toThrow();
+  });
+});
+
+describe('NDL 雑誌記事索引と図書の書誌ID', () => {
+  // 同じ番号 4196074 が、図書（R100000002-I000004196074）と雑誌記事索引（R000000004-I4196074）で別の資料になる
+  const routes: [RegExp, string][] = [
+    [/R000000004-I4196074/, 'ndl_sru_article_4196074.xml'],
+    [/R100000002-I000002041889/, 'ndl_sru_jpno_90035836.xml'],
+  ];
+
+  it('雑誌記事索引の URL は ndlarticle として扱い、記事のほうを引く（図書を引かない）', async () => {
+    const id = detectIds('https://ndlsearch.ndl.go.jp/books/R000000004-I4196074')[0];
+    expect(id).toMatchObject({ type: 'ndlarticle', value: '4196074' });
+    const ctx = fakeContext(routes);
+    const { record } = await resolveId(id, ctx);
+    expect(ctx.calls).toHaveLength(1);
+    expect(ctx.calls[0]).toContain('R000000004-I4196074');
+    expect(record.type).toBe('article-journal');
+    // NDL が記事に付ける NDLBibID は図書の書誌IDと番号が衝突するので、出典には書かない
+    expect(generate(record, { family: 'ja', today: '2026-10-06' }).inline).not.toContain('国立国会図書館書誌ID');
+    expect(record.ids.ndlarticle).toBe('4196074');
+  });
+
+  it('書誌ID（図書）は記事索引にフォールバックしない', async () => {
+    const ctx = fakeContext(routes);
+    await expect(resolveId(detectIds('https://ndlsearch.ndl.go.jp/books/R100000002-I000004196074')[0], ctx)).rejects.toThrow();
+    expect(ctx.calls.every((u) => !u.includes('R000000004'))).toBe(true);
+    const { record } = await resolveId(detectIds('https://ndlsearch.ndl.go.jp/books/R100000002-I000002041889')[0], fakeContext(routes));
+    expect(record.ids.ndlbib).toBe('000002041889');
   });
 });

@@ -29,7 +29,13 @@ jawiki 向けの出典テンプレート生成 Chrome 拡張（WXT + Vue 3 + Cod
    - 項目の決め方: サイドパネルの入力に #w- が無く項目が複数なら ChooseEntryError → 候補ボタン（DetectedId.label）。ページ取り込みでは 選択範囲の項目 → URL の #w- → 画面に見えている項目（src/lib/capture.ts の entryAnchor）。
    - 候補が同じ表示になる項目（日本歴史地名大系の同一分類など）は本文の食い違い始めを添えて区別。出版社の書式は辞書ごとにまちまち（サンプルは tests/fixtures/kotobank_*.html、漱石のほうは本文を削った録画）。出版社が取れない辞書がある（ブリタニカ等は辞書名のみ）。
    - 録画は 平野郷-864282 と 夏目漱石-17193（13 辞書）。テストは tests/kotobank.test.ts。host_permissions に kotobank.jp を追加したので、更新後に権限の再承認が要る。
-2. 実 API（JaLC・Crossref・CiNii・NDL）で取得を確認し、必要ならフィクスチャを追加。
+2. ~~実 API（JaLC・Crossref・CiNii・NDL）で取得を確認~~ → 済（2026-10-06）。Crossref（DOI 2 件）・CiNii（CRID/NAID/NCID）・NDL（ISBN/JPNO/書誌ID/記事索引）は実応答で出典が組み立つ。JaLC は実応答（curl）がフィクスチャと同じキー構成であることだけ確認（下記の環境事情で Node からは引けなかった）。見つけて直したこと:
+   - NDL サーチの雑誌記事索引 R000000004-I{n} を ndlbib 扱いしていて、同じ番号の別の図書（R100000002-I{12桁}）を引いていた → IdType ndlarticle を新設。記事に付く NDLBibID は図書と番号が衝突するため、article-journal/magazine では {{国立国会図書館書誌ID}} を出さない。
+   - DOI 10.11501/{PID} は NDL デジタルコレクションの DOI。JaLC 経由だと著者を姓名に割る・巻次が題名に混ざる → PID として OAI-PMH で引く。
+   - 叢書名の「 ; ア7-5」（巻次）を series から落とす。CRID からの取得で CiNii を二重に引いていたのをやめた。
+   - createHttp にネットワークエラー（接続タイムアウト・DNS）の再試行を追加。
+   - 環境メモ: この開発環境は .jp ホストの初回 DNS 解決が約 12 秒かかり、Node の接続タイムアウト（10 秒）を超えて api.japanlinkcenter.org が引けないことが多い（curl なら通る）。コードの問題ではない。
+   - 未確認: JaLC の図書・学位論文 DOI、CiNii の学位論文、Newspaper の NDL PID。CiNii の連載誌（NCID）は date が範囲（1994.3-2006.2）で解釈できず警告が出る（仕様どおり）。
 3. 生成 wikitext を jawiki の action=parse に通し、CS1 / CS-ja のエラー表示が出ないことを確認。特に:
    - CS-ja が CITEREF を自動生成するか（しなければ現状どおり ja 系は ref={{SfnRef|…}} を明示、するなら省ける）
    - id={{NDLDC|pid}} の表示

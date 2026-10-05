@@ -282,6 +282,8 @@ export function mapRecord(rec: CiteRecord, opts: MapOptions): MapResult {
   }
   const wrapped = (Object.keys(ID_WRAPPERS) as (keyof typeof ID_WRAPPERS)[])
     .filter((k) => rec.ids[k])
+    // 論文・記事の「NDL書誌ID」は雑誌記事索引（R000000004）の番号で、{{国立国会図書館書誌ID}} が作る図書（R100000002）のリンクだと別資料になる
+    .filter((k) => !(k === 'ndlbib' && (rec.type === 'article-journal' || rec.type === 'article-magazine')))
     .map((k) => ID_WRAPPERS[k]!(rec.ids[k]!));
   if (wrapped.length) add('id', wrapped.join(' '), true);
 

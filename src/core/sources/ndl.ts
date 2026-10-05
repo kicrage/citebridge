@@ -44,6 +44,9 @@ function typeOf(bib: any): WorkType {
   return 'other';
 }
 
+/** 叢書名に続く巻次（「ちくま学芸文庫 ; ア7-5」）は落とす */
+const seriesName = (s: string | undefined) => s?.split(/\s+[;；]\s+/)[0].trim() || undefined;
+
 /** 「会津若松 : 会津大学短期大学部」形式を出版地と出版者に分ける */
 function splitPublisher(s: string | undefined): { place?: string; publisher?: string } {
   if (!s) return {};
@@ -105,7 +108,7 @@ export function parseNdlBib(bib: any): Partial<CiteRecord> {
     translators,
     issued: issued?.y ? issued : (parseDate(text(bib['dcterms:issued'])) ?? issued),
     edition: text(bib['dcndl:edition']),
-    series: descValue(bib['dcndl:seriesTitle']),
+    series: seriesName(descValue(bib['dcndl:seriesTitle'])),
     publisher: pubSplit.publisher,
     place,
     language: lang === 'jpn' ? 'ja' : lang === 'eng' ? 'en' : lang,
@@ -143,16 +146,17 @@ async function sru(cql: string, ctx: SourceContext): Promise<SourceResult | unde
   return record ? { source: 'ndl', record, raw } : undefined;
 }
 
-export async function fetchNdl(type: 'isbn' | 'jpno' | 'ndlbib', value: string, ctx: SourceContext): Promise<SourceResult> {
+export async function fetchNdl(
+  type: 'isbn' | 'jpno' | 'ndlbib' | 'ndlarticle',
+  value: string,
+  ctx: SourceContext,
+): Promise<SourceResult> {
   let res: SourceResult | undefined;
   if (type === 'isbn') res = await sru(`isbn="${value}"`, ctx);
   else if (type === 'jpno') res = await sru(`jpno="${value}"`, ctx);
-  else {
-    // 図書（R100000002, 12桁ゼロ埋め）→ 雑誌記事索引（R000000004）の順に試す
-    res =
-      (await sru(`itemno="R100000002-I${value.padStart(12, '0')}"`, ctx)) ??
-      (await sru(`itemno="R000000004-I${value.replace(/^0+/, '')}"`, ctx));
-  }
+  // 雑誌記事索引（R000000004）。図書の書誌ID（R100000002, 12桁ゼロ埋め）とは別体系で、同じ番号が別資料になる
+  else if (type === 'ndlarticle') res = await sru(`itemno="R000000004-I${value.replace(/^0+/, '')}"`, ctx);
+  else res = await sru(`itemno="R100000002-I${value.padStart(12, '0')}"`, ctx);
   if (!res) throw new NotFoundError(`NDL: ${type}=${value}`);
   if (type === 'ndlbib') res.record.ids = { ...res.record.ids, ndlbib: value };
   return res;
@@ -264,7 +268,7 @@ export function parseNdldcOai(xml: string): Partial<CiteRecord> | undefined {
     ...vol,
     publisher: publisher && publisher !== '[出版者不明]' ? publisher : undefined,
     place: place && place !== '[出版地不明]' ? place.replace(/^\[(.+)\]$/, '$1') : undefined,
-    series: clean(text(dc['dcndl:seriesTitle']) ?? text(dc['dcndl:publicationName'])),
+    series: seriesName(clean(text(dc['dcndl:seriesTitle']) ?? text(dc['dcndl:publicationName']))),
     edition: text(dc['dcndl:edition']),
     language: lang === 'jpn' ? 'ja' : lang === 'eng' ? 'en' : lang,
   };

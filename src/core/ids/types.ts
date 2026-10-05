@@ -6,6 +6,7 @@ export type IdType =
   | 'ncid'
   | 'ndlbib' // 国立国会図書館書誌ID
   | 'jpno' // 全国書誌番号
+  | 'ndlarticle' // NDLサーチの雑誌記事索引 ID（R000000004-I{番号}）。図書の書誌ID（R100000002）とは別物で、番号が衝突する
   | 'ndldc' // 国立国会図書館デジタルコレクション PID
   | 'isbn'
   | 'issn'
@@ -36,6 +37,7 @@ export const ID_LABELS: Record<IdType, string> = {
   ncid: 'NCID',
   ndlbib: '国立国会図書館書誌ID',
   jpno: '全国書誌番号',
+  ndlarticle: 'NDLサーチ雑誌記事索引',
   ndldc: 'NDLデジタルコレクション',
   isbn: 'ISBN',
   issn: 'ISSN',
