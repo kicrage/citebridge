@@ -25,6 +25,14 @@ describe('detectIds: URL', () => {
     expect(first('https://dl.ndl.go.jp/pid/1234567/1/45')).toMatchObject({ type: 'ndldc', value: '1234567', extra: { koma: 45 } });
     expect(first('https://dl.ndl.go.jp/ja/pid/1234567')).toMatchObject({ type: 'ndldc', value: '1234567' });
     expect(first('info:ndljp/pid/1234567/12')).toMatchObject({ type: 'ndldc', value: '1234567', extra: { koma: 12 } });
+    expect(first('https://dl.ndl.go.jp/info:ndljp/pid/1234567/12')).toMatchObject({ type: 'ndldc', value: '1234567', extra: { koma: 12 } });
+    expect(first('https://id.ndl.go.jp/digimeta/1234567')).toMatchObject({ type: 'ndldc', value: '1234567' });
+    expect(first('pid:1234567')).toMatchObject({ type: 'ndldc', value: '1234567', confidence: 'exact' });
+    expect(first('PID 1234567')).toMatchObject({ type: 'ndldc', value: '1234567', confidence: 'exact' });
+  });
+
+  it('NDLサーチのデジタル化資料の URL を NDL書誌ID と取り違えない', () => {
+    expect(first('https://ndlsearch.ndl.go.jp/books/R100000039-I000000123456')).toMatchObject({ type: 'url' });
   });
 
   it('J-STAGE の記事 URL から DOI と URL の両方を返す', () => {

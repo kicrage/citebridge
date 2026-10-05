@@ -12,6 +12,7 @@ const PREFIXES: Record<string, IdType> = {
   jpno: 'jpno',
   ndldc: 'ndldc',
   ndljp: 'ndldc',
+  pid: 'ndldc',
   isbn: 'isbn',
   issn: 'issn',
   hdl: 'hdl',
@@ -102,12 +103,15 @@ function fromUrl(u: URL): DetectedId[] {
   }
   if (host === 'ndlsearch.ndl.go.jp' || host === 'iss.ndl.go.jp') {
     // R100000002 = 図書の NDL 書誌、R000000004 = 雑誌記事索引
-    if ((m = /^\/books\/R\d{9}-I(\d+)/.exec(path))) return [exact('ndlbib', m[1])];
+    // R100000002 / R000000004 の I 番号は NDL 書誌ID。デジタル化資料（R100000039 など）は書誌IDではないので URL として扱う
+    if ((m = /^\/books\/R(?:100000002|000000004)-I(\d+)/.exec(path))) return [exact('ndlbib', m[1])];
   }
   if (host === 'id.ndl.go.jp') {
     if ((m = /^\/bib\/(\d+)/.exec(path))) return [exact('ndlbib', m[1])];
     if ((m = /^\/jpno\/(\d+)/.exec(path))) return [exact('jpno', m[1])];
   }
+  // NDL のデジタル化資料メタデータ URI
+  if (host === 'id.ndl.go.jp' && (m = /^\/digimeta\/(\d+)/.exec(path))) return [exact('ndldc', m[1])];
   if (host === 'dl.ndl.go.jp') {
     const d = fromNdldcPath(path.replace(/^\/(?:ja\/)?/, ''));
     if (d) return [d];
