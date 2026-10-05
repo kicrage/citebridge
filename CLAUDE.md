@@ -17,7 +17,12 @@ jawiki 向けの出典テンプレート生成 Chrome 拡張（WXT + Vue 3 + Cod
 - tests/fixtures: API の録画レスポンス、tests/e2e/smoke.mjs: Chromium で通しのスモークテスト（API と編集画面は偽物）
 
 ## 次にやること（以前の環境では外部に接続できず保留していたもの）
-1. NDL デジタルコレクション PID の書誌取得: 現状は Citoid 任せで未検証。NDL の公式 API / IIIF マニフェスト / NDL サーチのいずれかで専用アダプタを作り、実レスポンスを tests/fixtures に録画してテストする。
+1. ~~NDL デジタルコレクション PID の書誌取得~~ → 済（2026-10-05）。src/core/sources/ndl.ts の `fetchNdldc` / `parseNdldcOai`。
+   - 使う API: OAI-PMH `https://dl.ndl.go.jp/api/oaipmh?verb=GetRecord&metadataPrefix=dcndl_porta&identifier=oai:dl.ndl.go.jp:info:ndljp/pid/{pid}`。公開・制限付きを問わず引ける（IIIF マニフェストは公開資料のみ、`/api/item/search/info:ndljp/pid/` は震災アーカイブ等で 404）。存在しない PID は HTTP 200 で `<error verb="idDoesNotExist">`。
+   - Citoid フォールバックは廃止（SPA の汎用題名「国立国会図書館デジタルコレクション」だけ返り、失敗が成功に見えるため）。
+   - 録画は tests/fixtures/ndldc_oai_*.xml（exif:width/height の繰り返しだけ除去）。図書・雑誌号・写本・錦絵・写真を網羅。テストは tests/ndldc.test.ts とゴールデン ndldc-oai-*.txt。
+   - 割り切り: ids は ndldc（雑誌は issn も）のみ。DOI（10.11501/…）・書誌ID・JPNO は id=/doi= に出すと冗長なので record に入れない。雑誌・新聞の「号」は題名を container に入れ、記事題名（title）は利用者が補う（validate が必須エラーを出す）。雑誌の号は「(53);2003」形式から issue を取るが、サンプルは 1 件だけ。新聞（Newspaper）の PID は未確認。
+1b. 新聞記事文庫（神戸大学）の取得（2026-10-05）: src/core/sources/kobe.ts。記事ページ `https://da.lib.kobe-u.ac.jp/da/np/{ID}/` の表（<th>項目名</th><td>）を読む（meta が無く <title> は「題名 | 新聞記事文庫」）。取れるのは題名（「主 : 副」は分離）・新聞名・著者名（「氏名:肩書」の肩書は捨てる）・出版日（連載は範囲「A/B」→初回日）。ページ（面）・新聞社名は元データに無い。巻・記事番号・切抜帳は切抜帳の位置なので出典には使わない。Handle URL・da URL・ID のどれからでも同じ。url= の Handle URL と重なるので hdl= は出さない。録画は tests/fixtures/kobe_np_*.html、テストは tests/kobe.test.ts。
 2. 実 API（JaLC・Crossref・CiNii・NDL）で取得を確認し、必要ならフィクスチャを追加。
 3. 生成 wikitext を jawiki の action=parse に通し、CS1 / CS-ja のエラー表示が出ないことを確認。特に:
    - CS-ja が CITEREF を自動生成するか（しなければ現状どおり ja 系は ref={{SfnRef|…}} を明示、するなら省ける）

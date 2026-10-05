@@ -7,6 +7,7 @@ const API_HOSTS = [
   'https://api.japanlinkcenter.org/*',
   'https://cir.nii.ac.jp/*',
   'https://ndlsearch.ndl.go.jp/*',
+  'https://dl.ndl.go.jp/*',
   'https://hdl.handle.net/*',
   'https://da.lib.kobe-u.ac.jp/*',
   // Citoid（REST API）と編集画面への挿入

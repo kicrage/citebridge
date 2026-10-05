@@ -65,7 +65,7 @@ async function capture(tabId: number, tab: { url?: string; title?: string } | un
   if (pid) {
     try {
       const r = await resolveId(pid, await context());
-      record = mergeResults(r.record.key, [...r.results, page], ['user', 'jalc', 'crossref', 'cinii', 'ndl', 'citoid', 'page']);
+      record = mergeResults(r.record.key, [...r.results, page], ['user', 'jalc', 'crossref', 'cinii', 'ndl', 'kobe', 'citoid', 'page']);
       if (r.record.koma) record.koma = r.record.koma;
       errors = r.errors;
     } catch (e: any) {

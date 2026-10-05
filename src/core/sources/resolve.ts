@@ -1,6 +1,5 @@
 import type { DetectedId } from '../ids/types';
 import { idKey } from '../ids/types';
-import { KOBE_HANDLE_PREFIX } from '../ids/detect';
 import type { CiteRecord, SourceId, SourceResult } from '../model/record';
 import { mergeResults } from '../merge/merge';
 import { fetchCinii, findCrid } from './cinii';
@@ -8,8 +7,9 @@ import { fetchCitoid } from './citoid';
 import { fetchCrossref } from './crossref';
 import { fetchHtmlMeta } from './html';
 import type { SourceContext } from './http';
+import { fetchKobeNp, kobeIdFromHandle } from './kobe';
 import { fetchDoiRa, fetchJalc } from './jalc';
-import { fetchNdl } from './ndl';
+import { fetchNdl, fetchNdldc } from './ndl';
 
 export interface ResolveResult {
   record: CiteRecord;
@@ -90,19 +90,23 @@ export async function resolveId(id: DetectedId, ctx: SourceContext): Promise<Res
       break;
     }
     case 'ndldc': {
-      const url = `https://dl.ndl.go.jp/pid/${id.value}`;
-      results = await settle([{ source: 'citoid', run: () => fetchCitoid(url, ctx) }], errors);
-      for (const r of results) r.record.ids = { ...r.record.ids, ndldc: id.value };
+      // OAI-PMH のみ。Citoid は SPA の汎用題名（「国立国会図書館デジタルコレクション」）しか返さず、
+      // 取得失敗を成功に見せかけるので、失敗時はエラーにする（閲覧中ページの meta は background 側で重ねる）
+      results = await settle([{ source: 'ndl', run: () => fetchNdldc(id.value, ctx) }], errors);
+      order = ['user', 'ndl', 'page'];
       break;
     }
     case 'kobenp':
     case 'hdl': {
-      const h = id.type === 'kobenp' ? `${KOBE_HANDLE_PREFIX}/${id.value}` : id.value;
-      results = await settle([{ source: 'page', run: () => fetchHtmlMeta(`https://hdl.handle.net/${h}`, ctx) }], errors);
-      for (const r of results) {
-        r.record.ids = { ...r.record.ids, [id.type]: id.value };
-        if (id.type === 'kobenp') r.record.type = 'article-newspaper';
+      // 新聞記事文庫は記事ページの表を専用に読む（meta が無く、<title> は「題名 | 新聞記事文庫」になるため）
+      const kobe = id.type === 'kobenp' ? id.value : kobeIdFromHandle(id.value);
+      if (kobe) {
+        results = await settle([{ source: 'kobe', run: () => fetchKobeNp(kobe, ctx) }], errors);
+        order = ['user', 'kobe'];
+        break;
       }
+      results = await settle([{ source: 'page', run: () => fetchHtmlMeta(`https://hdl.handle.net/${id.value}`, ctx) }], errors);
+      for (const r of results) r.record.ids = { ...r.record.ids, hdl: id.value };
       order = ['user', 'page', 'citoid'];
       break;
     }

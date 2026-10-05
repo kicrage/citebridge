@@ -157,3 +157,125 @@ export async function fetchNdl(type: 'isbn' | 'jpno' | 'ndlbib', value: string, 
   if (type === 'ndlbib') res.record.ids = { ...res.record.ids, ndlbib: value };
   return res;
 }
+
+// ---- NDL デジタルコレクション（PID） ----------------------------------------------------------
+// OAI-PMH（dcndl_porta）は公開・制限付きを問わず全 PID で引ける。IIIF マニフェストは公開資料のみ、
+// item API は一部の PID（国立国会図書館東日本大震災アーカイブ等）で 404 になるため使わない。
+
+const oaiParser = new XMLParser({
+  ignoreAttributes: false,
+  attributeNamePrefix: '@',
+  textNodeName: '#text',
+  removeNSPrefix: false,
+  isArray: (name) =>
+    ['dc:creator', 'dc:identifier', 'dc:publisher', 'dcterms:issued', 'dcndl:materialType', 'dcndl:sourceIdentifier'].includes(name),
+  parseTagValue: false,
+});
+
+const oaiUrl = (pid: string) =>
+  `https://dl.ndl.go.jp/api/oaipmh?verb=GetRecord&metadataPrefix=dcndl_porta&identifier=${encodeURIComponent(`oai:dl.ndl.go.jp:info:ndljp/pid/${pid}`)}`;
+
+/** 応答に含まれる画像サイズ（exif:width/height はコマ数だけ並ぶ）は書誌に不要なのでキャッシュ前に落とす */
+export const stripExif = (xml: string) => xml.replace(/<exif:(?:width|height)>[^<]*<\/exif:(?:width|height)>/g, '');
+
+const xsiType = (x: any): string => (typeof x === 'object' && x ? String(x['@xsi:type'] ?? '') : '');
+const ofType = (xs: any[], type: string) => xs.filter((x) => xsiType(x) === type);
+const untyped = (xs: any[]) => xs.filter((x) => !xsiType(x));
+
+/** NDL の連続スペース・前後空白を整える */
+const clean = (s: string | undefined) => s?.replace(/[\s　]+/g, ' ').trim() || undefined;
+
+/** dcndl:materialType（"Book"、"写真"、".../ndltype/Photograph" が混在する）→ 資料種別 */
+function ndldcType(types: string[]): WorkType {
+  const has = (re: RegExp) => types.some((t) => re.test(t));
+  if (has(/^(?:Journal|Magazine)$/)) return 'article-journal';
+  if (has(/^Newspaper$/)) return 'article-newspaper';
+  if (has(/^(?:DoctoralThesis|Thesis)$/)) return 'thesis';
+  if (has(/^(?:Book|Manuscript|JapaneseClassicalBook|Map)$/)) return 'book';
+  return 'other';
+}
+
+/** OAI-PMH（dcndl_porta）の GetRecord 応答から書誌を取り出す。存在しない PID は undefined */
+export function parseNdldcOai(xml: string): Partial<CiteRecord> | undefined {
+  const dc = oaiParser.parse(xml)?.['OAI-PMH']?.GetRecord?.record?.metadata?.['dcndl_porta:dc'];
+  const rawTitle = text(dc?.['dcterms:title']);
+  if (!dc || !rawTitle) return undefined;
+
+  const types = arr(dc['dcndl:materialType']).map((m) => text(m) ?? '');
+  const type = ndldcType(types);
+  const manuscript = types.includes('Manuscript');
+
+  // 責任表示（無印の dc:creator。「紫式部 著」のように役割語が付く）を優先し、無ければ典拠形（NDLNA）を使う
+  const creators = arr(dc['dc:creator']);
+  const statements = untyped(creators).map((c) => text(c)).filter((s): s is string => !!s);
+  const authors: Name[] = [];
+  const editors: Name[] = [];
+  const translators: Name[] = [];
+  const source = statements.length ? statements : ofType(creators, 'dcndl:NDLNA').map((c) => text(c)).filter((s): s is string => !!s);
+  for (const s of source) {
+    const { name, role } = parseName(clean(s)!);
+    (role === 'editor' ? editors : role === 'translator' ? translators : role === 'other' ? [] : authors).push(name);
+  }
+
+  // 雑誌・新聞の 1 号分は、題名ではなく掲載誌名として扱う（記事題名は利用者が補う）
+  const issue = type === 'article-journal' || type === 'article-newspaper';
+  const { title, subtitle } = splitSubtitle(rawTitle);
+  const yomi = text(dc['dcndl:titleTranscription']);
+  // 欧文題名では読みが題名そのものになる
+  const titleYomi = yomi && yomi !== title ? yomi : undefined;
+  const titleMl = { ja: title, ...(titleYomi ? { 'ja-Kana': titleYomi } : {}) };
+
+  // 巻次。雑誌は「(53);2003」（(号);年）の形
+  const volume = text(dc['dcndl:volume'])?.replace(/^\[(.+)\]$/, '$1');
+  let vol: { volume?: string; issue?: string } = {};
+  const mi = /^[(（]([^)）]+)[)）]\s*;/.exec(volume ?? '');
+  if (issue && mi) vol = { issue: mi[1] };
+  else if (volume) vol = parseVolumeIssue(volume);
+
+  const ids: Partial<Record<IdType, string>> = {};
+  const idEntries = arr(dc['dc:identifier']).concat(arr(dc['dcndl:sourceIdentifier']));
+  const issn = ofType(idEntries, 'dcndl:ISSN')[0];
+  if (issn) ids.issn = text(issn);
+  const pid = ofType(idEntries, 'dcndl:NDLJP')[0];
+  const pidValue = text(pid)?.replace(/^info:ndljp\/pid\//, '');
+  if (pidValue) ids.ndldc = pidValue;
+
+  // 出版年月。無印は和暦等の原表記なので W3CDTF を優先する
+  const issuedAll = arr(dc['dcterms:issued']);
+  const issued =
+    parseDate(text(ofType(issuedAll, 'dcterms:W3CDTF')[0])) ??
+    parseDate(text(untyped(issuedAll)[0])) ??
+    parseDate(text(dc['dcterms:created']));
+
+  const lang = text(arr(dc['dc:language'])[0]);
+  const place = clean(text(dc['dcndl:publicationPlace']));
+  // 写本・写（「写」だけが入る）は出版者ではない
+  const publisher = manuscript ? undefined : clean(text(arr(dc['dc:publisher'])[0]));
+
+  const rec: Partial<CiteRecord> = {
+    type,
+    ids,
+    // 雑誌・新聞の号の責任表示は発行者（団体）で、記事の著者ではない
+    authors: issue ? [] : authors,
+    editors: issue ? [] : editors,
+    translators: issue ? [] : translators,
+    issued,
+    ...(issue ? { container: titleMl } : { title: titleMl, ...(subtitle ? { subtitle: { ja: subtitle } } : {}) }),
+    ...vol,
+    publisher: publisher && publisher !== '[出版者不明]' ? publisher : undefined,
+    place: place && place !== '[出版地不明]' ? place.replace(/^\[(.+)\]$/, '$1') : undefined,
+    series: clean(text(dc['dcndl:seriesTitle']) ?? text(dc['dcndl:publicationName'])),
+    edition: text(dc['dcndl:edition']),
+    language: lang === 'jpn' ? 'ja' : lang === 'eng' ? 'en' : lang,
+  };
+  return rec;
+}
+
+/** NDL デジタルコレクションの PID から書誌を取得（OAI-PMH dcndl_porta） */
+export async function fetchNdldc(pid: string, ctx: SourceContext): Promise<SourceResult> {
+  const raw = stripExif(await ctx.http.text(oaiUrl(pid)));
+  const record = parseNdldcOai(raw);
+  if (!record) throw new NotFoundError(`NDLDC: pid=${pid}`);
+  record.ids = { ...record.ids, ndldc: pid };
+  return { source: 'ndl', record, raw };
+}

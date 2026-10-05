@@ -271,6 +271,8 @@ export function mapRecord(rec: CiteRecord, opts: MapOptions): MapResult {
   for (const [k, handler] of NATIVE_IDS) {
     const v = rec.ids[k];
     if (!v) continue;
+    // 新聞記事文庫は url= が Handle URL そのものなので hdl= は重ねない
+    if (k === 'hdl' && rec.ids.kobenp) continue;
     const pn = idParamName(family, handler);
     if (pn) add(pn, v);
   }

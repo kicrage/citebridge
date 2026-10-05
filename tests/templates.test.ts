@@ -5,7 +5,7 @@ import { emptyRecord, type CiteRecord, type SourceId } from '../src/core/model/r
 import { parseCinii } from '../src/core/sources/cinii';
 import { parseCrossref } from '../src/core/sources/crossref';
 import { parseJalc } from '../src/core/sources/jalc';
-import { parseNdlSru } from '../src/core/sources/ndl';
+import { parseNdlSru, parseNdldcOai } from '../src/core/sources/ndl';
 import { generate } from '../src/core/templates/generate';
 import { mapRecord } from '../src/core/templates/mapper';
 import { getTemplate, paramStatus } from '../src/core/templates/profiles';
@@ -20,6 +20,8 @@ const records: Record<string, CiteRecord> = {
   'journal-jalc': one('doi:10.20645/00000025', 'jalc', parseJalc(fixtureJson('jalc_10.20645_00000025.json').data)),
   'journal-crossref': one('doi:10.1038/nature12373', 'crossref', parseCrossref(fixtureJson('crossref_10.1038_nature12373.json').message)),
   'book-cinii': one('crid:1970586434846023986', 'cinii', parseCinii(fixtureJson('cir_book_1970586434846023986.json'), '1970586434846023986')),
+  'ndldc-oai-book': one('ndldc:3437686', 'ndl', parseNdldcOai(fixture('ndldc_oai_3437686.xml'))!),
+  'ndldc-oai-journal': one('ndldc:11228096', 'ndl', parseNdldcOai(fixture('ndldc_oai_11228096.xml'))!),
   'book-ndl': one('jpno:90035836', 'ndl', parseNdlSru(fixture('ndl_sru_jpno_90035836.xml'))!),
   web: {
     ...emptyRecord('url:https://www.example.jp/about'),

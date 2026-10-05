@@ -2,7 +2,7 @@ import type { SourceResult } from '../model/record';
 import type { SourceContext } from './http';
 import { parsePageSnapshot, type MetaPairs, type PageSnapshot } from './pagemeta';
 
-const decode = (s: string) =>
+export const decode = (s: string) =>
   s
     .replace(/&quot;/g, '"')
     .replace(/&#39;|&apos;/g, "'")

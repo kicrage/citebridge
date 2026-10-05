@@ -6,7 +6,7 @@ const DAY = 24 * 60 * 60 * 1000;
 /** ソースごとの保持期間。書誌データはほとんど変わらないので長め、Web ページは短め */
 function ttlFor(url: string): number {
   const host = new URL(url).host;
-  if (/crossref|japanlinkcenter|cir\.nii|ndlsearch/.test(host)) return 30 * DAY;
+  if (/crossref|japanlinkcenter|cir\.nii|ndlsearch|dl\.ndl\.go\.jp/.test(host)) return 30 * DAY;
   if (host === 'doi.org') return 90 * DAY;
   if (/wikipedia\.org$/.test(host)) return 7 * DAY;
   return DAY;
@@ -24,6 +24,7 @@ export function createCachedHttp(opts: { bypassCache?: boolean } = {}): Http {
       'ja.wikipedia.org': 1000, // Citoid は連続アクセスで 429 になる
       'cir.nii.ac.jp': 500,
       'ndlsearch.ndl.go.jp': 500,
+      'dl.ndl.go.jp': 500,
     },
     headers: { 'Api-User-Agent': UA },
   });

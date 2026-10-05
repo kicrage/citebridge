@@ -78,6 +78,9 @@ tests/ fixtures/ (APIレスポンス録画) golden/ (record→wikitext 期待値
 - 実描画検証スクリプト：生成 wikitext を jawiki `action=parse`（読み取りのみ）に投げ、CS1/CS-ja のエラー表示クラス・エラーカテゴリが出ないことを確認。
 - 手動 E2E：`pnpm dev` で Chrome にロード → 利用者サンドボックスの編集画面で DOI（JaLC/Crossref 各1）、CRID、NDL書誌ID、ISBN を挿入→「プレビュー」で表示確認（保存はしない）。サイドパネル/ポップアップ、キャッシュ再利用（2回目にネットワーク要求が出ないこと）を確認。
 
+## 進捗（2026-10-05 追記）
+- NDL デジタルコレクション PID の取得を OAI-PMH（dcndl_porta）の専用アダプタにした（実レスポンスを tests/fixtures に録画）。詳細は CLAUDE.md の「次にやること」1。
+
 ## 進捗（2026-10-04）
 - P0〜P4 を実装済み。単体テスト 125 件、Chromium での E2E スモークテスト（API・編集画面は偽物に差し替え）が通る。
 - 未検証（開発環境から ja.wikipedia.org と各 API に接続できなかったため）:
