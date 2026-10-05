@@ -7,6 +7,7 @@ export type SourceId =
   | 'cinii'
   | 'ndl'
   | 'kobe' // 神戸大学 新聞記事文庫
+  | 'kotobank'
   | 'citoid'
   | 'page' // 閲覧中ページの meta タグ等
   | 'user';

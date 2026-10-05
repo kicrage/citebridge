@@ -11,6 +11,7 @@ export type IdType =
   | 'issn'
   | 'hdl'
   | 'kobenp' // 神戸大学 新聞記事文庫 メタデータID
+  | 'kotobank' // コトバンクの語（URL の /word/ 以下。「平野郷-864282」）。辞書ごとの項目は extra.wid
   | 'pmid'
   | 'pmc'
   | 'arxiv'
@@ -21,7 +22,9 @@ export interface DetectedId {
   /** 正規化済みの値（DOI は小文字化しない。比較時に key を使う） */
   value: string;
   /** 補助情報（NDLDC のコマ番号など） */
-  extra?: { koma?: number };
+  extra?: { koma?: number; /** コトバンクの項目（#w-… の数字） */ wid?: string };
+  /** 候補ボタンに出す表示名（未指定なら種類名） */
+  label?: string;
   /** 'exact' = URL や接頭辞などから確定 / 'guess' = 形式からの推測（曖昧さあり） */
   confidence: 'exact' | 'guess';
 }
@@ -38,6 +41,7 @@ export const ID_LABELS: Record<IdType, string> = {
   issn: 'ISSN',
   hdl: 'Handle',
   kobenp: '新聞記事文庫',
+  kotobank: 'コトバンク',
   pmid: 'PMID',
   pmc: 'PMC',
   arxiv: 'arXiv',
@@ -45,7 +49,7 @@ export const ID_LABELS: Record<IdType, string> = {
 };
 
 /** レコード主キー（キャッシュ・照合用）。DOI は大文字小文字を区別しないので小文字化する */
-export function idKey(id: Pick<DetectedId, 'type' | 'value'>): string {
+export function idKey(id: Pick<DetectedId, 'type' | 'value'> & { extra?: DetectedId['extra'] }): string {
   const v = id.type === 'doi' || id.type === 'hdl' ? id.value.toLowerCase() : id.value;
-  return `${id.type}:${v}`;
+  return `${id.type}:${v}${id.extra?.wid ? `#w-${id.extra.wid}` : ''}`;
 }

@@ -23,6 +23,7 @@ export const SOURCE_LABELS: Record<SourceId, string> = {
   cinii: 'CiNii Research',
   ndl: 'NDLサーチ',
   kobe: '新聞記事文庫',
+  kotobank: 'コトバンク',
   citoid: 'Citoid',
   page: 'ページ情報',
   user: '手入力',

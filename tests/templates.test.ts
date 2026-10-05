@@ -130,6 +130,25 @@ describe('mapper', () => {
     expect(mapRecord(rec, { family: '2', settings: { urlWithId: true } }).call.params.some((p) => p.name === 'url')).toBe(true);
   });
 
+  it('Sfn で参照されやすい種類（図書・論文・学位論文）は一節なし・非 sfn モードでも ref=SfnRef を付ける', () => {
+    const ref = (rec: CiteRecord, o: Parameters<typeof mapRecord>[1]) => mapRecord(rec, o).call.params.find((p) => p.name === 'ref');
+    for (const family of ['ja', '2'] as const) {
+      expect(ref(records['journal-jalc'], { family })).toMatchObject({ value: '{{SfnRef|近藤|1997}}', raw: true });
+      expect(ref(records['book-ndl'], { family })?.value).toBe('{{SfnRef|夏目|1990}}');
+      expect(ref(records.thesis, { family })?.value).toBe('{{SfnRef|山田|2010}}');
+      // ウェブ・新聞は付けない
+      expect(ref(records.web, { family })).toBeUndefined();
+      expect(ref(records['news-kobe'], { family })).toBeUndefined();
+    }
+  });
+
+  it('設定 sfnRef を切ると sfn モード以外では ref= を付けない', () => {
+    const p = (mode: 'pages' | 'sfn') =>
+      mapRecord(records['journal-jalc'], { family: 'ja', passageMode: mode, settings: { sfnRef: false } }).call.params.some((x) => x.name === 'ref');
+    expect(p('pages')).toBe(false);
+    expect(p('sfn')).toBe(true);
+  });
+
   it('Crossref の出版社は雑誌論文に書かない', () => {
     expect(mapRecord(records['journal-crossref'], { family: '2' }).call.params.some((p) => p.name === 'publisher')).toBe(false);
   });

@@ -4,6 +4,7 @@ import { mergeResults } from '@/core/merge/merge';
 import type { Passage } from '@/core/model/passage';
 import type { CiteRecord, SourceResult } from '@/core/model/record';
 import { pageResult } from '@/core/sources/pagemeta';
+import { ChooseEntryError } from '@/core/sources/kotobank';
 import { resolveId } from '@/core/sources/resolve';
 import { addClip, db, purgeExpiredRaw, saveRecord } from '@/db/dexie';
 import { createCachedHttp } from '@/lib/cached-http';
@@ -33,6 +34,8 @@ async function handleResolve(input: string, id: DetectedId | undefined, bypassCa
     await saveRecord(record, errors);
     return { ok: true, record, errors };
   } catch (e: any) {
+    // コトバンクで辞書の項目が決まらないときは、候補から選んでもらう
+    if (e instanceof ChooseEntryError) return { ok: true, candidates: e.candidates };
     return { ok: false, error: String(e?.message ?? e) };
   }
 }
@@ -59,13 +62,16 @@ async function capture(tabId: number, tab: { url?: string; title?: string } | un
   }
   const page = pageResult(snap);
   // ページの中を読めなかったときは URL を Citoid に任せる
-  const pid = primaryId(page, snap.url) ?? (injected ? undefined : ({ type: 'url', value: snap.url, confidence: 'exact' } as DetectedId));
+  let pid = primaryId(page, snap.url) ?? (injected ? undefined : ({ type: 'url', value: snap.url, confidence: 'exact' } as DetectedId));
+  // コトバンクの項目: 選択範囲があればその項目、URL に #w- があればそれ、無ければ画面に見えている項目
+  if (pid?.type === 'kotobank' && snap.entryAnchor && (snap.entryAnchor.from === 'selection' || !pid.extra?.wid))
+    pid = { ...pid, extra: { ...pid.extra, wid: snap.entryAnchor.wid } };
   let record: CiteRecord;
   let errors: { source: string; message: string }[] = [];
   if (pid) {
     try {
       const r = await resolveId(pid, await context());
-      record = mergeResults(r.record.key, [...r.results, page], ['user', 'jalc', 'crossref', 'cinii', 'ndl', 'kobe', 'citoid', 'page']);
+      record = mergeResults(r.record.key, [...r.results, page], ['user', 'jalc', 'crossref', 'cinii', 'ndl', 'kobe', 'kotobank', 'citoid', 'page']);
       if (r.record.koma) record.koma = r.record.koma;
       errors = r.errors;
     } catch (e: any) {

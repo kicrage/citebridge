@@ -89,6 +89,9 @@ const NATIVE_IDS: [keyof CiteRecord['ids'], string][] = [
   ['hdl', 'HDL'],
 ];
 
+/** {{Sfn}} で参照されやすい CitationClass（ウェブ・新聞・事典項目は含めない） */
+const SFN_CLASSES = new Set(['book', 'journal', 'magazine', 'thesis', 'report', 'conference']);
+
 /** 引数の並び順（人が読みやすい順。ここに無い引数は末尾） */
 const ORDER = [
   /^(last|first|author|author-link)\d*$/,
@@ -110,6 +113,7 @@ const ORDER = [
   /^(isbn|issn|doi|crid|naid|ncid|pmid|pmc|arxiv|hdl|id)$/,
   /^url$/,
   /^access-date$/,
+  /^via$/,
   /^quote$/,
   /^ref$/,
 ];
@@ -281,6 +285,9 @@ export function mapRecord(rec: CiteRecord, opts: MapOptions): MapResult {
     .map((k) => ID_WRAPPERS[k]!(rec.ids[k]!));
   if (wrapped.length) add('id', wrapped.join(' '), true);
 
+  // コトバンク経由の出典は via= に明示する
+  if (rec.ids.kotobank) add('via', 'コトバンク');
+
   // URL と閲覧日
   const url = urlFor(rec);
   const hasId = NATIVE_IDS.some(([k]) => rec.ids[k]) || wrapped.length > 0;
@@ -293,10 +300,11 @@ export function mapRecord(rec: CiteRecord, opts: MapOptions): MapResult {
   if (passage?.text && mode === 'quote') add('quote', passage.text.replace(/\s*\n\s*/g, ' '));
 
   let sfn: string | undefined;
+  // {{Sfn}} から参照されやすい種類（図書・論文・学位論文など）は、sfn モードでなくても ref= を付けておく。
+  // CS1 は著者と年から CITEREF を作るが、CS-ja では自動生成を確認できないので、明示しておけば後から {{Sfn}} を足せる
+  const keys = sfnKeys(rec, title);
+  if (mode === 'sfn' || (s.sfnRef && SFN_CLASSES.has(cls))) add('ref', `{{SfnRef|${keys.join('|')}}}`, true);
   if (mode === 'sfn') {
-    const keys = sfnKeys(rec, title);
-    // CS1 は著者と年から CITEREF を作るが、CS-ja では自動生成を確認できないため ja 系は常に明示する
-    if (family === 'ja' || !rec.authors.length) add('ref', `{{SfnRef|${keys.join('|')}}}`, true);
     const pp = passage?.page ? pageParam(passage.page, passage.pageKind ?? inferPageKind(passage.page)) : undefined;
     const loc = pp ? `|${pp.name === 'pages' ? 'pp' : pp.name === 'page' ? 'p' : 'loc'}=${pp.value}` : '';
     sfn = `{{Sfn|${keys.join('|')}${loc}}}`;

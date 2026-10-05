@@ -10,6 +10,7 @@ const API_HOSTS = [
   'https://dl.ndl.go.jp/*',
   'https://hdl.handle.net/*',
   'https://da.lib.kobe-u.ac.jp/*',
+  'https://kotobank.jp/*',
   // Citoid（REST API）と編集画面への挿入
   'https://*.wikipedia.org/*',
 ];

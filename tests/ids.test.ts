@@ -31,8 +31,19 @@ describe('detectIds: URL', () => {
     expect(first('PID 1234567')).toMatchObject({ type: 'ndldc', value: '1234567', confidence: 'exact' });
   });
 
-  it('NDLサーチのデジタル化資料の URL を NDL書誌ID と取り違えない', () => {
+  it('NDLサーチのデジタル化資料の URL を NDL書誌ID と取り違えない（I 番号は PID）', () => {
     expect(first('https://ndlsearch.ndl.go.jp/books/R100000039-I000000123456')).toMatchObject({ type: 'url' });
+    expect(first('https://ndlsearch.ndl.go.jp/books/R100000039-I3437686')).toMatchObject({ type: 'ndldc', value: '3437686', confidence: 'exact' });
+    expect(first('https://ndlsearch.ndl.go.jp/en/books/R100000039-I3437686')).toMatchObject({ type: 'ndldc', value: '3437686' });
+    expect(first('https://ndlsearch.ndl.go.jp/en/books/R100000002-I000002041889')).toMatchObject({ type: 'ndlbib', value: '000002041889' });
+  });
+
+  it('NDL デジタルコレクションの URL: 言語プレフィックス・IIIF・スキームなし', () => {
+    expect(first('https://dl.ndl.go.jp/en/pid/3437686')).toMatchObject({ type: 'ndldc', value: '3437686' });
+    expect(first('https://dl.ndl.go.jp/ja/pid/3437686/1/5?keyword=x#a')).toMatchObject({ type: 'ndldc', value: '3437686', extra: { koma: 5 } });
+    expect(first('https://dl.ndl.go.jp/api/iiif/3437686/manifest.json')).toMatchObject({ type: 'ndldc', value: '3437686' });
+    expect(first('dl.ndl.go.jp/pid/3437686')).toMatchObject({ type: 'ndldc', value: '3437686' });
+    expect(first('ndlsearch.ndl.go.jp/books/R100000039-I3437686')).toMatchObject({ type: 'ndldc', value: '3437686' });
   });
 
   it('J-STAGE の記事 URL から DOI と URL の両方を返す', () => {

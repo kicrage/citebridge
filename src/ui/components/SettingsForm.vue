@@ -82,6 +82,7 @@ async function clearCache() {
       <cdx-text-input v-model="settings.subtitleJoinJa" />
     </cdx-field>
     <cdx-toggle-switch v-model="settings.urlWithId">DOI・CRID などがあっても url= を書く</cdx-toggle-switch>
+    <cdx-toggle-switch v-model="settings.sfnRef">図書・論文などには ref= に SfnRef を付ける（Sfn テンプレートから参照できるように）</cdx-toggle-switch>
     <cdx-toggle-switch v-model="settings.accessDate">url= を書くときに access-date= を付ける</cdx-toggle-switch>
     <cdx-field optional>
       <template #label>連絡先メールアドレス（Crossref 用）</template>

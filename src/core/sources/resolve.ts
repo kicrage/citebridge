@@ -8,6 +8,7 @@ import { fetchCrossref } from './crossref';
 import { fetchHtmlMeta } from './html';
 import type { SourceContext } from './http';
 import { fetchKobeNp, kobeIdFromHandle } from './kobe';
+import { fetchKotobank } from './kotobank';
 import { fetchDoiRa, fetchJalc } from './jalc';
 import { fetchNdl, fetchNdldc } from './ndl';
 
@@ -108,6 +109,12 @@ export async function resolveId(id: DetectedId, ctx: SourceContext): Promise<Res
       results = await settle([{ source: 'page', run: () => fetchHtmlMeta(`https://hdl.handle.net/${id.value}`, ctx) }], errors);
       for (const r of results) r.record.ids = { ...r.record.ids, hdl: id.value };
       order = ['user', 'page', 'citoid'];
+      break;
+    }
+    case 'kotobank': {
+      // 辞書ごとの項目（#w-…）はページ HTML から取る。項目が決まらず複数あれば ChooseEntryError で候補を返す
+      results = [await fetchKotobank(id, ctx)]; // settle を通さない（ChooseEntryError や 404 をそのまま呼び出し側に返す）
+      order = ['user', 'kotobank', 'page'];
       break;
     }
     case 'url': {

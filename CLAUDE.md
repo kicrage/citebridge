@@ -9,6 +9,8 @@ jawiki 向けの出典テンプレート生成 Chrome 拡張（WXT + Vue 3 + Cod
 - テンプレートの引数は各モジュールの Whitelist（profiles.generated.json）を正とする。TemplateData は補助。
 - 変更後は `npm test`・`npm run compile` を通す。生成結果が変わる変更はゴールデン（tests/golden）を見直してから更新する。
 - Wikimedia API は連続アクセスで 429 になるので間隔を空ける。
+- {{Sfn}} で参照されやすい種類（book・journal・magazine・thesis・report・conference）には、sfn モードでなくても ref={{SfnRef|…}} を付ける（設定 sfnRef、既定オン。web・news・事典項目は付けない）。
+- NDL デジタルコレクションの PID は dl.ndl.go.jp の URL（/ja/ /en/ 等の言語プレフィックス、/api/iiif/{pid}/、スキームなし）と NDL サーチの books/R100000039-I{PID} から取る（I 番号は PID。R100000002 / R000000004 の I 番号は書誌ID）。
 
 ## 構成
 - src/core/: UI 非依存の純粋関数（ids, sources, merge, templates, wikitext, transforms）。すべて Vitest 対象
@@ -23,6 +25,10 @@ jawiki 向けの出典テンプレート生成 Chrome 拡張（WXT + Vue 3 + Cod
    - 録画は tests/fixtures/ndldc_oai_*.xml（exif:width/height の繰り返しだけ除去）。図書・雑誌号・写本・錦絵・写真を網羅。テストは tests/ndldc.test.ts とゴールデン ndldc-oai-*.txt。
    - 割り切り: ids は ndldc（雑誌は issn も）のみ。DOI（10.11501/…）・書誌ID・JPNO は id=/doi= に出すと冗長なので record に入れない。雑誌・新聞の「号」は題名を container に入れ、記事題名（title）は利用者が補う（validate が必須エラーを出す）。雑誌の号は「(53);2003」形式から issue を取るが、サンプルは 1 件だけ。新聞（Newspaper）の PID は未確認。
 1b. 新聞記事文庫（神戸大学）の取得（2026-10-05）: src/core/sources/kobe.ts。記事ページ `https://da.lib.kobe-u.ac.jp/da/np/{ID}/` の表（<th>項目名</th><td>）を読む（meta が無く <title> は「題名 | 新聞記事文庫」）。取れるのは題名（「主 : 副」は分離）・新聞名・著者名（「氏名:肩書」の肩書は捨てる）・出版日（連載は範囲「A/B」→初回日）。ページ（面）・新聞社名は元データに無い。巻・記事番号・切抜帳は切抜帳の位置なので出典には使わない。Handle URL・da URL・ID のどれからでも同じ。url= の Handle URL と重なるので hdl= は出さない。録画は tests/fixtures/kobe_np_*.html、テストは tests/kobe.test.ts。
+1c. コトバンク（2026-10-06）: src/core/sources/kotobank.ts。語のページ `https://kotobank.jp/word/{見出し語}-{数字}` には辞書ごとの項目が並び、各項目の前に `<div class="page_link_marker" id="w-{wid}">` がある。出典 URL の `#w-…` はこの wid（ページ HTML から取れる）。記事は {{Cite encyclopedia ja}}: title=URL の見出し語、encyclopedia=辞書名（h2、全角スペースは半角に）、publisher=出典欄の最初の <small> から（「株式会社平凡社「…」」→平凡社、辞書名だけなら無し）、author=本文末尾「執筆者： …」（世界大百科事典のみ）、url=…#w-wid、via=コトバンク、access-date。
+   - 項目の決め方: サイドパネルの入力に #w- が無く項目が複数なら ChooseEntryError → 候補ボタン（DetectedId.label）。ページ取り込みでは 選択範囲の項目 → URL の #w- → 画面に見えている項目（src/lib/capture.ts の entryAnchor）。
+   - 候補が同じ表示になる項目（日本歴史地名大系の同一分類など）は本文の食い違い始めを添えて区別。出版社の書式は辞書ごとにまちまち（サンプルは tests/fixtures/kotobank_*.html、漱石のほうは本文を削った録画）。出版社が取れない辞書がある（ブリタニカ等は辞書名のみ）。
+   - 録画は 平野郷-864282 と 夏目漱石-17193（13 辞書）。テストは tests/kotobank.test.ts。host_permissions に kotobank.jp を追加したので、更新後に権限の再承認が要る。
 2. 実 API（JaLC・Crossref・CiNii・NDL）で取得を確認し、必要ならフィクスチャを追加。
 3. 生成 wikitext を jawiki の action=parse に通し、CS1 / CS-ja のエラー表示が出ないことを確認。特に:
    - CS-ja が CITEREF を自動生成するか（しなければ現状どおり ja 系は ref={{SfnRef|…}} を明示、するなら省ける）

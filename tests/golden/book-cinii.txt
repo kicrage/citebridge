@@ -1,18 +1,18 @@
 ## ja / 一節なし
-<ref>{{Cite book ja |last1=清水 |first1=孝純 |title=笑いのユートピア : 『吾輩は猫である』の世界 |location=東京 |publisher=翰林書房 |date=2002-10 |isbn=4877371591 |crid=1970586434846023986 |ncid=BA59493660}}</ref>
+<ref>{{Cite book ja |last1=清水 |first1=孝純 |title=笑いのユートピア : 『吾輩は猫である』の世界 |location=東京 |publisher=翰林書房 |date=2002-10 |isbn=4877371591 |crid=1970586434846023986 |ncid=BA59493660 |ref={{SfnRef|清水|2002}}}}</ref>
 ## ja / pages
-<ref>{{Cite book ja |last1=清水 |first1=孝純 |title=笑いのユートピア : 『吾輩は猫である』の世界 |page=12 |location=東京 |publisher=翰林書房 |date=2002-10 |isbn=4877371591 |crid=1970586434846023986 |ncid=BA59493660}}</ref>
+<ref>{{Cite book ja |last1=清水 |first1=孝純 |title=笑いのユートピア : 『吾輩は猫である』の世界 |page=12 |location=東京 |publisher=翰林書房 |date=2002-10 |isbn=4877371591 |crid=1970586434846023986 |ncid=BA59493660 |ref={{SfnRef|清水|2002}}}}</ref>
 ## ja / quote
-<ref>{{Cite book ja |last1=清水 |first1=孝純 |title=笑いのユートピア : 『吾輩は猫である』の世界 |page=12 |location=東京 |publisher=翰林書房 |date=2002-10 |isbn=4877371591 |crid=1970586434846023986 |ncid=BA59493660 |quote=引用する一節。 二行目}}</ref>
+<ref>{{Cite book ja |last1=清水 |first1=孝純 |title=笑いのユートピア : 『吾輩は猫である』の世界 |page=12 |location=東京 |publisher=翰林書房 |date=2002-10 |isbn=4877371591 |crid=1970586434846023986 |ncid=BA59493660 |quote=引用する一節。 二行目 |ref={{SfnRef|清水|2002}}}}</ref>
 ## ja / sfn
 {{Sfn|清水|2002|p=12}}
 * {{Cite book ja |last1=清水 |first1=孝純 |title=笑いのユートピア : 『吾輩は猫である』の世界 |location=東京 |publisher=翰林書房 |date=2002-10 |isbn=4877371591 |crid=1970586434846023986 |ncid=BA59493660 |ref={{SfnRef|清水|2002}}}}
 ## 2 / 一節なし
-<ref>{{Cite book2 |last1=清水 |first1=孝純 |title=笑いのユートピア : 『吾輩は猫である』の世界 |location=東京 |publisher=翰林書房 |date=2002-10 |isbn=4877371591 |crid=1970586434846023986 |ncid=BA59493660}}</ref>
+<ref>{{Cite book2 |last1=清水 |first1=孝純 |title=笑いのユートピア : 『吾輩は猫である』の世界 |location=東京 |publisher=翰林書房 |date=2002-10 |isbn=4877371591 |crid=1970586434846023986 |ncid=BA59493660 |ref={{SfnRef|清水|2002}}}}</ref>
 ## 2 / pages
-<ref>{{Cite book2 |last1=清水 |first1=孝純 |title=笑いのユートピア : 『吾輩は猫である』の世界 |page=12 |location=東京 |publisher=翰林書房 |date=2002-10 |isbn=4877371591 |crid=1970586434846023986 |ncid=BA59493660}}</ref>
+<ref>{{Cite book2 |last1=清水 |first1=孝純 |title=笑いのユートピア : 『吾輩は猫である』の世界 |page=12 |location=東京 |publisher=翰林書房 |date=2002-10 |isbn=4877371591 |crid=1970586434846023986 |ncid=BA59493660 |ref={{SfnRef|清水|2002}}}}</ref>
 ## 2 / quote
-<ref>{{Cite book2 |last1=清水 |first1=孝純 |title=笑いのユートピア : 『吾輩は猫である』の世界 |page=12 |location=東京 |publisher=翰林書房 |date=2002-10 |isbn=4877371591 |crid=1970586434846023986 |ncid=BA59493660 |quote=引用する一節。 二行目}}</ref>
+<ref>{{Cite book2 |last1=清水 |first1=孝純 |title=笑いのユートピア : 『吾輩は猫である』の世界 |page=12 |location=東京 |publisher=翰林書房 |date=2002-10 |isbn=4877371591 |crid=1970586434846023986 |ncid=BA59493660 |quote=引用する一節。 二行目 |ref={{SfnRef|清水|2002}}}}</ref>
 ## 2 / sfn
 {{Sfn|清水|2002|p=12}}
-* {{Cite book2 |last1=清水 |first1=孝純 |title=笑いのユートピア : 『吾輩は猫である』の世界 |location=東京 |publisher=翰林書房 |date=2002-10 |isbn=4877371591 |crid=1970586434846023986 |ncid=BA59493660}}
+* {{Cite book2 |last1=清水 |first1=孝純 |title=笑いのユートピア : 『吾輩は猫である』の世界 |location=東京 |publisher=翰林書房 |date=2002-10 |isbn=4877371591 |crid=1970586434846023986 |ncid=BA59493660 |ref={{SfnRef|清水|2002}}}}

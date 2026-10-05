@@ -104,7 +104,9 @@ function fromUrl(u: URL): DetectedId[] {
   if (host === 'ndlsearch.ndl.go.jp' || host === 'iss.ndl.go.jp') {
     // R100000002 = 図書の NDL 書誌、R000000004 = 雑誌記事索引
     // R100000002 / R000000004 の I 番号は NDL 書誌ID。デジタル化資料（R100000039 など）は書誌IDではないので URL として扱う
-    if ((m = /^\/books\/R(?:100000002|000000004)-I(\d+)/.exec(path))) return [exact('ndlbib', m[1])];
+    if ((m = /^\/(?:[a-z]{2}\/)?books\/R(?:100000002|000000004)-I(\d+)/.exec(path))) return [exact('ndlbib', m[1])];
+    // R100000039-I{PID}: デジタル化資料。I 番号は書誌IDではなく PID そのもの（0 埋めの形は実在しない）
+    if ((m = /^\/(?:[a-z]{2}\/)?books\/R100000039-I([1-9]\d{4,9})(?:\D|$)/.exec(path))) return [exact('ndldc', m[1])];
   }
   if (host === 'id.ndl.go.jp') {
     if ((m = /^\/bib\/(\d+)/.exec(path))) return [exact('ndlbib', m[1])];
@@ -113,11 +115,18 @@ function fromUrl(u: URL): DetectedId[] {
   // NDL のデジタル化資料メタデータ URI
   if (host === 'id.ndl.go.jp' && (m = /^\/digimeta\/(\d+)/.exec(path))) return [exact('ndldc', m[1])];
   if (host === 'dl.ndl.go.jp') {
-    const d = fromNdldcPath(path.replace(/^\/(?:ja\/)?/, ''));
+    // 言語プレフィックス（/ja/ /en/ …）は任意。IIIF マニフェスト（/api/iiif/{pid}/…）も PID を含む
+    const d = fromNdldcPath(path.replace(/^\/(?:[a-z]{2}(?:-[A-Za-z]+)?\/)?/, ''));
     if (d) return [d];
+    if ((m = /^\/api\/iiif\/(\d{5,10})(?:\/|$)/.exec(path))) return [exact('ndldc', m[1])];
   }
   if (host === 'hdl.handle.net' && (m = /^\/(\d+(?:\.\d+)*\/.+)$/.exec(path))) return fromHandle(m[1]);
   if (host === 'da.lib.kobe-u.ac.jp' && (m = /\/(\d{10})(?:\/|$)/.exec(path))) return [exact('kobenp', m[1])];
+  // コトバンク: /word/{見出し語}-{数字}。#w-{数字} が辞書ごとの項目（無ければ後で選ぶ）
+  if (host === 'kotobank.jp' && (m = /^\/word\/(.+-\d+)$/.exec(path))) {
+    const wid = /^#w-(\d+)$/.exec(u.hash)?.[1];
+    return [exact('kotobank', m[1], wid ? { wid } : undefined)];
+  }
   if (host === 'pubmed.ncbi.nlm.nih.gov' && (m = /^\/(\d+)/.exec(path))) return [exact('pmid', m[1])];
   if (/ncbi\.nlm\.nih\.gov$/.test(host) && (m = /\/pmc\/articles\/PMC(\d+)/i.exec(path)))
     return [exact('pmc', m[1])];
@@ -147,10 +156,10 @@ export function detectIds(input: string): DetectedId[] {
   const s = input.trim().replace(/^<|>$/g, '');
   if (!s) return [];
 
-  // 1) URL
-  if (/^https?:\/\//i.test(s)) {
+  // 1) URL（NDL 系はスキームなしで貼られることが多いので補う）
+  if (/^https?:\/\//i.test(s) || /^(?:www\.)?(?:dl|ndlsearch|id)\.ndl\.go\.jp\//i.test(s)) {
     try {
-      return fromUrl(new URL(s));
+      return fromUrl(new URL(/^https?:/i.test(s) ? s : `https://${s}`));
     } catch {
       return [];
     }

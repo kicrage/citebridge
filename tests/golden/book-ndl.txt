@@ -1,18 +1,18 @@
 ## ja / 一節なし
-<ref>{{Cite book ja |last1=夏目 |first1=漱石 |title=吾輩は猫である |series=岩波文庫 |edition=改版 |location=東京 |publisher=岩波書店 |date=1990-04 |isbn=4-00-310101-4 |id={{国立国会図書館書誌ID|000002041889}} {{全国書誌番号|90035836}}}}</ref>
+<ref>{{Cite book ja |last1=夏目 |first1=漱石 |title=吾輩は猫である |series=岩波文庫 |edition=改版 |location=東京 |publisher=岩波書店 |date=1990-04 |isbn=4-00-310101-4 |id={{国立国会図書館書誌ID|000002041889}} {{全国書誌番号|90035836}} |ref={{SfnRef|夏目|1990}}}}</ref>
 ## ja / pages
-<ref>{{Cite book ja |last1=夏目 |first1=漱石 |title=吾輩は猫である |series=岩波文庫 |page=12 |edition=改版 |location=東京 |publisher=岩波書店 |date=1990-04 |isbn=4-00-310101-4 |id={{国立国会図書館書誌ID|000002041889}} {{全国書誌番号|90035836}}}}</ref>
+<ref>{{Cite book ja |last1=夏目 |first1=漱石 |title=吾輩は猫である |series=岩波文庫 |page=12 |edition=改版 |location=東京 |publisher=岩波書店 |date=1990-04 |isbn=4-00-310101-4 |id={{国立国会図書館書誌ID|000002041889}} {{全国書誌番号|90035836}} |ref={{SfnRef|夏目|1990}}}}</ref>
 ## ja / quote
-<ref>{{Cite book ja |last1=夏目 |first1=漱石 |title=吾輩は猫である |series=岩波文庫 |page=12 |edition=改版 |location=東京 |publisher=岩波書店 |date=1990-04 |isbn=4-00-310101-4 |id={{国立国会図書館書誌ID|000002041889}} {{全国書誌番号|90035836}} |quote=引用する一節。 二行目}}</ref>
+<ref>{{Cite book ja |last1=夏目 |first1=漱石 |title=吾輩は猫である |series=岩波文庫 |page=12 |edition=改版 |location=東京 |publisher=岩波書店 |date=1990-04 |isbn=4-00-310101-4 |id={{国立国会図書館書誌ID|000002041889}} {{全国書誌番号|90035836}} |quote=引用する一節。 二行目 |ref={{SfnRef|夏目|1990}}}}</ref>
 ## ja / sfn
 {{Sfn|夏目|1990|p=12}}
 * {{Cite book ja |last1=夏目 |first1=漱石 |title=吾輩は猫である |series=岩波文庫 |edition=改版 |location=東京 |publisher=岩波書店 |date=1990-04 |isbn=4-00-310101-4 |id={{国立国会図書館書誌ID|000002041889}} {{全国書誌番号|90035836}} |ref={{SfnRef|夏目|1990}}}}
 ## 2 / 一節なし
-<ref>{{Cite book2 |last1=夏目 |first1=漱石 |title=吾輩は猫である |series=岩波文庫 |edition=改版 |location=東京 |publisher=岩波書店 |date=1990-04 |isbn=4-00-310101-4 |id={{国立国会図書館書誌ID|000002041889}} {{全国書誌番号|90035836}}}}</ref>
+<ref>{{Cite book2 |last1=夏目 |first1=漱石 |title=吾輩は猫である |series=岩波文庫 |edition=改版 |location=東京 |publisher=岩波書店 |date=1990-04 |isbn=4-00-310101-4 |id={{国立国会図書館書誌ID|000002041889}} {{全国書誌番号|90035836}} |ref={{SfnRef|夏目|1990}}}}</ref>
 ## 2 / pages
-<ref>{{Cite book2 |last1=夏目 |first1=漱石 |title=吾輩は猫である |series=岩波文庫 |page=12 |edition=改版 |location=東京 |publisher=岩波書店 |date=1990-04 |isbn=4-00-310101-4 |id={{国立国会図書館書誌ID|000002041889}} {{全国書誌番号|90035836}}}}</ref>
+<ref>{{Cite book2 |last1=夏目 |first1=漱石 |title=吾輩は猫である |series=岩波文庫 |page=12 |edition=改版 |location=東京 |publisher=岩波書店 |date=1990-04 |isbn=4-00-310101-4 |id={{国立国会図書館書誌ID|000002041889}} {{全国書誌番号|90035836}} |ref={{SfnRef|夏目|1990}}}}</ref>
 ## 2 / quote
-<ref>{{Cite book2 |last1=夏目 |first1=漱石 |title=吾輩は猫である |series=岩波文庫 |page=12 |edition=改版 |location=東京 |publisher=岩波書店 |date=1990-04 |isbn=4-00-310101-4 |id={{国立国会図書館書誌ID|000002041889}} {{全国書誌番号|90035836}} |quote=引用する一節。 二行目}}</ref>
+<ref>{{Cite book2 |last1=夏目 |first1=漱石 |title=吾輩は猫である |series=岩波文庫 |page=12 |edition=改版 |location=東京 |publisher=岩波書店 |date=1990-04 |isbn=4-00-310101-4 |id={{国立国会図書館書誌ID|000002041889}} {{全国書誌番号|90035836}} |quote=引用する一節。 二行目 |ref={{SfnRef|夏目|1990}}}}</ref>
 ## 2 / sfn
 {{Sfn|夏目|1990|p=12}}
-* {{Cite book2 |last1=夏目 |first1=漱石 |title=吾輩は猫である |series=岩波文庫 |edition=改版 |location=東京 |publisher=岩波書店 |date=1990-04 |isbn=4-00-310101-4 |id={{国立国会図書館書誌ID|000002041889}} {{全国書誌番号|90035836}}}}
+* {{Cite book2 |last1=夏目 |first1=漱石 |title=吾輩は猫である |series=岩波文庫 |edition=改版 |location=東京 |publisher=岩波書店 |date=1990-04 |isbn=4-00-310101-4 |id={{国立国会図書館書誌ID|000002041889}} {{全国書誌番号|90035836}} |ref={{SfnRef|夏目|1990}}}}

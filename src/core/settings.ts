@@ -15,6 +15,8 @@ export interface Settings {
   /** DOI・CRID 等があっても url= を出すか */
   urlWithId: boolean;
   accessDate: boolean;
+  /** {{Sfn}} で参照されやすい種類（図書・論文・学位論文など）に ref={{SfnRef|…}} を常に付けるか */
+  sfnRef: boolean;
   /** 和文の本題と副題のつなぎ */
   subtitleJoinJa: string;
   /** Crossref の polite pool 用連絡先 */
@@ -30,6 +32,7 @@ export const DEFAULT_SETTINGS: Settings = {
   layout: 'auto',
   urlWithId: false,
   accessDate: true,
+  sfnRef: true,
   subtitleJoinJa: ' : ',
   mailto: '',
 };
