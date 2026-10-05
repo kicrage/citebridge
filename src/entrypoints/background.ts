@@ -71,10 +71,14 @@ async function capture(tabId: number, tab: { url?: string; title?: string } | un
   if (pid) {
     try {
       const r = await resolveId(pid, await context());
-      record = mergeResults(r.record.key, [...r.results, page], ['user', 'jalc', 'crossref', 'cinii', 'ndl', 'kobe', 'kotobank', 'citoid', 'page']);
+      // コトバンクのページの JSON-LD の「著者」は辞書名の列挙なので、項目に著者が無くても補完に使わない
+      const extra = pid.type === 'kotobank' ? [] : [page];
+      record = mergeResults(r.record.key, [...r.results, ...extra], ['user', 'jalc', 'crossref', 'cinii', 'ndl', 'kobe', 'kotobank', 'citoid', 'page']);
       if (r.record.koma) record.koma = r.record.koma;
       errors = r.errors;
     } catch (e: any) {
+      // コトバンクはページの meta だけでは辞書名・出版社・項目の URL が分からず、Cite web になって誤解を招くので失敗にする
+      if (pid.type === 'kotobank') return { ok: false, error: `コトバンクの項目を取得できませんでした: ${String(e?.message ?? e)}` };
       record = mergeResults(idKey(pid), [page], ['page']);
       errors = [{ source: pid.type, message: String(e?.message ?? e) }];
     }
