@@ -61,7 +61,7 @@ describe('新聞記事文庫', () => {
     expect(ctx.calls).toEqual(['https://da.lib.kobe-u.ac.jp/da/np/0100165761/']);
     expect(record.provenance.container).toBe('kobe');
     expect(generate(record, { family: 'ja', today: '2026-10-05' }).inline).toBe(
-      '<ref>{{Cite news ja |author1=大屋霊城 |title=都市の分裂繁殖論 （一〜五） |newspaper=大阪朝日新聞 |date=1922-12-21 |url=https://hdl.handle.net/20.500.14094/0100165761 |access-date=2026-10-05}}</ref>',
+      '<ref>{{Cite news ja |author1=大屋霊城 |title=都市の分裂繁殖論 （一〜五） |newspaper=大阪朝日新聞 |date=1922-12-21 |url=https://hdl.handle.net/20.500.14094/0100165761 |access-date=2026-10-05 |via=神戸大学経済経営研究所 新聞記事文庫}}</ref>',
     );
   });
 

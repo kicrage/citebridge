@@ -12,6 +12,7 @@
     "postinstall": "wxt prepare",
     "test": "vitest run",
     "gen:profiles": "tsx scripts/gen-profiles.ts",
+    "check:parse": "tsx scripts/parse-check.ts",
     "e2e": "node tests/e2e/smoke.mjs"
   },
   "dependencies": {

@@ -206,8 +206,8 @@ describe('NDL 雑誌記事索引と図書の書誌ID', () => {
     expect(ctx.calls).toHaveLength(1);
     expect(ctx.calls[0]).toContain('R000000004-I4196074');
     expect(record.type).toBe('article-journal');
-    // NDL が記事に付ける NDLBibID は図書の書誌IDと番号が衝突するので、出典には書かない
-    expect(generate(record, { family: 'ja', today: '2026-10-06' }).inline).not.toContain('国立国会図書館書誌ID');
+    // 記事の NDLBibID（0 埋めなし）は {{国立国会図書館書誌ID}} → ndlonline で記事に飛ぶので、そのまま出す
+    expect(generate(record, { family: 'ja', today: '2026-10-06' }).inline).toContain('{{国立国会図書館書誌ID|4196074}}');
     expect(record.ids.ndlarticle).toBe('4196074');
   });
 

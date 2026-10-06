@@ -37,6 +37,12 @@ describe('日付・和暦', () => {
     expect(formatDate(parseDate('昭和12年5月3日'))).toBe('1937-05-03');
     expect(formatDate(parseDate('1937-05'), 'ja')).toBe('1937年5月');
     expect(formatDate(parseDate('不明'))).toBe('不明');
+    // YYYY-MM は MM が年の下 2 桁より大きいと年の範囲と紛らわしく CS1 が「曖昧な日付」にする（jawiki の action=parse で確認）
+    expect(formatDate(parseDate('2003-12'))).toBe('2003年12月');
+    expect(formatDate(parseDate('2010-11'))).toBe('2010年11月');
+    expect(formatDate(parseDate('1997-03'))).toBe('1997-03');
+    expect(formatDate(parseDate('1990-04'))).toBe('1990-04');
+    expect(formatDate(parseDate('2003-12-15'))).toBe('2003-12-15');
   });
 });
 

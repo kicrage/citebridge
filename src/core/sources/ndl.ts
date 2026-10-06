@@ -156,7 +156,11 @@ export async function fetchNdl(
   else if (type === 'jpno') res = await sru(`jpno="${value}"`, ctx);
   // 雑誌記事索引（R000000004）。図書の書誌ID（R100000002, 12桁ゼロ埋め）とは別体系で、同じ番号が別資料になる
   else if (type === 'ndlarticle') res = await sru(`itemno="R000000004-I${value.replace(/^0+/, '')}"`, ctx);
-  else res = await sru(`itemno="R100000002-I${value.padStart(12, '0')}"`, ctx);
+  else {
+    // NDL の解決規則: 0 埋めなしの短い番号（〜8 桁）は雑誌記事索引、9 桁以上（「000002041889」「028842503」）は図書で、
+    // 図書の I 番号は書誌ID の文字列そのまま（12 桁に 0 埋めすると別物になり存在しない）
+    res = value.length >= 9 ? await sru(`itemno="R100000002-I${value}"`, ctx) : await sru(`itemno="R000000004-I${value}"`, ctx);
+  }
   if (!res) throw new NotFoundError(`NDL: ${type}=${value}`);
   if (type === 'ndlbib') res.record.ids = { ...res.record.ids, ndlbib: value };
   return res;

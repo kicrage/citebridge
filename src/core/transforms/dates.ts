@@ -71,6 +71,8 @@ export function formatDate(d: DateParts | undefined, style: DateStyle = 'iso'): 
   if (!d) return undefined;
   if (!d.y) return d.raw || undefined;
   if (style === 'ja') return `${d.y}年` + (d.m ? `${d.m}月` : '') + (d.m && d.d ? `${d.d}日` : '');
+  // YYYY-MM は、MM が年の下 2 桁より大きいと年の範囲（2003-12 → 2003〜2012）と紛らわしく「曖昧な日付のフォーマット」になる
+  if (d.m && !d.d && d.m > d.y % 100) return `${d.y}年${d.m}月`;
   return String(d.y) + (d.m ? `-${pad(d.m)}` : '') + (d.m && d.d ? `-${pad(d.d)}` : '');
 }
 

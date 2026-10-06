@@ -1,18 +1,18 @@
 ## ja / 一節なし
-<ref>{{Cite news ja |title=綿業の不振 |newspaper=大阪朝日新聞 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04}}</ref>
+<ref>{{Cite news ja |title=綿業の不振 |newspaper=大阪朝日新聞 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04 |via=神戸大学経済経営研究所 新聞記事文庫}}</ref>
 ## ja / pages
-<ref>{{Cite news ja |title=綿業の不振 |newspaper=大阪朝日新聞 |page=12 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04}}</ref>
+<ref>{{Cite news ja |title=綿業の不振 |newspaper=大阪朝日新聞 |page=12 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04 |via=神戸大学経済経営研究所 新聞記事文庫}}</ref>
 ## ja / quote
-<ref>{{Cite news ja |title=綿業の不振 |newspaper=大阪朝日新聞 |page=12 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04 |quote=引用する一節。 二行目}}</ref>
+<ref>{{Cite news ja |title=綿業の不振 |newspaper=大阪朝日新聞 |page=12 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04 |via=神戸大学経済経営研究所 新聞記事文庫 |quote=引用する一節。 二行目}}</ref>
 ## ja / sfn
 {{Sfn|綿業の不振|1930|p=12}}
-* {{Cite news ja |title=綿業の不振 |newspaper=大阪朝日新聞 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04 |ref={{SfnRef|綿業の不振|1930}}}}
+* {{Cite news ja |title=綿業の不振 |newspaper=大阪朝日新聞 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04 |via=神戸大学経済経営研究所 新聞記事文庫 |ref={{SfnRef|綿業の不振|1930}}}}
 ## 2 / 一節なし
-<ref>{{Cite news2 |title=綿業の不振 |newspaper=大阪朝日新聞 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04}}</ref>
+<ref>{{Cite news2 |title=綿業の不振 |newspaper=大阪朝日新聞 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04 |via=神戸大学経済経営研究所 新聞記事文庫}}</ref>
 ## 2 / pages
-<ref>{{Cite news2 |title=綿業の不振 |newspaper=大阪朝日新聞 |page=12 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04}}</ref>
+<ref>{{Cite news2 |title=綿業の不振 |newspaper=大阪朝日新聞 |page=12 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04 |via=神戸大学経済経営研究所 新聞記事文庫}}</ref>
 ## 2 / quote
-<ref>{{Cite news2 |title=綿業の不振 |newspaper=大阪朝日新聞 |page=12 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04 |quote=引用する一節。 二行目}}</ref>
+<ref>{{Cite news2 |title=綿業の不振 |newspaper=大阪朝日新聞 |page=12 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04 |via=神戸大学経済経営研究所 新聞記事文庫 |quote=引用する一節。 二行目}}</ref>
 ## 2 / sfn
 {{Sfn|綿業の不振|1930|p=12}}
-* {{Cite news2 |title=綿業の不振 |newspaper=大阪朝日新聞 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04 |ref={{SfnRef|綿業の不振|1930}}}}
+* {{Cite news2 |title=綿業の不振 |newspaper=大阪朝日新聞 |date=1930-05-03 |url=https://hdl.handle.net/20.500.14094/0100012345 |access-date=2026-10-04 |via=神戸大学経済経営研究所 新聞記事文庫 |ref={{SfnRef|綿業の不振|1930}}}}

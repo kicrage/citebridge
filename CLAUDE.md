@@ -9,7 +9,7 @@ jawiki 向けの出典テンプレート生成 Chrome 拡張（WXT + Vue 3 + Cod
 - テンプレートの引数は各モジュールの Whitelist（profiles.generated.json）を正とする。TemplateData は補助。
 - 変更後は `npm test`・`npm run compile` を通す。生成結果が変わる変更はゴールデン（tests/golden）を見直してから更新する。
 - Wikimedia API は連続アクセスで 429 になるので間隔を空ける。
-- {{Sfn}} で参照されやすい種類（book・journal・magazine・thesis・report・conference）には、sfn モードでなくても ref={{SfnRef|…}} を付ける（設定 sfnRef、既定オン。web・news・事典項目は付けない）。
+- ref={{SfnRef|…}} は、CS1 / CS-ja が著者（編者）と年から自動生成する CITEREF（jawiki の action=parse で確認済み）と {{Sfn}} のキーが一致しないときだけ付ける。同じ値を明示すると「CS1メンテナンス: デフォルトと同じref」になる。付けるのは著者も編者もいないとき、author= に「姓 名」を書く設定のとき等。設定 sfnRef: needed（既定）/ always / never。
 - NDL デジタルコレクションの PID は dl.ndl.go.jp の URL（/ja/ /en/ 等の言語プレフィックス、/api/iiif/{pid}/、スキームなし）と NDL サーチの books/R100000039-I{PID} から取る（I 番号は PID。R100000002 / R000000004 の I 番号は書誌ID）。
 
 ## 構成
@@ -30,14 +30,17 @@ jawiki 向けの出典テンプレート生成 Chrome 拡張（WXT + Vue 3 + Cod
    - 候補が同じ表示になる項目（日本歴史地名大系の同一分類など）は本文の食い違い始めを添えて区別。出版社の書式は辞書ごとにまちまち（サンプルは tests/fixtures/kotobank_*.html、漱石のほうは本文を削った録画）。出版社が取れない辞書がある（ブリタニカ等は辞書名のみ）。
    - 録画は 平野郷-864282 と 夏目漱石-17193（13 辞書）。テストは tests/kotobank.test.ts。host_permissions に kotobank.jp を追加したので、更新後に権限の再承認が要る。
 2. ~~実 API（JaLC・Crossref・CiNii・NDL）で取得を確認~~ → 済（2026-10-06）。Crossref（DOI 2 件）・CiNii（CRID/NAID/NCID）・NDL（ISBN/JPNO/書誌ID/記事索引）は実応答で出典が組み立つ。JaLC は実応答（curl）がフィクスチャと同じキー構成であることだけ確認（下記の環境事情で Node からは引けなかった）。見つけて直したこと:
-   - NDL サーチの雑誌記事索引 R000000004-I{n} を ndlbib 扱いしていて、同じ番号の別の図書（R100000002-I{12桁}）を引いていた → IdType ndlarticle を新設。記事に付く NDLBibID は図書と番号が衝突するため、article-journal/magazine では {{国立国会図書館書誌ID}} を出さない。
+   - NDL サーチの雑誌記事索引 R000000004-I{n} を ndlbib 扱いしていて、同じ番号の別の図書（R100000002-I{12桁}）を引いていた → IdType ndlarticle を新設。ndlbib は NDL の解決規則に合わせ、9 桁以上は図書（R100000002-I{そのまま}、0 埋めしない）、短い番号は記事索引。記事の NDLBibID（0 埋めなし）は {{国立国会図書館書誌ID}} で記事に解決されるのでそのまま出す。
    - DOI 10.11501/{PID} は NDL デジタルコレクションの DOI。JaLC 経由だと著者を姓名に割る・巻次が題名に混ざる → PID として OAI-PMH で引く。
    - 叢書名の「 ; ア7-5」（巻次）を series から落とす。CRID からの取得で CiNii を二重に引いていたのをやめた。
    - createHttp にネットワークエラー（接続タイムアウト・DNS）の再試行を追加。
    - 環境メモ: この開発環境は .jp ホストの初回 DNS 解決が約 12 秒かかり、Node の接続タイムアウト（10 秒）を超えて api.japanlinkcenter.org が引けないことが多い（curl なら通る）。コードの問題ではない。
    - 未確認: JaLC の図書・学位論文 DOI、CiNii の学位論文、Newspaper の NDL PID。CiNii の連載誌（NCID）は date が範囲（1994.3-2006.2）で解釈できず警告が出る（仕様どおり）。
-3. 生成 wikitext を jawiki の action=parse に通し、CS1 / CS-ja のエラー表示が出ないことを確認。特に:
-   - CS-ja が CITEREF を自動生成するか（しなければ現状どおり ja 系は ref={{SfnRef|…}} を明示、するなら省ける）
-   - id={{NDLDC|pid}} の表示
-   - {{新聞記事文庫}} の正しい使い方（現状は url= に Handle URL）
+3. ~~生成 wikitext を jawiki の action=parse に通す~~ → 済（2026-10-06）。`npm run check:parse`（scripts/parse-check.ts）で tests/golden の全行と録画データ由来の出典 122 件を通し、想定外のエラー・カテゴリは 0。分かったこと:
+   - CS-ja / CS1 は CITEREF を自動生成する（last1=夏目 → CITEREF夏目1990、author1=夏目漱石 → CITEREF夏目漱石1990、著者は最大 4 人、著者がなければ編者）。著者も編者もいないと生成されない。→ ref= は一致しないときだけ（上の決まりごと）。
+   - id={{NDLDC|pid}} は裸の URL を出すだけで、CS1 が id の後ろに付ける「。」までリンクに含まれて壊れる → {{NDLDC|pid|format=ndljp}}（「NDLJP:pid」のリンク）にした。
+   - date=YYYY-MM は MM が年の下 2 桁より大きいと（2003-12、2010-11）「曖昧な日付のフォーマット」のメンテナンスカテゴリ → その場合だけ「2003年12月」と書く（1997-03 などは ISO のまま）。
+   - {{新聞記事文庫|url|ID}} の出力は https://hdl.handle.net/20.500.14094/ID で、現状の url= の Handle URL と同じ。cite 形式は Cite news に id=[[神戸大学]]経済経営研究所 新聞記事文庫 を付けて出す（出所の表記）。→ 同じ出所を via=神戸大学経済経営研究所 新聞記事文庫 として出すようにした。
+   - 記事題名の無い雑誌の号（NDLDC の雑誌 PID）は title 必須エラーになる（利用者が補う前提で、check:parse では期待どおり扱い）。
+   - 書誌ID・全国書誌番号・コトバンク（via=）・新聞記事文庫・Cite encyclopedia ja はエラーなし。NDL の {{国立国会図書館書誌ID|N}} は id.ndl.go.jp/bib/N → ndlonline で、0 埋めなしの短い番号（〜8 桁）は雑誌記事索引、9 桁以上は図書に解決される（fetchNdl もこの規則）。
 4. 実際の Chrome に .output/chrome-mv3 を読み込み、利用者サンドボックスの編集画面で挿入・Sfn・空欄補完を手動確認（保存はしない）。

@@ -1,26 +1,26 @@
 ## ja / 一節なし
-<ref>{{Cite journal ja |journal=Quelle |issue=53 |location=豊中 |publisher=クヴェレ会 |date=2003-12 |id={{NDLDC|11228096}} |url=https://dl.ndl.go.jp/pid/11228096 |ref={{SfnRef|2003}}}}</ref>
+<ref>{{Cite journal ja |journal=Quelle |issue=53 |location=豊中 |publisher=クヴェレ会 |date=2003年12月 |id={{NDLDC|11228096|format=ndljp}} |url=https://dl.ndl.go.jp/pid/11228096 |ref={{SfnRef|2003}}}}</ref>
 ! error: 必須の引数「title」がありません
 ## ja / pages
-<ref>{{Cite journal ja |journal=Quelle |issue=53 |page=12 |location=豊中 |publisher=クヴェレ会 |date=2003-12 |id={{NDLDC|11228096}} |url=https://dl.ndl.go.jp/pid/11228096 |ref={{SfnRef|2003}}}}</ref>
+<ref>{{Cite journal ja |journal=Quelle |issue=53 |page=12 |location=豊中 |publisher=クヴェレ会 |date=2003年12月 |id={{NDLDC|11228096|format=ndljp}} |url=https://dl.ndl.go.jp/pid/11228096 |ref={{SfnRef|2003}}}}</ref>
 ! error: 必須の引数「title」がありません
 ## ja / quote
-<ref>{{Cite journal ja |journal=Quelle |issue=53 |page=12 |location=豊中 |publisher=クヴェレ会 |date=2003-12 |id={{NDLDC|11228096}} |url=https://dl.ndl.go.jp/pid/11228096 |quote=引用する一節。 二行目 |ref={{SfnRef|2003}}}}</ref>
+<ref>{{Cite journal ja |journal=Quelle |issue=53 |page=12 |location=豊中 |publisher=クヴェレ会 |date=2003年12月 |id={{NDLDC|11228096|format=ndljp}} |url=https://dl.ndl.go.jp/pid/11228096 |quote=引用する一節。 二行目 |ref={{SfnRef|2003}}}}</ref>
 ! error: 必須の引数「title」がありません
 ## ja / sfn
 {{Sfn|2003|p=12}}
-* {{Cite journal ja |journal=Quelle |issue=53 |location=豊中 |publisher=クヴェレ会 |date=2003-12 |id={{NDLDC|11228096}} |url=https://dl.ndl.go.jp/pid/11228096 |ref={{SfnRef|2003}}}}
+* {{Cite journal ja |journal=Quelle |issue=53 |location=豊中 |publisher=クヴェレ会 |date=2003年12月 |id={{NDLDC|11228096|format=ndljp}} |url=https://dl.ndl.go.jp/pid/11228096 |ref={{SfnRef|2003}}}}
 ! error: 必須の引数「title」がありません
 ## 2 / 一節なし
-<ref>{{Cite journal2 |journal=Quelle |issue=53 |location=豊中 |publisher=クヴェレ会 |date=2003-12 |id={{NDLDC|11228096}} |url=https://dl.ndl.go.jp/pid/11228096 |ref={{SfnRef|2003}}}}</ref>
+<ref>{{Cite journal2 |journal=Quelle |issue=53 |location=豊中 |publisher=クヴェレ会 |date=2003年12月 |id={{NDLDC|11228096|format=ndljp}} |url=https://dl.ndl.go.jp/pid/11228096 |ref={{SfnRef|2003}}}}</ref>
 ! error: 必須の引数「title」がありません
 ## 2 / pages
-<ref>{{Cite journal2 |journal=Quelle |issue=53 |page=12 |location=豊中 |publisher=クヴェレ会 |date=2003-12 |id={{NDLDC|11228096}} |url=https://dl.ndl.go.jp/pid/11228096 |ref={{SfnRef|2003}}}}</ref>
+<ref>{{Cite journal2 |journal=Quelle |issue=53 |page=12 |location=豊中 |publisher=クヴェレ会 |date=2003年12月 |id={{NDLDC|11228096|format=ndljp}} |url=https://dl.ndl.go.jp/pid/11228096 |ref={{SfnRef|2003}}}}</ref>
 ! error: 必須の引数「title」がありません
 ## 2 / quote
-<ref>{{Cite journal2 |journal=Quelle |issue=53 |page=12 |location=豊中 |publisher=クヴェレ会 |date=2003-12 |id={{NDLDC|11228096}} |url=https://dl.ndl.go.jp/pid/11228096 |quote=引用する一節。 二行目 |ref={{SfnRef|2003}}}}</ref>
+<ref>{{Cite journal2 |journal=Quelle |issue=53 |page=12 |location=豊中 |publisher=クヴェレ会 |date=2003年12月 |id={{NDLDC|11228096|format=ndljp}} |url=https://dl.ndl.go.jp/pid/11228096 |quote=引用する一節。 二行目 |ref={{SfnRef|2003}}}}</ref>
 ! error: 必須の引数「title」がありません
 ## 2 / sfn
 {{Sfn|2003|p=12}}
-* {{Cite journal2 |journal=Quelle |issue=53 |location=豊中 |publisher=クヴェレ会 |date=2003-12 |id={{NDLDC|11228096}} |url=https://dl.ndl.go.jp/pid/11228096 |ref={{SfnRef|2003}}}}
+* {{Cite journal2 |journal=Quelle |issue=53 |location=豊中 |publisher=クヴェレ会 |date=2003年12月 |id={{NDLDC|11228096|format=ndljp}} |url=https://dl.ndl.go.jp/pid/11228096 |ref={{SfnRef|2003}}}}
 ! error: 必須の引数「title」がありません

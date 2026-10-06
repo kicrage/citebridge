@@ -130,23 +130,48 @@ describe('mapper', () => {
     expect(mapRecord(rec, { family: '2', settings: { urlWithId: true } }).call.params.some((p) => p.name === 'url')).toBe(true);
   });
 
-  it('Sfn で参照されやすい種類（図書・論文・学位論文）は一節なし・非 sfn モードでも ref=SfnRef を付ける', () => {
-    const ref = (rec: CiteRecord, o: Parameters<typeof mapRecord>[1]) => mapRecord(rec, o).call.params.find((p) => p.name === 'ref');
+  // CS1 / CS-ja は著者（編者）と年から CITEREF を自動生成する（jawiki の action=parse で確認）。
+  // 同じ値の ref= は「CS1メンテナンス: デフォルトと同じref」になるので、アンカーが合わないときだけ付ける
+  const refOf = (rec: CiteRecord, o: Parameters<typeof mapRecord>[1]) => mapRecord(rec, o).call.params.find((p) => p.name === 'ref');
+
+  it('ref=SfnRef: 自動生成されるアンカーと Sfn のキーが一致するなら付けない', () => {
     for (const family of ['ja', '2'] as const) {
-      expect(ref(records['journal-jalc'], { family })).toMatchObject({ value: '{{SfnRef|近藤|1997}}', raw: true });
-      expect(ref(records['book-ndl'], { family })?.value).toBe('{{SfnRef|夏目|1990}}');
-      expect(ref(records.thesis, { family })?.value).toBe('{{SfnRef|山田|2010}}');
-      // ウェブ・新聞は付けない
-      expect(ref(records.web, { family })).toBeUndefined();
-      expect(ref(records['news-kobe'], { family })).toBeUndefined();
+      expect(refOf(records['journal-jalc'], { family })).toBeUndefined(); // last1=近藤 + 1997 → CITEREF近藤1997
+      expect(refOf(records['book-ndl'], { family })).toBeUndefined();
+      expect(refOf(records.thesis, { family })).toBeUndefined();
+      expect(refOf(records.web, { family })).toBeUndefined();
+      for (const mode of ['pages', 'quote', 'sfn'] as PassageMode[])
+        expect(refOf(records['journal-jalc'], { family, passageMode: mode, passage: passage(records['journal-jalc']) })).toBeUndefined();
     }
   });
 
-  it('設定 sfnRef を切ると sfn モード以外では ref= を付けない', () => {
-    const p = (mode: 'pages' | 'sfn') =>
-      mapRecord(records['journal-jalc'], { family: 'ja', passageMode: mode, settings: { sfnRef: false } }).call.params.some((x) => x.name === 'ref');
-    expect(p('pages')).toBe(false);
-    expect(p('sfn')).toBe(true);
+  it('ref=SfnRef: 著者も編者もいない図書・論文には付ける（アンカーが作られない）', () => {
+    for (const family of ['ja', '2'] as const) {
+      expect(refOf(records['ndldc-oai-journal'], { family })).toMatchObject({ value: '{{SfnRef|2003}}', raw: true });
+      expect(refOf({ ...records['book-ndl'], authors: [], editors: [] }, { family })?.value).toMatch(/^{{SfnRef|吾輩は猫である|1990}}$/);
+    }
+  });
+
+  it('ref=SfnRef: author= に「姓 名」を書く設定だとアンカーが「近藤 哲1997」になり Sfn のキー（近藤）と合わないので付ける', () => {
+    const o = { family: 'ja' as const, settings: { nameStyle: 'author' as const } };
+    expect(refOf(records['journal-jalc'], o)?.value).toBe('{{SfnRef|近藤|1997}}');
+  });
+
+  it('設定 sfnRef: always は図書・論文などに常に付け、never は sfn モード以外では付けない', () => {
+    const has = (mode: PassageMode, sfnRef: 'always' | 'never' | 'needed', rec = records['journal-jalc']) =>
+      !!refOf(rec, { family: 'ja', passageMode: mode, passage: passage(rec), settings: { sfnRef } });
+    expect(has('pages', 'always')).toBe(true);
+    expect(has('pages', 'always', records.web)).toBe(false); // ウェブ・新聞などは always でも付けない
+    expect(has('sfn', 'always')).toBe(true);
+    expect(has('pages', 'never', records['ndldc-oai-journal'])).toBe(false); // 必要でも Sfn モード以外では付けない
+    expect(has('sfn', 'never', records['ndldc-oai-journal'])).toBe(true); // Sfn モードではアンカーが要る
+    expect(has('sfn', 'never')).toBe(false); // 一致していれば要らない
+  });
+
+  it('旧設定（真偽値）: true は「必要なときだけ」、false は「付けない」', () => {
+    const has = (v: unknown) => !!refOf(records['ndldc-oai-journal'], { family: 'ja', settings: { sfnRef: v as any } });
+    expect(has(true)).toBe(true);
+    expect(has(false)).toBe(false);
   });
 
   it('Crossref の出版社は雑誌論文に書かない', () => {

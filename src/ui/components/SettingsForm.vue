@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { CdxButton, CdxField, CdxIcon, CdxRadio, CdxTextInput, CdxToggleSwitch } from '@wikimedia/codex';
 import { cdxIconDownload, cdxIconUpload } from '@wikimedia/codex-icons';
 import { PROFILE_INFO } from '@/core/templates/profiles';
@@ -17,6 +17,17 @@ const layoutItems = [
   { value: 'inline', label: '横並び（1行）' },
   { value: 'block', label: '縦並び（引数ごとに改行）' },
 ];
+
+// 旧設定（真偽値）が残っていても「自動で作られないときだけ」として表示する（mapper 側の解釈と同じ）
+const sfnRefMode = computed<'needed' | 'always' | 'never'>({
+  get: () => {
+    const v = settings.value.sfnRef as unknown;
+    return v === 'always' ? 'always' : v === 'never' || v === false ? 'never' : 'needed';
+  },
+  set: (v) => {
+    settings.value.sfnRef = v;
+  },
+});
 
 async function doExport() {
   const data = await exportData();
@@ -82,7 +93,13 @@ async function clearCache() {
       <cdx-text-input v-model="settings.subtitleJoinJa" />
     </cdx-field>
     <cdx-toggle-switch v-model="settings.urlWithId">DOI・CRID などがあっても url= を書く</cdx-toggle-switch>
-    <cdx-toggle-switch v-model="settings.sfnRef">図書・論文などには ref= に SfnRef を付ける（Sfn テンプレートから参照できるように）</cdx-toggle-switch>
+    <cdx-field is-fieldset>
+      <template #label>ref=（Sfn から参照するためのアンカー）</template>
+      <template #description>図書・論文などで、著者と年から自動で作られるアンカーと Sfn のキーが違うときは、どれを選んでも付けます</template>
+      <cdx-radio v-model="sfnRefMode" name="sfnRef" input-value="needed">自動で作られないときだけ付ける（推奨）</cdx-radio>
+      <cdx-radio v-model="sfnRefMode" name="sfnRef" input-value="always">図書・論文などには常に付ける（同じ値だとメンテナンスカテゴリに入る）</cdx-radio>
+      <cdx-radio v-model="sfnRefMode" name="sfnRef" input-value="never">Sfn 形式のとき以外は付けない</cdx-radio>
+    </cdx-field>
     <cdx-toggle-switch v-model="settings.accessDate">url= を書くときに access-date= を付ける</cdx-toggle-switch>
     <cdx-field optional>
       <template #label>連絡先メールアドレス（Crossref 用）</template>

@@ -15,8 +15,12 @@ export interface Settings {
   /** DOI・CRID 等があっても url= を出すか */
   urlWithId: boolean;
   accessDate: boolean;
-  /** {{Sfn}} で参照されやすい種類（図書・論文・学位論文など）に ref={{SfnRef|…}} を常に付けるか */
-  sfnRef: boolean;
+  /**
+   * {{Sfn}} で参照されやすい種類（図書・論文・学位論文など）の ref={{SfnRef|…}}。
+   * 'needed' = CITEREF が自動で作られない／一致しないときだけ（既定。同じ値の明示はメンテナンスカテゴリになる）、
+   * 'always' = 常に付ける、'never' = Sfn モード以外では付けない
+   */
+  sfnRef: 'needed' | 'always' | 'never';
   /** 和文の本題と副題のつなぎ */
   subtitleJoinJa: string;
   /** Crossref の polite pool 用連絡先 */
@@ -32,7 +36,7 @@ export const DEFAULT_SETTINGS: Settings = {
   layout: 'auto',
   urlWithId: false,
   accessDate: true,
-  sfnRef: true,
+  sfnRef: 'needed',
   subtitleJoinJa: ' : ',
   mailto: '',
 };

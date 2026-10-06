@@ -73,7 +73,8 @@ export function chooseTemplate(rec: CiteRecord, family: Family): TemplateProfile
 const ID_WRAPPERS: Partial<Record<keyof CiteRecord['ids'], (v: string) => string>> = {
   ndlbib: (v) => `{{国立国会図書館書誌ID|${v}}}`,
   jpno: (v) => `{{全国書誌番号|${v}}}`,
-  ndldc: (v) => `{{NDLDC|${v}}}`,
+  // format=ndljp が無いと裸の URL になり、CS1 が id の後ろに付ける「。」までリンクに含まれて壊れる
+  ndldc: (v) => `{{NDLDC|${v}|format=ndljp}}`,
 };
 
 /** 専用引数のある識別子（Whitelist の id_handlers 名） */
@@ -164,6 +165,27 @@ function pageParam(page: string, kind: Passage['pageKind']): Param {
   if (kind === 'loc') return { name: 'at', value: page };
   const p = normalizePages(page)!;
   return { name: isPageRange(p) ? 'pages' : 'page', value: p };
+}
+
+/** 旧設定（真偽値）との互換。true は旧既定値で明示的な選択ではないので「必要なときだけ」にする */
+function normalizeSfnRef(v: unknown): 'needed' | 'always' | 'never' {
+  return v === 'always' ? 'always' : v === false || v === 'never' ? 'never' : 'needed';
+}
+
+/**
+ * テンプレートが引数から自動で作る CITEREF のキー（「CITEREF」を除いた部分）。作られないときは undefined。
+ * 著者（last1…、無ければ author1…、無ければ編者）の最大 4 人 ＋ 年（date/year の西暦）。
+ */
+function defaultCiteRef(params: Param[]): string | undefined {
+  const valuesOf = (re: RegExp) =>
+    params
+      .filter((p) => re.test(p.name))
+      .sort((a, b) => Number(a.name.replace(/\D/g, '') || 1) - Number(b.name.replace(/\D/g, '') || 1))
+      .map((p) => p.value);
+  const people = [/^last\d*$/, /^author\d*$/, /^editor\d*-last$/, /^editor\d*$/].map(valuesOf).find((v) => v.length) ?? [];
+  if (!people.length) return undefined;
+  const year = /\d{4}/.exec(params.find((p) => p.name === 'date' || p.name === 'year')?.value ?? '')?.[0] ?? '';
+  return people.slice(0, 4).join('') + year;
 }
 
 /** {{Sfn}} 用の著者名（姓）と年 */
@@ -282,13 +304,12 @@ export function mapRecord(rec: CiteRecord, opts: MapOptions): MapResult {
   }
   const wrapped = (Object.keys(ID_WRAPPERS) as (keyof typeof ID_WRAPPERS)[])
     .filter((k) => rec.ids[k])
-    // 論文・記事の「NDL書誌ID」は雑誌記事索引（R000000004）の番号で、{{国立国会図書館書誌ID}} が作る図書（R100000002）のリンクだと別資料になる
-    .filter((k) => !(k === 'ndlbib' && (rec.type === 'article-journal' || rec.type === 'article-magazine')))
     .map((k) => ID_WRAPPERS[k]!(rec.ids[k]!));
   if (wrapped.length) add('id', wrapped.join(' '), true);
 
-  // コトバンク経由の出典は via= に明示する
+  // 提供元は via= に明示する（コトバンク、{{新聞記事文庫|cite}} が id= に付けるのと同じ出所の表記）
   if (rec.ids.kotobank) add('via', 'コトバンク');
+  if (rec.ids.kobenp) add('via', '神戸大学経済経営研究所 新聞記事文庫');
 
   // URL と閲覧日
   const url = urlFor(rec);
@@ -302,10 +323,17 @@ export function mapRecord(rec: CiteRecord, opts: MapOptions): MapResult {
   if (passage?.text && mode === 'quote') add('quote', passage.text.replace(/\s*\n\s*/g, ' '));
 
   let sfn: string | undefined;
-  // {{Sfn}} から参照されやすい種類（図書・論文・学位論文など）は、sfn モードでなくても ref= を付けておく。
-  // CS1 は著者と年から CITEREF を作るが、CS-ja では自動生成を確認できないので、明示しておけば後から {{Sfn}} を足せる
+  // CS1 / CS-ja は著者（編者）と年から CITEREF アンカーを自動生成する（jawiki の action=parse で確認済み）。
+  // {{Sfn}} のキーと一致していれば ref= は不要で、同じ値を明示すると「CS1メンテナンス: デフォルトと同じref」になる。
+  // ref= が要るのは、著者も編者も無い／氏名の書き方が違ってアンカーが一致しないとき。
   const keys = sfnKeys(rec, title);
-  if (mode === 'sfn' || (s.sfnRef && SFN_CLASSES.has(cls))) add('ref', `{{SfnRef|${keys.join('|')}}}`, true);
+  const sfnRef = normalizeSfnRef(s.sfnRef);
+  const anchorOk = defaultCiteRef(P) === keys.join('');
+  const wantRef =
+    mode === 'sfn'
+      ? sfnRef === 'always' || !anchorOk
+      : SFN_CLASSES.has(cls) && (sfnRef === 'always' || (sfnRef === 'needed' && !anchorOk));
+  if (wantRef) add('ref', `{{SfnRef|${keys.join('|')}}}`, true);
   if (mode === 'sfn') {
     const pp = passage?.page ? pageParam(passage.page, passage.pageKind ?? inferPageKind(passage.page)) : undefined;
     const loc = pp ? `|${pp.name === 'pages' ? 'pp' : pp.name === 'page' ? 'p' : 'loc'}=${pp.value}` : '';
