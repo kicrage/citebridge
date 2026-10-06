@@ -35,7 +35,17 @@ export function createHttp(opts: { minIntervalMs?: Record<string, number>; heade
       if (wait > 0) await new Promise((r) => setTimeout(r, wait));
       last.set(host, Date.now());
       for (let attempt = 0; ; attempt++) {
-        const res = await fetch(url, { ...init, headers: { ...opts.headers, ...init?.headers } });
+        let res: Response;
+        try {
+          res = await fetch(url, { ...init, headers: { ...opts.headers, ...init?.headers } });
+        } catch (e) {
+          // 接続タイムアウト・DNS の一時的な失敗（初回の名前解決が遅い環境がある）は少し待って再試行する
+          if (attempt < 2) {
+            await new Promise((r) => setTimeout(r, 500 * 2 ** attempt));
+            continue;
+          }
+          throw e;
+        }
         if ((res.status === 429 || res.status === 503) && attempt < 3) {
           const ra = Number(res.headers.get('retry-after'));
           await new Promise((r) => setTimeout(r, (ra > 0 ? ra * 1000 : 1000) * 2 ** attempt));

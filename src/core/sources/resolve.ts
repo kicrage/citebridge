@@ -1,15 +1,17 @@
 import type { DetectedId } from '../ids/types';
 import { idKey } from '../ids/types';
-import { KOBE_HANDLE_PREFIX } from '../ids/detect';
 import type { CiteRecord, SourceId, SourceResult } from '../model/record';
 import { mergeResults } from '../merge/merge';
-import { fetchCinii, findCrid } from './cinii';
+import { ChooseEntryError } from './choose';
+import { fetchCinii, findCrid, findSerialsByIssn } from './cinii';
 import { fetchCitoid } from './citoid';
 import { fetchCrossref } from './crossref';
 import { fetchHtmlMeta } from './html';
 import type { SourceContext } from './http';
+import { fetchKobeNp, kobeIdFromHandle } from './kobe';
+import { fetchKotobank } from './kotobank';
 import { fetchDoiRa, fetchJalc } from './jalc';
-import { fetchNdl } from './ndl';
+import { fetchNdl, fetchNdldc } from './ndl';
 
 export interface ResolveResult {
   record: CiteRecord;
@@ -30,7 +32,7 @@ async function settle(steps: Step[], errors: ResolveResult['errors']): Promise<S
   return ok;
 }
 
-async function viaDoi(doi: string, ctx: SourceContext, errors: ResolveResult['errors']) {
+async function viaDoi(doi: string, ctx: SourceContext, errors: ResolveResult['errors'], opts: { skipCinii?: boolean } = {}) {
   let ra: string | undefined;
   try {
     ra = await fetchDoiRa(doi, ctx);
@@ -41,7 +43,9 @@ async function viaDoi(doi: string, ctx: SourceContext, errors: ResolveResult['er
     const res = await settle(
       [
         { source: 'jalc', run: () => fetchJalc(doi, ctx) },
-        { source: 'cinii', run: async () => { const c = await findCrid(doi, ctx); return c ? fetchCinii(c, ctx) : undefined; } },
+        ...(opts.skipCinii
+          ? []
+          : [{ source: 'cinii' as const, run: async () => { const c = await findCrid(doi, ctx); return c ? fetchCinii(c, ctx) : undefined; } }]),
       ],
       errors,
     );
@@ -56,8 +60,13 @@ async function viaDoi(doi: string, ctx: SourceContext, errors: ResolveResult['er
   return { results: res, order: ['user', 'citoid', 'crossref', 'jalc', 'page'] as SourceId[] };
 }
 
+const NDL_DOI = /^10\.11501\/(\d+)$/;
+
 /** 識別子からメタデータを取得し、統合済みレコードを返す */
 export async function resolveId(id: DetectedId, ctx: SourceContext): Promise<ResolveResult> {
+  // 10.11501/{PID} は NDL デジタルコレクションの DOI。JaLC 経由だと著者を姓名に割る・巻次が題名に混ざるなど質が落ちるので OAI-PMH で引く
+  const ndlDoi = id.type === 'doi' ? NDL_DOI.exec(id.value) : null;
+  if (ndlDoi) return resolveId({ type: 'ndldc', value: ndlDoi[1], confidence: 'exact' }, ctx);
   const errors: ResolveResult['errors'] = [];
   let results: SourceResult[] = [];
   let order: SourceId[] = ['user', 'cinii', 'jalc', 'crossref', 'ndl', 'citoid', 'page'];
@@ -75,14 +84,16 @@ export async function resolveId(id: DetectedId, ctx: SourceContext): Promise<Res
       results = await settle([{ source: 'cinii', run: () => fetchCinii(crid, ctx) }], errors);
       const doi = results[0]?.record.ids?.doi;
       const isbn = results[0]?.record.ids?.isbn;
-      if (doi) results.push(...(await viaDoi(doi, ctx, errors)).results);
+      // CiNii は取得済みなので DOI からの再検索はしない
+      if (doi) results.push(...(await viaDoi(doi, ctx, errors, { skipCinii: true })).results);
       else if (isbn) results.push(...(await settle([{ source: 'ndl', run: () => fetchNdl('isbn', isbn, ctx) }], errors)));
       if (id.type !== 'crid') for (const r of results) if (r.source === 'cinii') r.record.ids = { ...r.record.ids, [id.type]: id.value };
       break;
     }
     case 'isbn':
     case 'jpno':
-    case 'ndlbib': {
+    case 'ndlbib':
+    case 'ndlarticle': {
       results = await settle([{ source: 'ndl', run: () => fetchNdl(id.type as 'isbn', id.value, ctx) }], errors);
       if (!results.length && id.type === 'isbn')
         results = await settle([{ source: 'citoid', run: () => fetchCitoid(id.value, ctx) }], errors);
@@ -90,20 +101,43 @@ export async function resolveId(id: DetectedId, ctx: SourceContext): Promise<Res
       break;
     }
     case 'ndldc': {
-      const url = `https://dl.ndl.go.jp/pid/${id.value}`;
-      results = await settle([{ source: 'citoid', run: () => fetchCitoid(url, ctx) }], errors);
-      for (const r of results) r.record.ids = { ...r.record.ids, ndldc: id.value };
+      // OAI-PMH のみ。Citoid は SPA の汎用題名（「国立国会図書館デジタルコレクション」）しか返さず、
+      // 取得失敗を成功に見せかけるので、失敗時はエラーにする（閲覧中ページの meta は background 側で重ねる）
+      results = await settle([{ source: 'ndl', run: () => fetchNdldc(id.value, ctx) }], errors);
+      order = ['user', 'ndl', 'page'];
       break;
     }
     case 'kobenp':
     case 'hdl': {
-      const h = id.type === 'kobenp' ? `${KOBE_HANDLE_PREFIX}/${id.value}` : id.value;
-      results = await settle([{ source: 'page', run: () => fetchHtmlMeta(`https://hdl.handle.net/${h}`, ctx) }], errors);
-      for (const r of results) {
-        r.record.ids = { ...r.record.ids, [id.type]: id.value };
-        if (id.type === 'kobenp') r.record.type = 'article-newspaper';
+      // 新聞記事文庫は記事ページの表を専用に読む（meta が無く、<title> は「題名 | 新聞記事文庫」になるため）
+      const kobe = id.type === 'kobenp' ? id.value : kobeIdFromHandle(id.value);
+      if (kobe) {
+        results = await settle([{ source: 'kobe', run: () => fetchKobeNp(kobe, ctx) }], errors);
+        order = ['user', 'kobe'];
+        break;
       }
+      results = await settle([{ source: 'page', run: () => fetchHtmlMeta(`https://hdl.handle.net/${id.value}`, ctx) }], errors);
+      for (const r of results) r.record.ids = { ...r.record.ids, hdl: id.value };
       order = ['user', 'page', 'citoid'];
+      break;
+    }
+    case 'issn': {
+      // ISSN は雑誌そのものを引く（誌名・ISSN が入り、記事題名は利用者が補う）。同じ ISSN の雑誌（サブシリーズ）が複数あれば候補から選ぶ
+      const found = await findSerialsByIssn(id.value, ctx);
+      if (!found.length) throw new Error(`CiNii Research に ISSN ${id.value} の雑誌が見つかりませんでした`);
+      if (found.length > 1)
+        throw new ChooseEntryError(
+          found.map((f) => ({ type: 'crid', value: f.crid, confidence: 'exact', label: `${f.title}${f.ncid ? `（${f.ncid}）` : ''}` })),
+          `ISSN ${id.value} の雑誌が複数あります。どれを出典にするか選んでください`,
+        );
+      results = await settle([{ source: 'cinii', run: () => fetchCinii(found[0].crid, ctx) }], errors);
+      order = ['user', 'cinii', 'citoid', 'page'];
+      break;
+    }
+    case 'kotobank': {
+      // 辞書ごとの項目（#w-…）はページ HTML から取る。項目が決まらず複数あれば ChooseEntryError で候補を返す
+      results = [await fetchKotobank(id, ctx)]; // settle を通さない（ChooseEntryError や 404 をそのまま呼び出し側に返す）
+      order = ['user', 'kotobank', 'page'];
       break;
     }
     case 'url': {

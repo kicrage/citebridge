@@ -1,0 +1,11 @@
+{
+  "extends": "./.wxt/tsconfig.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "noImplicitAny": false,
+    "noUncheckedIndexedAccess": false,
+    "types": ["vitest/globals", "node"]
+  },
+  "include": [".wxt/wxt.d.ts", "src/**/*", "tests/**/*", "scripts/**/*", "wxt.config.ts", "vitest.config.ts"]
+}

@@ -1,0 +1,18 @@
+## ja / 一節なし
+<ref>{{Cite journal ja |last1=近藤 |first1=哲 |title=漱石とハーンの神秘主義 |journal=会津大学短期大学部研究年報 |issue=54 |pages=11-27 |publisher=会津大学短期大学部 |date=1997 |doi=10.20645/00000025 |ncid=AN10448031}}</ref>
+## ja / pages
+<ref>{{Cite journal ja |last1=近藤 |first1=哲 |title=漱石とハーンの神秘主義 |journal=会津大学短期大学部研究年報 |issue=54 |page=12 |publisher=会津大学短期大学部 |date=1997 |doi=10.20645/00000025 |ncid=AN10448031}}</ref>
+## ja / quote
+<ref>{{Cite journal ja |last1=近藤 |first1=哲 |title=漱石とハーンの神秘主義 |journal=会津大学短期大学部研究年報 |issue=54 |page=12 |publisher=会津大学短期大学部 |date=1997 |doi=10.20645/00000025 |ncid=AN10448031 |quote=引用する一節。 二行目}}</ref>
+## ja / sfn
+{{Sfn|近藤|1997|p=12}}
+* {{Cite journal ja |last1=近藤 |first1=哲 |title=漱石とハーンの神秘主義 |journal=会津大学短期大学部研究年報 |issue=54 |pages=11-27 |publisher=会津大学短期大学部 |date=1997 |doi=10.20645/00000025 |ncid=AN10448031}}
+## 2 / 一節なし
+<ref>{{Cite journal2 |last1=近藤 |first1=哲 |title=漱石とハーンの神秘主義 |journal=会津大学短期大学部研究年報 |issue=54 |pages=11-27 |publisher=会津大学短期大学部 |date=1997 |doi=10.20645/00000025 |ncid=AN10448031}}</ref>
+## 2 / pages
+<ref>{{Cite journal2 |last1=近藤 |first1=哲 |title=漱石とハーンの神秘主義 |journal=会津大学短期大学部研究年報 |issue=54 |page=12 |publisher=会津大学短期大学部 |date=1997 |doi=10.20645/00000025 |ncid=AN10448031}}</ref>
+## 2 / quote
+<ref>{{Cite journal2 |last1=近藤 |first1=哲 |title=漱石とハーンの神秘主義 |journal=会津大学短期大学部研究年報 |issue=54 |page=12 |publisher=会津大学短期大学部 |date=1997 |doi=10.20645/00000025 |ncid=AN10448031 |quote=引用する一節。 二行目}}</ref>
+## 2 / sfn
+{{Sfn|近藤|1997|p=12}}
+* {{Cite journal2 |last1=近藤 |first1=哲 |title=漱石とハーンの神秘主義 |journal=会津大学短期大学部研究年報 |issue=54 |pages=11-27 |publisher=会津大学短期大学部 |date=1997 |doi=10.20645/00000025 |ncid=AN10448031}}

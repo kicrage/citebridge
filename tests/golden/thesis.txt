@@ -1,0 +1,18 @@
+## ja / 一節なし
+<ref>{{Cite thesis ja |last1=山田 |first1=花子 |title=近代日本語の文体 |degree=博士（文学） |publisher=東京大学 |date=2010 |crid=1500000000000000001}}</ref>
+## ja / pages
+<ref>{{Cite thesis ja |last1=山田 |first1=花子 |title=近代日本語の文体 |page=12 |degree=博士（文学） |publisher=東京大学 |date=2010 |crid=1500000000000000001}}</ref>
+## ja / quote
+<ref>{{Cite thesis ja |last1=山田 |first1=花子 |title=近代日本語の文体 |page=12 |degree=博士（文学） |publisher=東京大学 |date=2010 |crid=1500000000000000001 |quote=引用する一節。 二行目}}</ref>
+## ja / sfn
+{{Sfn|山田|2010|p=12}}
+* {{Cite thesis ja |last1=山田 |first1=花子 |title=近代日本語の文体 |degree=博士（文学） |publisher=東京大学 |date=2010 |crid=1500000000000000001}}
+## 2 / 一節なし
+<ref>{{Cite thesis2 |last1=山田 |first1=花子 |title=近代日本語の文体 |degree=博士（文学） |publisher=東京大学 |date=2010 |crid=1500000000000000001}}</ref>
+## 2 / pages
+<ref>{{Cite thesis2 |last1=山田 |first1=花子 |title=近代日本語の文体 |page=12 |degree=博士（文学） |publisher=東京大学 |date=2010 |crid=1500000000000000001}}</ref>
+## 2 / quote
+<ref>{{Cite thesis2 |last1=山田 |first1=花子 |title=近代日本語の文体 |page=12 |degree=博士（文学） |publisher=東京大学 |date=2010 |crid=1500000000000000001 |quote=引用する一節。 二行目}}</ref>
+## 2 / sfn
+{{Sfn|山田|2010|p=12}}
+* {{Cite thesis2 |last1=山田 |first1=花子 |title=近代日本語の文体 |degree=博士（文学） |publisher=東京大学 |date=2010 |crid=1500000000000000001}}

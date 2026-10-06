@@ -1,0 +1,18 @@
+## ja / 一節なし
+<ref>{{Cite book ja |author1=東京市 |title=東京案内 |at=45コマ |publisher=裳華房 |date=1907 |id={{NDLDC|1234567|format=ndljp}} |url=https://dl.ndl.go.jp/pid/1234567/1/45}}</ref>
+## ja / pages
+<ref>{{Cite book ja |author1=東京市 |title=東京案内 |page=12 |publisher=裳華房 |date=1907 |id={{NDLDC|1234567|format=ndljp}} |url=https://dl.ndl.go.jp/pid/1234567/1/45}}</ref>
+## ja / quote
+<ref>{{Cite book ja |author1=東京市 |title=東京案内 |page=12 |publisher=裳華房 |date=1907 |id={{NDLDC|1234567|format=ndljp}} |url=https://dl.ndl.go.jp/pid/1234567/1/45 |quote=引用する一節。 二行目}}</ref>
+## ja / sfn
+{{Sfn|東京市|1907|p=12}}
+* {{Cite book ja |author1=東京市 |title=東京案内 |at=45コマ |publisher=裳華房 |date=1907 |id={{NDLDC|1234567|format=ndljp}} |url=https://dl.ndl.go.jp/pid/1234567/1/45}}
+## 2 / 一節なし
+<ref>{{Cite book2 |author1=東京市 |title=東京案内 |at=45コマ |publisher=裳華房 |date=1907 |id={{NDLDC|1234567|format=ndljp}} |url=https://dl.ndl.go.jp/pid/1234567/1/45}}</ref>
+## 2 / pages
+<ref>{{Cite book2 |author1=東京市 |title=東京案内 |page=12 |publisher=裳華房 |date=1907 |id={{NDLDC|1234567|format=ndljp}} |url=https://dl.ndl.go.jp/pid/1234567/1/45}}</ref>
+## 2 / quote
+<ref>{{Cite book2 |author1=東京市 |title=東京案内 |page=12 |publisher=裳華房 |date=1907 |id={{NDLDC|1234567|format=ndljp}} |url=https://dl.ndl.go.jp/pid/1234567/1/45 |quote=引用する一節。 二行目}}</ref>
+## 2 / sfn
+{{Sfn|東京市|1907|p=12}}
+* {{Cite book2 |author1=東京市 |title=東京案内 |at=45コマ |publisher=裳華房 |date=1907 |id={{NDLDC|1234567|format=ndljp}} |url=https://dl.ndl.go.jp/pid/1234567/1/45}}

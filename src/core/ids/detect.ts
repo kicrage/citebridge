@@ -12,6 +12,7 @@ const PREFIXES: Record<string, IdType> = {
   jpno: 'jpno',
   ndldc: 'ndldc',
   ndljp: 'ndldc',
+  pid: 'ndldc',
   isbn: 'isbn',
   issn: 'issn',
   hdl: 'hdl',
@@ -102,18 +103,31 @@ function fromUrl(u: URL): DetectedId[] {
   }
   if (host === 'ndlsearch.ndl.go.jp' || host === 'iss.ndl.go.jp') {
     // R100000002 = 図書の NDL 書誌、R000000004 = 雑誌記事索引
-    if ((m = /^\/books\/R\d{9}-I(\d+)/.exec(path))) return [exact('ndlbib', m[1])];
+    // R100000002 の I 番号は NDL 書誌ID。R000000004（雑誌記事索引）の I 番号は別の体系で、図書の書誌IDと番号が衝突する
+    if ((m = /^\/(?:[a-z]{2}\/)?books\/R100000002-I(\d+)/.exec(path))) return [exact('ndlbib', m[1])];
+    if ((m = /^\/(?:[a-z]{2}\/)?books\/R000000004-I(\d+)/.exec(path))) return [exact('ndlarticle', m[1])];
+    // R100000039-I{PID}: デジタル化資料。I 番号は書誌IDではなく PID そのもの（0 埋めの形は実在しない）
+    if ((m = /^\/(?:[a-z]{2}\/)?books\/R100000039-I([1-9]\d{4,9})(?:\D|$)/.exec(path))) return [exact('ndldc', m[1])];
   }
   if (host === 'id.ndl.go.jp') {
     if ((m = /^\/bib\/(\d+)/.exec(path))) return [exact('ndlbib', m[1])];
     if ((m = /^\/jpno\/(\d+)/.exec(path))) return [exact('jpno', m[1])];
   }
+  // NDL のデジタル化資料メタデータ URI
+  if (host === 'id.ndl.go.jp' && (m = /^\/digimeta\/(\d+)/.exec(path))) return [exact('ndldc', m[1])];
   if (host === 'dl.ndl.go.jp') {
-    const d = fromNdldcPath(path.replace(/^\/(?:ja\/)?/, ''));
+    // 言語プレフィックス（/ja/ /en/ …）は任意。IIIF マニフェスト（/api/iiif/{pid}/…）も PID を含む
+    const d = fromNdldcPath(path.replace(/^\/(?:[a-z]{2}(?:-[A-Za-z]+)?\/)?/, ''));
     if (d) return [d];
+    if ((m = /^\/api\/iiif\/(\d{5,10})(?:\/|$)/.exec(path))) return [exact('ndldc', m[1])];
   }
   if (host === 'hdl.handle.net' && (m = /^\/(\d+(?:\.\d+)*\/.+)$/.exec(path))) return fromHandle(m[1]);
   if (host === 'da.lib.kobe-u.ac.jp' && (m = /\/(\d{10})(?:\/|$)/.exec(path))) return [exact('kobenp', m[1])];
+  // コトバンク: /word/{見出し語}-{数字}。#w-{数字} が辞書ごとの項目（無ければ後で選ぶ）
+  if (host === 'kotobank.jp' && (m = /^\/word\/(.+-\d+)$/.exec(path))) {
+    const wid = /^#w-(\d+)$/.exec(u.hash)?.[1];
+    return [exact('kotobank', m[1], wid ? { wid } : undefined)];
+  }
   if (host === 'pubmed.ncbi.nlm.nih.gov' && (m = /^\/(\d+)/.exec(path))) return [exact('pmid', m[1])];
   if (/ncbi\.nlm\.nih\.gov$/.test(host) && (m = /\/pmc\/articles\/PMC(\d+)/i.exec(path)))
     return [exact('pmc', m[1])];
@@ -143,16 +157,18 @@ export function detectIds(input: string): DetectedId[] {
   const s = input.trim().replace(/^<|>$/g, '');
   if (!s) return [];
 
-  // 1) URL
-  if (/^https?:\/\//i.test(s)) {
+  // 1) URL（NDL 系はスキームなしで貼られることが多いので補う）
+  if (/^https?:\/\//i.test(s) || /^(?:www\.)?(?:dl|ndlsearch|id)\.ndl\.go\.jp\//i.test(s)) {
     try {
-      return fromUrl(new URL(s));
+      return fromUrl(new URL(/^https?:/i.test(s) ? s : `https://${s}`));
     } catch {
       return [];
     }
   }
   // 2) 明示的な接頭辞 `type:value`
-  const pm = /^([^\s:]+?)\s*[:：]\s*(.+)$/.exec(s);
+  // 「ISBN 978-…」「ISBN-13: …」「DOI 10.…」のような空白区切り・桁数付きも受ける
+  const pm = /^([^\s:]+?)\s*[:：]\s*(.+)$/.exec(s.replace(/^(isbn|issn)-?1[03]\b/i, '$1')) ??
+    /^([A-Za-z]{3,6})\s+(\S.*)$/.exec(s);
   if (pm && !/^info$/i.test(pm[1])) {
     const t = PREFIXES[pm[1].toLowerCase()];
     if (t) {

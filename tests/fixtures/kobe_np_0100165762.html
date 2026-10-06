@@ -1,0 +1,876 @@
+
+
+	
+	
+
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="Access-Control-Allow-Origin" content="*" />
+	<meta http-equiv="Access-Control-Allow-Headers" content="*" />
+	<meta http-equiv="Access-Control-Allow-Methods" content="GET, POST, OPTIONS" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="Content-Style-type" content="text/css" />
+	<meta http-equiv="content-script-type" content="text/javascript" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Cache-Control" content="no-cache" />
+	<meta http-equiv="Cache-Control" content="no-store" />
+	<meta http-equiv="Cache-Control" content="must-revalidate" />
+	<meta http-equiv="Expires" content="0" />
+	
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+	
+	<link rel="shortcut icon" href="/media7/img/np.ico" />
+
+	
+
+
+
+
+	<link href="/media7/css/mmd_style.css?version=20250317" rel="stylesheet" type="text/css" />
+	<link href="/media7/css/mmd_style_np_custom.css?version=20250317" rel="stylesheet" type="text/css" />
+	<link href="/media7/css/mmd_icon.css?version=20250317" rel="stylesheet" type="text/css" />
+	<link href="/media7/css/yamm.css?version=20250317" rel="stylesheet" type="text/css" />
+	<link href="/media7/css/remodal-default-theme.css?20250317" rel="stylesheet" type="text/css" />
+	<link href="/media7/css/remodal-default-theme_custom.css?20250317" rel="stylesheet" type="text/css" />
+	<link href="/media7/css/remodal.css?20250317" rel="stylesheet" type="text/css" />
+	<link href="/media7/css/remodal_custom.css?20250317" rel="stylesheet" type="text/css" />
+
+
+	
+
+<script type="text/javascript">
+//<![CDATA[
+	var media_url="/media7/"; // MEDIA_URL
+	var repository_url="/da/"; // REPOSITORY_URL
+	var url_length=repository_url.length; // REPOSITORY_URLの文字列長
+//]]>
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-758C4MFTDG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-758C4MFTDG');
+</script>
+
+	
+	<script type="text/javascript" src="/media7/js/jquery.min.js?20250317" charset="UTF-8"></script>
+	<script type="text/javascript" src="/media7/js/jquery-ui.min.js?20250317" charset="utf-8"></script>
+	<script type="text/javascript" src="/media7/js/longPressBlocker.js?20250317" charset="UTF-8"></script>
+	<script type="text/javascript" src="/media7/js/bootstrap.min.js?20250317" charset="utf-8"></script>
+	<script type="text/javascript" src="/media7/js/repository.js?version=20250317" charset="utf-8"></script>
+	<script type="text/javascript" src="/media7/js/pagetop.js?20250317" charset="utf-8"></script>
+	<script type="text/javascript" src="/media7/js/remodal.min.js?20250317" charset="utf-8"></script>
+
+	<script type="text/javascript" src="/media7/js/datatables.min.js?20250317"></script>
+	
+	<script type="text/javascript">
+	//<![CDATA[
+		$(document).ready( function() {
+			
+			/* 詳細情報ブロック表示制御 */
+			
+				$('#md_bb_change').show();
+				
+					view_accordion_detail('.bb_chang',0);
+				
+			
+
+			
+				
+					$("#block_mirador,#switch_uv").removeClass("hide");
+					initMirador();
+				
+			
+			
+		});
+		
+		
+
+		function backList(req, s_group) {
+			var	obj = document.forms[0];
+			var newObj = new Object();
+			var srch_url = '/search/simple/?';
+			var cur_url = location.href;
+			mid = cur_url.indexOf(repository_url);
+			var mode = obj.mode.value;
+
+			newObj.lang = obj.lang.value;
+			newObj.mode = mode;
+			newObj.opkey = obj.opkey.value;
+			newObj.start = obj.start.value;
+
+			if (obj.chk_schema.value != '') {
+				newObj.chk_schema = obj.chk_schema.value;
+			}
+
+			if (mode == '2') {
+				newObj.facet_key = obj.facet_key.value;
+				newObj.next_facet = 'list';
+				srch_url = '/' + obj.facet_key.value + '/?';
+			} else {
+				if (obj.cate_schema.value != '') {
+					newObj.cate_schema = obj.cate_schema.value;
+				}
+				if (obj.flflg.value == '1'){
+					newObj.srch_flflg = "1";
+				}
+				if (obj.bodytextflg && obj.bodytextflg.value == '1') {
+					newObj.srch_bodytextflg = "1";
+				}
+				if (obj.cflg && obj.cflg.value == '1') {
+					newObj.cflg = "1";
+				}
+				if (obj.codeno) {
+					newObj.codeno = obj.codeno.value;
+				}
+				newObj.req = req;
+
+				if (mode == '1') {
+					srch_url = '/search/advanced/?';
+					
+						setCodeQueryFromHidden(obj, newObj);
+					
+				}
+			}
+
+			location.href = cur_url.substring(0, mid + url_length) + s_group + srch_url + $.param(newObj);
+			return false;
+		}
+
+		/* view detail info */
+		function view_info(block_id,view_txt,view_span,show,hide){
+			var obj_bb = $(block_id);
+			var obj_txt = $(view_txt);
+			var obj_span = $(view_span);
+			var plus = 'icon-mmd_open-2';
+			var minus = 'icon-mmd_close-2';
+
+			if( obj_bb.is(":visible")) {
+				obj_txt.html(show);
+				obj_span.removeClass(minus).addClass(plus);
+			}else{
+				obj_txt.html(hide);
+				obj_span.removeClass(plus).addClass(minus);
+			}
+		}
+
+		function view_accordion_detail(accordion_disp,first_dsp){
+			$(accordion_disp).on("click", function() {
+				$(this).next().slideToggle();
+			}).next().hide();
+
+			if(first_dsp == 1){
+				$(accordion_disp+':first').next().show();
+			} else {
+				$(accordion_disp+':first').next().hide();
+			}
+		}
+
+		
+			// getクエリをHidden項目から生成
+			function setCodeQueryFromHidden(obj, newObj) {
+				
+			}
+		
+	//]]>
+	</script>
+
+
+	
+
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#cate_browse,#browse,#ranking,#archive,#us_service").on("click", function (event){
+		<!--ハンバーガーメニューのプルダウンが開いているときにメニュークリックされたら-->
+		if($('#mmd-extra-link-menu').hasClass('collapse in')) {
+			<!--閉じるだけして抜ける-->
+			$('#mmd-extra-link-menu').collapse('hide');
+			event.preventDefault();
+		}
+	});
+	$('#global-nav').on('shown.bs.dropdown', function() {
+		$('.dropdown-backdrop').remove();
+	});
+});
+</script>
+<!-- title -->
+<title>新輸出税率 : 五月十五日実施 | 新聞記事文庫</title>
+</head>
+
+<body class="mmd_ja" id="pageTop">
+	<div id="sidr-wrapper">
+		<!-- header -->
+			<header id="np" class="hidden-print">
+			<div class="loginname_block">
+				<div class="container-fluid">
+					<a href="https://lib.kobe-u.ac.jp/da/about" style="color: #fff;" target="_blank">神戸大学附属図書館デジタルアーカイブ</a>
+				</div>
+			</div>
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-xs-7 col-md-7">
+						<div id="da-logo">
+							<a href="/da/np/?lang=0"><img src="/media7/img/np_logo.svg" class="img-logo"></a>
+						</div>
+					</div>
+					<div class="col-xs-5 col-md-5">
+						<div id="header-help-nav" class="clearfix">
+							<a href="/media7/htm/mmd_keyboard.html" onclick="MojiOpen(this.href, 'np');return false;" id="nav-input" class="btn hidden-xs">入力補助<br /><span class="icon-mmd_input size-large"></span></a>
+							<a href="" onclick="LangChange('0');return false;" id="nav-english" class="btn">English<br /><span class="icon-mmd_english size-large"></span></a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+
+		<!-- navigation -->
+		<nav id="global-nav" class="navbar navbar-inverse yamm clearfix hidden-print" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header mmd-left-menu">
+					
+						
+						<div class="dropdown yamm-fw navbar-brand">
+							<a href="#" id="cate_browse" class="dropdown-toggle navbar-brand-btn" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							<span class="icon-mmd_library size-large"></span> <span class="nav-text">カテゴリ</span></a>
+
+							<ul class="dropdown-menu" aria-labelledby="cate_browse" id="cate_browse-menu">
+								
+									<li>
+										<a href="JavaScript:cateBrowseClick('001', '', '')">切抜帳</a>
+									</li>
+								
+									<li>
+										<a href="JavaScript:cateBrowseClick('002', '', '')">編年体</a>
+									</li>
+								
+									<li>
+										<a href="JavaScript:cateBrowseClick('003', '', '')">新聞</a>
+									</li>
+								
+							</ul><!--/.dropdown-menu-->
+						</div><!--/.dropdown-->
+					
+					
+					
+						
+						<div class="dropdown yamm-fw navbar-brand">
+							<a href="#" id="ranking" class="dropdown-toggle navbar-brand-btn" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+							<span class="icon-mmd_crown size-large"></span> <span class="nav-text">ランキング</span></a>
+							<ul class="dropdown-menu" aria-labelledby="ranking" id="ranking-menu">
+								
+									<li>
+										<a href="JavaScript:rankingClick('0')">アクセスランキング</a>
+									</li>
+								
+								
+									<li>
+										<a href="JavaScript:rankingClick('1')">ダウンロードランキング</a>
+									</li>
+								
+							</ul><!--/.dropdown-menu-->
+						</div><!--/.dropdown-->
+					
+					
+						
+					
+						
+					
+				</div><!--/.mmd-left-menu-->
+			</div>
+		</nav><!-- /navigation -->
+
+	<div id="content-wrapper">
+		<div id="contents">
+			<div class="container-fluid maCont clearfix">
+
+
+	
+	<form id="disp" method="post" action="" onsubmit="return false;"><input type='hidden' name='csrfmiddlewaretoken' value='1pulSM3Y2UfAqMZeBRzo5ZrHVAPO1MufyjiuDgKL0uOMRKvijK8vfQ8fAnD5Zhuu' />
+
+
+		<div id="content" class="content_detail">
+			
+			<div class="handleURL">
+				<span style="background: #E9EDF6; padding: 0.5em; border-radius: 9px;"><span class="fas fa-link" style="margin-right: 0.7em;"></span><span style="font-weight: bold">https://hdl.handle.net/20.500.14094/0100165762</span></span>
+			</div>
+
+			<div class="accessCntBox">
+				<p>このアイテムのアクセス数:<span>13</span>件<span>（<span>2026-10-05</span> 19:27&nbsp;集計</span>）</p>
+			</div>
+
+			
+
+			
+				<h3 class="topic">
+					閲覧可能ファイル&nbsp;<span class="icon-mmd_thesis size-small"></span>
+				</h3>
+				
+			
+			
+			
+				<div id="block_uv" class="uv hide" data-locale="en-GB:English (GB),cy-GB:Cymraeg" data-uri="https://da.lib.kobe-u.ac.jp/files/manifest/1/20000/0100165762.json" data-collectionindex="0" data-manifestindex="0" data-sequenceindex="0" data-canvasindex="0" data-zoom="0,0,0,0" data-rotation="0" style="width:100%; height:700px; background-color:#000;"></div>
+		        <div id="block_mirador" class="hide" style="position:relative;width:100%;height:700px;background-color:#000;"></div>
+                <script type="text/javascript">
+					
+						function switchViewer(target) {
+							if (target == "1") {
+								$("#block_mirador,#switch_uv").addClass("hide");
+								$("#block_uv,#switch_mirador").removeClass("hide");
+								if (!($("#embedUV").length)) {
+									initUV();
+								}
+							} else {
+								$("#block_uv,#switch_mirador").addClass("hide");
+								$("#block_mirador,#switch_uv").removeClass("hide");
+								if (!($("#embedMD").length)) {
+									initMirador();
+								}
+							}
+						}
+						
+						function initMirador() {
+							$("#block_mirador").after("<script type=\"text/javascript\" id=\"embedMD\" src=\"/media7/mirador/mirador3_20210710.js\"><\/script>");
+							Mirador.viewer({
+																id: "block_mirador",
+																selectedTheme: "dark",
+																theme: {
+																	typography: {
+																		body1: {
+																			fontSize: "1.215rem",
+																			letterSpacing: "0.007em",
+																			lineHeight: "1.45em",
+																		},
+																	},
+																},
+																language: "ja",
+																availableLanguages: {ja: '日本語', en: 'English'},
+																thumbnailNavigation: {defaultPosition: 'far-right'},
+																workspace: {showZoomControls: true},
+																windows: [
+																	{loadedManifest: "https://da.lib.kobe-u.ac.jp/files/manifest/1/20000/0100165762.json"}
+																],
+																"window": {
+																	sideBarOpenByDefault: true,
+																	highlightAllAnnotations: true
+																}
+												},
+												[miradorAnnotationTooltipPlugins]
+							);
+						}
+					
+					
+					function initUV() {
+						$("#block_uv").after("<script type=\"text/javascript\" id=\"embedUV\" src=\"/media7/universal_viewer/lib/embed.js\"><\/script>");
+					}
+                </script>
+				<div id="viewer_footer" class="clearfix">
+					<span class="pull-right">
+						
+							<a id="switch_mirador" href="#" onclick="switchViewer('0'); return false;" class="hide"><img id="icon_mirador" src="/media7/img/icon_mirador.png" /><span>Mirador</span></a>
+							<a id="switch_uv" href="#" onclick="switchViewer('1'); return false;" class="hide"><img id="icon_uv" src="/media7/img/icon_uv.png"  /><span>Universal Viewer</span></a>
+						
+						<a id="link_manifest" href="https://da.lib.kobe-u.ac.jp/files/manifest/1/20000/0100165762.json" target="_blank" rel="noopener noreferrer"><img id="icon_iiif" src="/media7/img/icon_iiif.png" /><span>manifest</span></a>
+					</span>
+				</div>
+			
+
+			<h3 class="topic">メタデータ</h3>
+			
+			
+				<p class="export_btn_space">
+					
+						<a href="/repo_fileout/?lang=0&amp;s_group=np&amp;list_bibid=0100165762&amp;list_datatype=MD20000&amp;check=1" onclick="SubWinOpen(this.href,'repo_fileout_pop',450,500);return false;">
+						<span class="icon-mmd_file"></span>ファイル出力</a>
+					
+					
+					
+					
+				</p>
+			
+
+			<table class="simple_data_block" summary="基本">
+				
+
+					
+						<tr>
+							
+
+								<th class="md_774" rowspan="1">メタデータID</th>
+
+							
+							<td class="md_774">
+								
+									
+										<div class="metadata_block depth1 loop_last">
+											
+											<div class="metadata_value">
+												
+													
+													
+
+														0100165762
+
+													
+												
+											</div>
+										</div>
+									
+								
+							</td>
+						</tr>
+					
+				
+
+					
+						<tr>
+							
+
+								<th class="md_776" rowspan="1">タイトル</th>
+
+							
+							<td class="md_776">
+								
+									
+										<div class="metadata_block depth1 loop_last">
+											
+											<div class="metadata_value">
+												
+													
+													
+
+														新輸出税率 : 五月十五日実施
+
+													
+												
+											</div>
+										</div>
+									
+								
+							</td>
+						</tr>
+					
+				
+
+					
+						<tr>
+							
+
+								<th class="md_788" rowspan="1">新聞名</th>
+
+							
+							<td class="md_788">
+								
+									
+										<div class="metadata_block depth1 loop_last">
+											
+											<div class="metadata_value">
+												
+													
+													
+
+														大阪朝日新聞
+
+													
+												
+											</div>
+										</div>
+									
+								
+							</td>
+						</tr>
+					
+				
+
+					
+						<tr>
+							
+
+								<th class="md_780" rowspan="2">切抜帳</th>
+
+							
+							<td class="md_780 first_data">
+								
+									
+										<div class="metadata_block depth1 loop_last">
+											
+											<div class="metadata_value">
+												
+													
+													
+
+														12.商業
+
+													
+												
+											</div>
+										</div>
+									
+								
+							</td>
+						</tr>
+					
+						<tr>
+							
+							<td class="md_780 continued_data">
+								
+									
+										<div class="metadata_block depth1 loop_last">
+											
+											<div class="metadata_value">
+												
+													
+													
+
+														02.国際貿易
+
+													
+												
+											</div>
+										</div>
+									
+								
+							</td>
+						</tr>
+					
+				
+
+					
+						<tr>
+							
+
+								<th class="md_789" rowspan="1">巻</th>
+
+							
+							<td class="md_789">
+								
+									
+										<div class="metadata_block depth1 loop_last">
+											
+											<div class="metadata_value">
+												
+													
+													
+
+														第 39巻
+
+													
+												
+											</div>
+										</div>
+									
+								
+							</td>
+						</tr>
+					
+				
+
+					
+						<tr>
+							
+
+								<th class="md_790" rowspan="1">記事番号</th>
+
+							
+							<td class="md_790">
+								
+									
+										<div class="metadata_block depth1 loop_last">
+											
+											<div class="metadata_value">
+												
+													
+													
+
+														42
+
+													
+												
+											</div>
+										</div>
+									
+								
+							</td>
+						</tr>
+					
+				
+
+					
+						<tr>
+							
+
+								<th class="md_783" rowspan="1">出版日</th>
+
+							
+							<td class="md_783">
+								
+									
+										<div class="metadata_block depth1 loop_last">
+											
+											<div class="metadata_value">
+												
+													
+													
+
+														1931-04-18
+
+													
+												
+											</div>
+										</div>
+									
+								
+							</td>
+						</tr>
+					
+				
+
+
+
+					
+						<tr>
+							
+
+								<th class="md_784" rowspan="1">出版年（和暦）</th>
+
+							
+							<td class="md_784">
+								
+									
+										<div class="metadata_block depth1 loop_last">
+											
+											<div class="metadata_value">
+												
+													
+													
+
+														1931年(昭和6)
+
+													
+												
+											</div>
+										</div>
+									
+								
+							</td>
+						</tr>
+					
+				
+
+					
+						<tr>
+							
+
+								<th class="md_779" rowspan="2">権利情報</th>
+
+							
+							<td class="md_779 first_data">
+								
+									
+										<div class="metadata_block depth1 loop_last">
+											
+											<div class="metadata_value">
+												
+													
+													
+														<a href='https://lib.kobe-u.ac.jp/da/secondaryuse/' target='_blank' rel='noopener noreferrer'>本資料の画像を転載（引用・展示・放映等）する際は、事前の申請が必要です</a>
+													
+												
+											</div>
+										</div>
+									
+								
+							</td>
+						</tr>
+					
+						<tr>
+							
+							<td class="md_779 continued_data">
+								
+									
+										<div class="metadata_block depth1 loop_last">
+											
+											<div class="metadata_value">
+												
+													
+													
+														<a href='https://lib.kobe-u.ac.jp/da/en/secondaryuse/' target='_blank' rel='noopener noreferrer'>This collections need you to make an application to reuse images</a>
+													
+												
+											</div>
+										</div>
+									
+								
+							</td>
+						</tr>
+					
+				
+			</table>
+			
+				<div onclick="javascript:view_info('#md_block', '#view_bb_txt','#view_bb_class', '詳細を表示', '詳細を非表示');" class="bb_chang" id="md_bb_change" style="display:none;">
+					<h3 class="topic">
+						
+	  						<em id="view_bb_txt">詳細を表示</em>&nbsp;<a href="javascript:void(0);"><span id="view_bb_class" class="icon-mmd_open-2 size-small"></span></a>
+						
+					</h3>
+				</div><!-- /bb_chang -->
+
+				<div id="md_block" style="display:none;">
+					<div id="bb_block_detail">
+						<table class="detail_data_block" summary="詳細">
+							
+								
+									<tr>
+										
+											<th class="md_785" rowspan="1">言語</th>
+										
+										<td class="md_785">
+											
+												
+													<div class="metadata_block depth1 loop_last">
+														
+														<div class="metadata_value">
+															
+																
+																
+																	Japanese (日本語)
+																
+															
+														</div>
+													</div>
+												
+											
+										</td>
+									</tr>
+								
+							
+								
+									<tr>
+										
+											<th class="md_791" rowspan="1">所在</th>
+										
+										<td class="md_791">
+											
+												
+													<div class="metadata_block depth1 loop_last">
+														
+														<div class="metadata_value">
+															
+																
+																
+																	神戸大学経済経営研究所
+																
+															
+														</div>
+													</div>
+												
+											
+										</td>
+									</tr>
+								
+							
+								
+									<tr>
+										
+											<th class="md_792" rowspan="1">原リール番号</th>
+										
+										<td class="md_792">
+											
+												
+													<div class="metadata_block depth1 loop_last">
+														
+														<div class="metadata_value">
+															
+																
+																
+																	10583
+																
+															
+														</div>
+													</div>
+												
+											
+										</td>
+									</tr>
+								
+							
+						</table>
+					</div>
+				</div>
+			
+			
+			
+			<p class="panel-body panel-button">
+				
+					<button class="btn-ordinary leftIcon" onclick="return displayTop();">
+						<span class="btnIcon glyphicon glyphicon-home"></span>
+						<span class="btnLabel">ホームへ戻る</span>
+					</button>
+				
+				
+			</p>
+			<input type="hidden" name="lang" value="0" />
+			<input type="hidden" name="mode" value="" />
+			<input type="hidden" name="category" value="001012002039" />
+			<input type="hidden" name="req" value="" />
+			<input type="hidden" name="start" value="" />
+			<input type="hidden" name="opkey" value="" />
+			<input type="hidden" name="upmetapid" value="" />
+			<input type="hidden" name="idx" value="" />
+			<input type="hidden" name="cidx" value="" />
+			<input type="hidden" name="flflg" value="" />
+			<input type="hidden" name="bodytextflg" value="" />
+			<input type="hidden" name="chk_schema" value="" />
+			<input type="hidden" name="cate_schema" value="" />
+			<input type="hidden" name="facet_key" value="" />
+			<input type="hidden" name="list_datatype" value="MD20000" />
+			<input type="hidden" name="list_bibid" value="0100165762" />
+			<input type="hidden" name="check" value="1" />
+			<input type="hidden" name="cate_inherit_flg" value="0" />
+			<input type="hidden" name="search_code_flg" value="1" />
+			<input type="hidden" name="s_group_op" value="" />
+			<input type="hidden" name="cflg" value="" />
+			<input type="hidden" name="codeno" value="" />
+			
+			</div>
+		</div><!-- /mainBox -->
+	</form>
+
+
+
+			</div><!-- /maCont -->
+		</div><!-- /contens -->
+	</div><!-- /content-wrapper -->
+	
+
+				<div id="mmd_detail_aera"></div><!-- この行だけは消してはいけない -->
+
+				<footer id="footer" class="hidden-print">
+					<ul class="footer-nav">
+						
+							<li><a href="https://lib.kobe-u.ac.jp/userguides/contact/contact-da/" target="_blank">お問い合わせ</a></li>
+						
+							<li><a href="https://lib.kobe-u.ac.jp/da/secondaryuse/" target="_blank">二次利用について</a></li>
+						
+							<li><a href="https://lib.kobe-u.ac.jp/" target="_blank">附属図書館</a></li>
+						
+					</ul>
+					<div id="copyright">
+						
+							<p>Copyright &copy; Kobe University Library All rights reserved.</p>
+						
+					</div>
+				</footer>
+			</div><!-- /container -->
+			<a href="#" class="pagetop hidden-print" title="Back to Page Top"><span class="icon-mmd_btn-top"></span></a>
+		</div>
+	</body>
+</html>
