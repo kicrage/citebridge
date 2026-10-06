@@ -28,7 +28,14 @@ jawiki 向けの出典テンプレート生成 Chrome 拡張（WXT + Vue 3 + Cod
 1c. コトバンク（2026-10-06）: src/core/sources/kotobank.ts。語のページ `https://kotobank.jp/word/{見出し語}-{数字}` には辞書ごとの項目が並び、各項目の前に `<div class="page_link_marker" id="w-{wid}">` がある。出典 URL の `#w-…` はこの wid（ページ HTML から取れる）。記事は {{Cite encyclopedia ja}}: title=URL の見出し語、encyclopedia=辞書名（h2、全角スペースは半角に）、publisher=出典欄の最初の <small> から（「株式会社平凡社「…」」→平凡社、辞書名だけなら無し）、author=本文末尾「執筆者： …」（世界大百科事典のみ）、url=…#w-wid、via=コトバンク、access-date。
    - 項目の決め方: サイドパネルの入力に #w- が無く項目が複数なら ChooseEntryError → 候補ボタン（DetectedId.label）。ページ取り込みでは 選択範囲の項目 → URL の #w- → 画面に見えている項目（src/lib/capture.ts の entryAnchor）。
    - 候補が同じ表示になる項目（日本歴史地名大系の同一分類など）は本文の食い違い始めを添えて区別。出版社の書式は辞書ごとにまちまち（サンプルは tests/fixtures/kotobank_*.html、漱石のほうは本文を削った録画）。出版社が取れない辞書がある（ブリタニカ等は辞書名のみ）。
+   - 「世界大百科事典（旧版）内の〇〇の言及」（article#sekai_refs）は他項目（【油】より…）の抜粋で、w- 目印もリンクも無い。項目扱いにして wid=ref1, ref2…（ページ内の順）、題名=抜粋元の項目名（油）、辞書名・出版社は出典欄から、url=語のページ#sekai_refs（抜粋元の項目自体の URL は HTML に無い）。取り込みでは選択位置を含む <article> の中だけで目印を探す（別辞書の項目に飛ばない）。
    - 録画は 平野郷-864282 と 夏目漱石-17193（13 辞書）。テストは tests/kotobank.test.ts。host_permissions に kotobank.jp を追加したので、更新後に権限の再承認が要る。
+1d. 機関リポジトリ（WEKO）・雑誌（NCID/ISSN）（2026-10-06）:
+   - ページ取り込み: citation_author に 1 人 3 表記（漢字・カナ・ローマ字）が並ぶ → 漢字だけ残しカナを yomi に（pagemeta の dedupeScripts）。meta に無く本文の表にだけある NCID（「識別子タイプ NCID／関連識別子 AN…」）は collectPage が本文から拾い citebridge:ncid として渡す（収録誌の NCID）。
+   - issn= を出力する（NATIVE_IDS）。DOI があれば出さない（論文は DOI で特定済み）。
+   - 雑誌の NCID は CiNii Research の opensearch/books?ncid= で引く（全文検索 opensearch/all では雑誌が上位に出ず「見つからない」になっていた）。雑誌レコード（resourceType「雑誌」）は 誌名=container・ISSN・NCID、題名は空（記事名は利用者が補う）、発行者は著者にしない、刊行期間（1976.3-2002.3）は日付にしない。
+   - ISSN 入力: opensearch/books?issn= で雑誌を検索（同じ ISSN のサブシリーズが複数ある）。1 件ならそのまま、複数なら候補ボタン（ChooseEntryError、src/core/sources/choose.ts。コトバンクと共通）。NDL サーチの ISSN 検索は論文まで 1500 件返すので使わない。
+   - サイドパネルのボタンからの取り込みで、許可が無いサイト（host_permissions 外。機関リポジトリなど）は許可ダイアログが要る。ダイアログはクリック直後に出さないと出ない/拒否扱いになるので、直近のアクティブタブの URL を覚えておいて await を挟まず request する。許可が無くて読めないときは、黙って Citoid に落とさずエラーで許可を促す。
 2. ~~実 API（JaLC・Crossref・CiNii・NDL）で取得を確認~~ → 済（2026-10-06）。Crossref（DOI 2 件）・CiNii（CRID/NAID/NCID）・NDL（ISBN/JPNO/書誌ID/記事索引）は実応答で出典が組み立つ。JaLC は実応答（curl）がフィクスチャと同じキー構成であることだけ確認（下記の環境事情で Node からは引けなかった）。見つけて直したこと:
    - NDL サーチの雑誌記事索引 R000000004-I{n} を ndlbib 扱いしていて、同じ番号の別の図書（R100000002-I{12桁}）を引いていた → IdType ndlarticle を新設。ndlbib は NDL の解決規則に合わせ、9 桁以上は図書（R100000002-I{そのまま}、0 埋めしない）、短い番号は記事索引。記事の NDLBibID（0 埋めなし）は {{国立国会図書館書誌ID}} で記事に解決されるのでそのまま出す。
    - DOI 10.11501/{PID} は NDL デジタルコレクションの DOI。JaLC 経由だと著者を姓名に割る・巻次が題名に混ざる → PID として OAI-PMH で引く。

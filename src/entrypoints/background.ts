@@ -57,6 +57,13 @@ async function capture(tabId: number, tab: { url?: string; title?: string } | un
   } catch {
     // Chrome 内蔵の PDF ビューアや、権限の無いページ（サイドパネルのボタンからは activeTab が付かない）
     if (!tab?.url || !/^https?:/.test(tab.url)) return { ok: false, error: 'このページからは取り込めません' };
+    // このサイトを読む許可が無いだけなら、黙って Citoid（汎用の取得）に切り替えず、許可を求める
+    const origin = `${new URL(tab.url).origin}/*`;
+    if (!(await browser.permissions.contains({ origins: [origin] })))
+      return {
+        ok: false,
+        error: `このサイト（${new URL(tab.url).host}）のページを読む許可がありません。サイドパネルの「閲覧中のページから取り込む」で表示される許可を承認するか、ページ上で右クリック →「このページを出典クリップボードに取り込む」を使ってください`,
+      };
     snap = { url: tab.url, title: tab.title ?? '', metas: [], jsonLd: [], selection: selectionText ?? '' };
     injected = false;
   }

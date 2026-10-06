@@ -2,7 +2,7 @@ import { detectIds, normalizeIsbn } from '../ids/detect';
 import type { IdType } from '../ids/types';
 import type { CiteRecord, Name, SourceResult, WorkType } from '../model/record';
 import { parseDate } from '../transforms/dates';
-import { parseName } from '../transforms/names';
+import { attachYomi, parseName } from '../transforms/names';
 import { joinPages } from '../transforms/numbers';
 
 /** ページから抜き出した meta 要素（name/property → content の組。重複可） */
@@ -16,6 +16,22 @@ export interface PageSnapshot {
   /** application/ld+json の中身 */
   jsonLd: unknown[];
   lang?: string;
+}
+
+const KANJI = /[㐀-鿿々〆]/;
+const KANA_ONLY = /^[぀-ヿー・\s,，.]+$/;
+
+/**
+ * 氏名のリスト → Name[]。機関リポジトリ（WEKO など）は 1 人につき漢字・カナ・ローマ字の 3 表記を citation_author に並べるので、
+ * 漢字の表記だけを残し、カナ表記は読み（yomi）として付ける。
+ */
+export function dedupeScripts(strs: string[]): Name[] {
+  const kanji = strs.filter((s) => KANJI.test(s));
+  if (kanji.length && kanji.length < strs.length) {
+    const kana = strs.filter((s) => KANA_ONLY.test(s));
+    return kanji.map((s, i) => attachYomi(parseName(s).name, kana.length === kanji.length ? kana[i] : undefined));
+  }
+  return strs.map((s) => parseName(s).name);
 }
 
 const all = (m: MetaPairs, ...names: string[]) =>
@@ -39,8 +55,7 @@ export function parsePageSnapshot(p: PageSnapshot): Partial<CiteRecord> {
   const ldAuthors = arr(ld?.author)
     .map((a: any) => (typeof a === 'string' ? a : a?.name))
     .filter(Boolean);
-  const authors: Name[] = (authorStrs.length ? authorStrs : all(m, 'dc.creator').length ? all(m, 'dc.creator') : ldAuthors)
-    .map((s) => parseName(s).name);
+  const authors: Name[] = dedupeScripts(authorStrs.length ? authorStrs : all(m, 'dc.creator').length ? all(m, 'dc.creator') : ldAuthors);
 
   const journal = one(m, 'citation_journal_title', 'prism.publicationname');
   const book = one(m, 'citation_inbook_title', 'citation_book_title');
@@ -59,6 +74,9 @@ export function parsePageSnapshot(p: PageSnapshot): Partial<CiteRecord> {
   }
   const issn = one(m, 'citation_issn');
   if (issn) ids.issn = issn;
+  // ページ本文の表にだけ書かれている NCID（機関リポジトリの「関連識別子 NCID」。収録誌の NCID）は取り込み側が拾って渡す
+  const ncid = one(m, 'citebridge:ncid');
+  if (ncid) ids.ncid = ncid;
   for (const d of detectIds(p.url)) if (d.type !== 'url' && !ids[d.type]) ids[d.type] = d.value;
 
   let type: WorkType = 'webpage';

@@ -86,7 +86,7 @@ for (const f of readdirSync('tests/golden').filter((x) => x.endsWith('.txt'))) {
 // 2) 録画から作る実データの出典
 const extra: [string, CiteRecord][] = [];
 const kb = parseKotobankPage(fx('kotobank_864282.html'))!;
-for (const e of kb.entries.slice(0, 3)) extra.push([`kotobank ${e.dictionary}`, one('k', 'kotobank', entryToRecord(e, kb))]);
+for (const e of [...kb.entries.slice(0, 3), ...kb.entries.filter((x) => x.mention)]) extra.push([`kotobank ${e.dictionary}`, one('k', 'kotobank', entryToRecord(e, kb))]);
 const ks = parseKotobankPage(fx('kotobank_17193_trimmed.html'))!;
 for (const e of ks.entries.filter((x) => /ブリタニカ|大辞泉|日本大百科/.test(x.dictionary))) extra.push([`kotobank ${e.dictionary}`, one('k', 'kotobank', entryToRecord(e, ks))]);
 for (const id of ['0100165761', '0100165762']) extra.push([`kobe ${id}`, one(`kobenp:${id}`, 'kobe', parseKobeNp(fx(`kobe_np_${id}.html`), id)!)]);

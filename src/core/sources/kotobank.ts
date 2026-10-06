@@ -1,6 +1,7 @@
 import type { DetectedId } from '../ids/types';
 import type { CiteRecord, Name, SourceResult } from '../model/record';
 import { parseName } from '../transforms/names';
+import { ChooseEntryError } from './choose';
 import { decode } from './html';
 import type { SourceContext } from './http';
 import { NotFoundError } from './http';
@@ -11,8 +12,12 @@ import { NotFoundError } from './http';
  * 出典に書く URL の「#w-…」はこの id なので、ページの HTML から取れる。
  */
 export interface KotobankEntry {
-  /** #w-… の数字 */
+  /** #w-… の数字。他項目の抜粋（「…内の平野郷の言及」）は ref1, ref2…（目印が無いのでページ内の順番） */
   wid: string;
+  /** 「…内の〇〇の言及」に並ぶ他項目の抜粋（【油】より）。title がその項目名 */
+  mention?: boolean;
+  /** 出典の題名（通常はページの見出し語。抜粋では抜粋元の項目名） */
+  title?: string;
   /** 辞書名（「改訂新版 世界大百科事典」） */
   dictionary: string;
   /** 項目の見出し表示（読み付き。候補の見分けに使う） */
@@ -55,6 +60,37 @@ export function parseWriters(description: string): string[] {
   return m ? m[1].split(/\s*[、，,／/]\s*/).map((x) => x.trim()).filter(Boolean) : [];
 }
 
+/**
+ * 「世界大百科事典（旧版）内の〇〇の言及」: 他の項目（【油】より…）の抜粋を並べたブロック。
+ * 目印（w-…）もリンクも無いが、利用者が「この抜粋を出典にしたい」ことがあるので項目として扱う。
+ * 題名は抜粋元の項目名、URL は抜粋が載っているこのページの #sekai_refs。
+ */
+function parseMentions(body: string): KotobankEntry[] {
+  // 出典欄は「株式会社平凡社「世界大百科事典（旧版）」」の形。辞書名は「」の中
+  const source = /<p class="source">[\s\S]*?<small>([\s\S]*?)<\/small>/.exec(body)?.[1];
+  const sourceText = source ? text(source) : '';
+  const dictionary = norm(/[「『]([^」』]+)[」』]/.exec(sourceText)?.[1] ?? '世界大百科事典（旧版）');
+  const publisher = parsePublisher(sourceText, dictionary);
+  const out: KotobankEntry[] = [];
+  for (const m of body.matchAll(/<div class="ex cf">([\s\S]*?)<\/section>/g)) {
+    const heading = norm(text(/<h3>([\s\S]*?)<\/h3>/.exec(m[1])?.[1] ?? ''));
+    const title = /^【(.+?)】/.exec(heading)?.[1];
+    if (!title) continue;
+    const desc = /<section class="description">([\s\S]*)$/.exec(m[1])?.[1] ?? '';
+    out.push({
+      wid: `ref${out.length + 1}`,
+      mention: true,
+      title,
+      dictionary,
+      heading,
+      ...(publisher ? { publisher } : {}),
+      snippet: [...text(desc)].slice(0, 120).join(''),
+      authors: parseWriters(text(desc)),
+    });
+  }
+  return out;
+}
+
 export function parseKotobankPage(html: string): KotobankPage | undefined {
   const canonical =
     /<link rel="canonical" href="([^"]+)"/.exec(html)?.[1] ?? /<meta property="og:url" content="([^"]+)"/.exec(html)?.[1];
@@ -71,9 +107,13 @@ export function parseKotobankPage(html: string): KotobankPage | undefined {
   const entries: KotobankEntry[] = [];
   for (const art of html.matchAll(/<article\b[^>]*class="dictype[^"]*"[^>]*>([\s\S]*?)<\/article>/g)) {
     const body = art[1];
+    if (/<article\b[^>]*\bid="sekai_refs"/.test(art[0])) {
+      entries.push(...parseMentions(body));
+      continue;
+    }
     const dictionary = norm(text(/<h2>\s*<a [^>]*>([\s\S]*?)<\/a>/.exec(body)?.[1] ?? ''));
     const markers = [...body.matchAll(/<div class="page_link_marker" id="w-(\d+)"><\/div>/g)];
-    if (!dictionary || !markers.length) continue; // 「世界大百科事典（旧版）」の他項目からの引用などは項目ではない
+    if (!dictionary || !markers.length) continue;
     const source = /<p class="source">[\s\S]*?<small>([\s\S]*?)<\/small>/.exec(body)?.[1];
     const publisher = parsePublisher(source ? text(source) : undefined, dictionary);
     markers.forEach((mk, i) => {
@@ -100,9 +140,9 @@ export function parseKotobankPage(html: string): KotobankPage | undefined {
 export function entryLabel(e: KotobankEntry, page: KotobankPage): string {
   const base = (x: KotobankEntry) => {
     const siblings = page.entries.filter((y) => y.dictionary === x.dictionary).length > 1;
-    const detail = siblings ? x.topic ?? x.heading : undefined;
+    const detail = x.mention ? x.heading : siblings ? x.topic ?? x.heading : undefined;
     const by = x.authors.length ? `（${x.authors.join('・')}）` : '';
-    return `${x.dictionary}${detail ? ` — ${detail}` : ''}${by}`;
+    return `${x.dictionary}${x.mention ? '・言及' : ''}${detail ? ` — ${detail}` : ''}${by}`;
   };
   const label = base(e);
   // それでも他の項目と同じ表示になるときは、同じ表示の項目どうしで本文が食い違い始める所を添える
@@ -121,21 +161,17 @@ export function entryToRecord(e: KotobankEntry, page: KotobankPage): Partial<Cit
     type: 'entry-encyclopedia',
     ids: { kotobank: page.wordPath },
     // 題名は語のページの見出し語（項目の見出しは「なつめ‐そうせき【夏目漱石】」のように辞書ごとに表記が違う）
-    title: { ja: slug },
+    title: { ja: e.title ?? slug },
     container: { ja: e.dictionary },
     authors,
     publisher: e.publisher,
-    url: `${page.baseUrl}#w-${e.wid}`,
+    // 抜粋は、載っているブロック（article#sekai_refs）への URL
+    url: `${page.baseUrl}#${e.mention ? 'sekai_refs' : `w-${e.wid}`}`,
     language: 'ja',
   };
 }
 
-/** 項目を選べないとき（#w- が無い）に、候補を示すために投げる */
-export class ChooseEntryError extends Error {
-  constructor(public candidates: DetectedId[]) {
-    super('コトバンクのどの辞書の項目を出典にするか選んでください');
-  }
-}
+export { ChooseEntryError };
 
 export async function fetchKotobank(id: DetectedId, ctx: SourceContext): Promise<SourceResult> {
   const raw = await ctx.http.text(`https://kotobank.jp/word/${encodeURIComponent(id.value)}`, { headers: { Accept: 'text/html' } });
@@ -148,6 +184,7 @@ export async function fetchKotobank(id: DetectedId, ctx: SourceContext): Promise
     if (page.entries.length > 1)
       throw new ChooseEntryError(
         page.entries.map((e) => ({ type: 'kotobank', value: id.value, extra: { wid: e.wid }, confidence: 'exact', label: entryLabel(e, page) })),
+        'コトバンクのどの辞書の項目を出典にするか選んでください',
       );
     entry = page.entries[0];
   }

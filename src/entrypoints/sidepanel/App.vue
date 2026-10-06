@@ -33,16 +33,25 @@ function useStored(stored: StoredRecord, passage?: Passage) {
 }
 
 const capturing = ref(false);
+/** 直近のアクティブなタブの URL。許可ダイアログはクリック直後に出す必要があるので、await を挟まず使えるよう覚えておく */
+let lastActiveUrl: string | undefined;
+const rememberActive = () => activeTab().then((t) => { lastActiveUrl = t?.url; }).catch(() => undefined);
+
+const originPattern = (url: string | undefined) => (url && /^https?:/.test(url) ? `${new URL(url).origin}/*` : undefined);
+
 async function captureActive() {
+  // サイドパネルのボタンでは activeTab が付かないので、そのサイトの読み取りを許可してもらう。
+  // ユーザー操作の直後に同期的に求める（先に await するとダイアログが出ずに拒否扱いになることがある）
+  const cachedOrigin = originPattern(lastActiveUrl);
+  const asked = cachedOrigin ? browser.permissions.request({ origins: [cachedOrigin] }).catch(() => false) : undefined;
   const t = await activeTab();
   if (!t?.id || !t.url) return;
   capturing.value = true;
   try {
-    // サイドパネルのボタンでは activeTab が付かないので、そのサイトの読み取りを許可してもらう
-    if (/^https?:/.test(t.url)) {
-      const origin = `${new URL(t.url).origin}/*`;
-      await browser.permissions.request({ origins: [origin] }).catch(() => false);
-    }
+    const origin = originPattern(t.url);
+    if (asked) await asked;
+    // キャッシュと実際のタブが違っていたときは、改めて求める
+    if (origin && origin !== cachedOrigin) await browser.permissions.request({ origins: [origin] }).catch(() => false);
     const r = await sendToBackground({ type: 'capture-tab', tabId: t.id, withSelection: true });
     if (!r.ok) throw new Error(r.error);
     const stored = await db.records.get(r.recordKey);
@@ -66,13 +75,20 @@ const onStorage = (changes: Record<string, { newValue?: any }>, area: string) =>
   if (changes.focus.newValue.passageId) notify('一節を保存しました。ページ番号を入力してください', 'notice');
 };
 
-const onTabChange = () => refreshArticle();
+const onTabChange = () => {
+  refreshArticle();
+  rememberActive();
+};
 const onTabUpdated = (_id: number, info: { status?: string }) => {
-  if (info.status === 'complete') refreshArticle();
+  if (info.status === 'complete') {
+    refreshArticle();
+    rememberActive();
+  }
 };
 
 onMounted(() => {
   refreshArticle();
+  rememberActive();
   browser.storage.onChanged.addListener(onStorage);
   browser.tabs.onActivated.addListener(onTabChange);
   browser.tabs.onUpdated.addListener(onTabUpdated);

@@ -57,7 +57,7 @@ defineExpose({ run, input });
     <cdx-progress-bar v-if="busy" inline aria-label="取得中" />
     <cdx-message v-if="error" type="error" inline>{{ error }}</cdx-message>
     <div v-if="candidates.length" class="cb-stack">
-      <cdx-message type="notice" inline>{{ candidates.some((c) => c.label) ? 'どの項目を出典にしますか？' : 'どの識別子として調べますか？' }}</cdx-message>
+      <cdx-message type="notice" inline>{{ candidates.some((c) => c.label) ? 'どれを出典にしますか？' : 'どの識別子として調べますか？' }}</cdx-message>
       <div class="cb-choices">
         <cdx-button v-for="c in candidates" :key="`${c.type}${c.extra?.wid ?? ''}`" @click="run(c)">{{ c.label ?? ID_LABELS[c.type] }}</cdx-button>
       </div>

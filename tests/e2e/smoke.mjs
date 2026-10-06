@@ -77,6 +77,10 @@ const routes = [
       <tr><th class="md_788">新聞名</th><td class="md_788"><div class="metadata_value">大阪朝日新聞</div></td></tr>
       <tr><th class="md_955">出版日</th><td class="md_955"><div class="metadata_value">1930-05-03</div></td></tr>
     </table></body></html>`, ct: 'text/html; charset=utf-8' })],
+  [/cir\.nii\.ac\.jp\/e2e-repo/, () => ({
+    body: FX('repo_ocu_2014755_head.html').replace('<body></body>', '<body><table><tr><th>識別子タイプ</th><td>NCID</td></tr><tr><th>関連識別子</th><td>AN00029633</td></tr></table></body>'),
+    ct: 'text/html; charset=utf-8',
+  })],
   [/kotobank\.jp\/word\//, () => ({ body: FX('kotobank_864282.html'), ct: 'text/html; charset=utf-8' })],
   [/ja\.wikipedia\.org\/w\/index\.php/, () => ({ body: FAKE_EDIT, ct: 'text/html; charset=utf-8' })],
 ];
@@ -205,6 +209,25 @@ await kb.evaluate(() => {
 let c = await capKb(true);
 assert.equal(c.ok, true, JSON.stringify(c));
 assert.equal(c.recordKey, 'kotobank:平野郷-864282#w-1199559', '選択範囲の項目の #w- を使う');
+// a2) 「世界大百科事典（旧版）内の平野郷の言及」の抜粋は目印が無い。直前の別辞書の項目（日本歴史地名大系）に飛ばず、何番目の抜粋かで決める
+const selectIn = (selector) =>
+  kb.evaluate((sel) => {
+    const r = document.createRange();
+    r.selectNodeContents(document.querySelector(sel));
+    getSelection().removeAllRanges();
+    getSelection().addRange(r);
+  }, selector);
+await selectIn('article#sekai_refs .ex:nth-of-type(2) section.description p, article#sekai_refs .ex:nth-of-type(2) section.description');
+c = await capKb(true);
+assert.equal(c.recordKey, 'kotobank:平野郷-864282#w-ref2', '言及の 2 番目の抜粋');
+await selectIn('article#sekai_refs .ex section.description');
+c = await capKb(true);
+assert.equal(c.recordKey, 'kotobank:平野郷-864282#w-ref1', '言及の 1 番目の抜粋');
+const refRec = await panel.evaluate(() => chrome.runtime.sendMessage({ type: 'resolve', input: 'https://kotobank.jp/word/%E5%B9%B3%E9%87%8E%E9%83%B7-864282#sekai_refs' }));
+assert.ok(refRec.candidates?.some((x) => x.extra?.wid === 'ref1'), '抜粋も候補に出る');
+await selectIn('article.histchimei .ex section.description');
+c = await capKb(true);
+assert.match(c.recordKey, /#w-3354299$/, '日本歴史地名大系の最初の項目');
 // b) 選択なし・URL に #w- なし → 画面に見えている項目（先頭のマイペディア）
 await kb.evaluate(() => getSelection().removeAllRanges());
 c = await capKb(false);
@@ -227,6 +250,30 @@ await panel.waitForTimeout(800);
 const kbWt = await panel.locator('.cb-code textarea').inputValue();
 assert.match(kbWt, /^\{\{Cite encyclopedia ja \|last1=脇田 \|first1=修 \|title=平野郷 \|encyclopedia=改訂新版 世界大百科事典 \|publisher=平凡社 \|url=https:\/\/kotobank\.jp\/word\/%E5%B9%B3%E9%87%8E%E9%83%B7-864282#w-1199559 \|access-date=\d{4}-\d{2}-\d{2} \|via=コトバンク\}\}$/);
 await shot(panel, '7c-kotobank');
+
+// 6c) 機関リポジトリ（WEKO）の記事ページ: 著者は漢字・カナ・ローマ字の 3 表記が並ぶ。NCID は meta に無く本文の表にだけある
+const repo = await ctx.newPage();
+await repo.goto('https://cir.nii.ac.jp/e2e-repo'); // host_permissions に入っているホストで代用（任意のホストは実機では許可ダイアログが要る）
+const repoTab = await panel.evaluate(async () => (await chrome.tabs.query({ url: 'https://cir.nii.ac.jp/e2e-repo' }))[0].id);
+const capRepo = await panel.evaluate((id) => chrome.runtime.sendMessage({ type: 'capture-tab', tabId: id, withSelection: false }), repoTab);
+assert.equal(capRepo.ok, true, JSON.stringify(capRepo));
+const repoRec = await panel.evaluate(
+  (key) =>
+    new Promise((res, rej) => {
+      const q = indexedDB.open('citebridge');
+      q.onerror = rej;
+      q.onsuccess = () => {
+        const g = q.result.transaction('records').objectStore('records').get(key);
+        g.onsuccess = () => res(g.result?.record);
+        g.onerror = rej;
+      };
+    }),
+  capRepo.recordKey,
+);
+assert.equal(repoRec.ids.ncid, 'AN00029633', '本文の表の NCID を拾う');
+assert.equal(repoRec.ids.issn, '0385-8642');
+assert.deepEqual(repoRec.authors.map((a) => a.family), ['白木', '辻野', '青木'], '3 表記を 1 人にまとめる');
+await repo.close();
 
 // 7) 記事の出典タブ：wiki タブを前面にして読み込み、空欄補完
 await wiki.bringToFront();

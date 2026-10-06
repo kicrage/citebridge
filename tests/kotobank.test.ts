@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { detectIds } from '../src/core/ids/detect';
 import { idKey } from '../src/core/ids/types';
-import { ChooseEntryError, entryLabel, parsePublisher, parseWriters, parseKotobankPage } from '../src/core/sources/kotobank';
+import { ChooseEntryError, entryLabel, entryToRecord, parsePublisher, parseWriters, parseKotobankPage } from '../src/core/sources/kotobank';
 import { resolveId } from '../src/core/sources/resolve';
 import { generate } from '../src/core/templates/generate';
 import { fakeContext, fixture } from './helpers';
@@ -27,7 +27,7 @@ describe('コトバンクの URL → 識別子', () => {
 });
 
 describe('コトバンクのページ解析', () => {
-  it('辞書ごとの項目と #w- の id を取る。他項目からの引用（旧版）は項目に含めない', () => {
+  it('辞書ごとの項目と #w- の id を取る。「…内の平野郷の言及」の抜粋は ref1, ref2… として末尾に並ぶ', () => {
     const p = hirano();
     expect(p.wordPath).toBe('平野郷-864282');
     expect(p.baseUrl).toBe(URL_HIRANO);
@@ -37,7 +37,24 @@ describe('コトバンクのページ解析', () => {
       ['3354299', '日本歴史地名大系'],
       ['3333380', '日本歴史地名大系'],
       ['3333332', '日本歴史地名大系'],
+      ['ref1', '世界大百科事典（旧版）'],
+      ['ref2', '世界大百科事典（旧版）'],
     ]);
+  });
+
+  it('言及の抜粋: 題名は抜粋元の項目名（【油】より → 油）、出版社は出典欄から、URL は #sekai_refs', () => {
+    const p = hirano();
+    const [ref1, ref2] = p.entries.filter((e) => e.mention);
+    expect(ref1).toMatchObject({ title: '油', heading: '【油】より', publisher: '平凡社', mention: true });
+    expect(ref2).toMatchObject({ title: '平野藤次郎', publisher: '平凡社' });
+    expect(entryToRecord(ref1, p)).toMatchObject({
+      type: 'entry-encyclopedia',
+      title: { ja: '油' },
+      container: { ja: '世界大百科事典（旧版）' },
+      publisher: '平凡社',
+      url: `${URL_HIRANO}#sekai_refs`,
+    });
+    expect(entryLabel(ref1, p)).toBe('世界大百科事典（旧版）・言及 — 【油】より');
   });
 
   it('出版社と執筆者（世界大百科事典の末尾）', () => {
@@ -52,8 +69,9 @@ describe('コトバンクのページ解析', () => {
     const labels = p.entries.map((e) => entryLabel(e, p));
     expect(labels[1]).toBe('改訂新版 世界大百科事典（脇田 修）');
     expect(labels[2]).toMatch(/^日本歴史地名大系 — .+/);
-    expect(new Set(labels.slice(2)).size).toBe(3);
+    expect(new Set(labels.slice(2, 5)).size).toBe(3);
     expect(labels[3]).toMatch(/「.+…」$/);
+    expect(new Set(labels).size).toBe(labels.length); // 候補ボタンはすべて見分けがつく
   });
 
   it('出版社の書式はさまざま', () => {
@@ -107,7 +125,7 @@ describe('resolveId（コトバンク）', () => {
   it('#w- が無く項目が複数あれば、候補（辞書名つき）を返すための例外', async () => {
     const err = await resolveId(detectIds(URL_HIRANO)[0], fakeContext(routes)).catch((e) => e);
     expect(err).toBeInstanceOf(ChooseEntryError);
-    expect(err.candidates).toHaveLength(5);
+    expect(err.candidates).toHaveLength(7);
     expect(err.candidates[1]).toMatchObject({ type: 'kotobank', value: '平野郷-864282', extra: { wid: '1199559' }, label: '改訂新版 世界大百科事典（脇田 修）' });
     // 選んだ候補をそのまま resolve できる
     const { record } = await resolveId(err.candidates[0], fakeContext(routes));
@@ -116,5 +134,16 @@ describe('resolveId（コトバンク）', () => {
 
   it('存在しない項目（wid）は例外', async () => {
     await expect(resolveId(detectIds(`${URL_HIRANO}#w-1`)[0], fakeContext(routes))).rejects.toThrow(/w-1/);
+  });
+});
+
+describe('resolveId（コトバンクの言及）', () => {
+  it('「【油】より」の抜粋を出典にできる（題名は油、URL は #sekai_refs）', async () => {
+    const id = { ...detectIds(URL_HIRANO)[0], extra: { wid: 'ref1' } };
+    const { record } = await resolveId(id, fakeContext(routes));
+    expect(record.key).toBe('kotobank:平野郷-864282#w-ref1');
+    expect(generate(record, { family: 'ja', today: '2026-10-06' }).inline).toBe(
+      `<ref>{{Cite encyclopedia ja |title=油 |encyclopedia=世界大百科事典（旧版） |publisher=平凡社 |url=${URL_HIRANO}#sekai_refs |access-date=2026-10-06 |via=コトバンク}}</ref>`,
+    );
   });
 });

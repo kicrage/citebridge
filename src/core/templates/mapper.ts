@@ -84,6 +84,7 @@ const NATIVE_IDS: [keyof CiteRecord['ids'], string][] = [
   ['crid', 'CRID'],
   ['naid', 'NAID'],
   ['ncid', 'NCID'],
+  ['issn', 'ISSN'],
   ['pmid', 'PMID'],
   ['pmc', 'PMC'],
   ['arxiv', 'ARXIV'],
@@ -299,6 +300,8 @@ export function mapRecord(rec: CiteRecord, opts: MapOptions): MapResult {
     if (!v) continue;
     // 新聞記事文庫は url= が Handle URL そのものなので hdl= は重ねない
     if (k === 'hdl' && rec.ids.kobenp) continue;
+    // DOI があれば論文は特定できているので、掲載誌の ISSN は書かない（DOI の無い機関リポジトリの論文などで出す）
+    if (k === 'issn' && rec.ids.doi) continue;
     const pn = idParamName(family, handler);
     if (pn) add(pn, v);
   }

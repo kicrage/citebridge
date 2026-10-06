@@ -33,6 +33,7 @@ const ID_TYPES: Record<string, IdType> = {
   DOI: 'doi',
   NAID: 'naid',
   NCID: 'ncid',
+  ISSN: 'issn',
   ISBN: 'isbn',
   NDL_BIB_ID: 'ndlbib',
   JPNO: 'jpno',
@@ -102,6 +103,11 @@ export function parseCinii(d: any, crid?: string): Partial<CiteRecord> {
     const grantor = d.degreeGrantor?.[0]?.['foaf:name']?.[0]?.['@value'];
     if (grantor) rec.publisher = grantor;
   }
+  // 雑誌そのもの（NCID・ISSN で引いた記録）は、誌名を掲載誌名にして題名（記事名）は利用者が補う。
+  // 発行者は著者ではなく、刊行期間（1976.3-2002.3）は日付ではない
+  if (type === 'book' && /雑誌|journal/i.test(String(d.resourceType ?? ''))) {
+    return { ...rec, type: 'article-journal', container: rec.title, title: undefined, subtitle: undefined, authors: [], issued: undefined };
+  }
   // 草枕のように「論文」として登録された古い記事は publicationName が作品名になっていることがあるので、題名が無ければ補う
   if (!rec.title && rec.container) {
     rec.title = rec.container;
@@ -115,11 +121,31 @@ export async function fetchCinii(crid: string, ctx: SourceContext): Promise<Sour
   return { source: 'cinii', record: parseCinii(raw, crid), raw };
 }
 
-/** NAID・NCID 等から CRID を引く（CiNii Research OpenSearch の全文検索） */
+const NCID_SHAPE = /^[A-Z]{2}\d{7}[\dX]$/;
+
+/** ISSN から、その ISSN を持つ雑誌（サブシリーズを含む）を引く。CiNii Research の図書・雑誌向け検索 */
+export async function findSerialsByIssn(issn: string, ctx: SourceContext): Promise<{ crid: string; ncid?: string; title: string }[]> {
+  const raw: any = await ctx.http.json(`https://cir.nii.ac.jp/opensearch/books?issn=${encodeURIComponent(issn)}&format=json&count=10`);
+  const out: { crid: string; ncid?: string; title: string }[] = [];
+  for (const it of raw.items ?? []) {
+    const crid = /crid\/(\d+)/.exec(it['@id'])?.[1];
+    if (!crid) continue;
+    const ncid = (it['dc:identifier'] ?? []).find((x: any) => x['@type'] === 'cir:NCID')?.['@value'];
+    out.push({ crid, ...(ncid ? { ncid } : {}), title: String(it.title ?? '') });
+  }
+  // 親の雑誌名（サブシリーズ「…. 食物学」が付かないもの）を先頭に
+  return out.sort((a, b) => a.title.length - b.title.length);
+}
+
+/**
+ * NAID・NCID 等から CRID を引く。
+ * NCID は図書・雑誌向けの検索（opensearch/books?ncid=）で引く（全文検索では雑誌の NCID が上位に出てこないことがある）。
+ */
 export async function findCrid(query: string, ctx: SourceContext): Promise<string | undefined> {
-  const raw: any = await ctx.http.json(
-    `https://cir.nii.ac.jp/opensearch/all?q=${encodeURIComponent(query)}&format=json&count=5`,
-  );
+  const url = NCID_SHAPE.test(query)
+    ? `https://cir.nii.ac.jp/opensearch/books?ncid=${encodeURIComponent(query)}&format=json&count=5`
+    : `https://cir.nii.ac.jp/opensearch/all?q=${encodeURIComponent(query)}&format=json&count=5`;
+  const raw: any = await ctx.http.json(url);
   for (const it of raw.items ?? []) {
     const ids: any[] = it['dc:identifier'] ?? [];
     if (ids.some((x) => x['@value'] === query)) return /crid\/(\d+)/.exec(it['@id'])?.[1];

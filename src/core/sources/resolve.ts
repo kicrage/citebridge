@@ -2,7 +2,8 @@ import type { DetectedId } from '../ids/types';
 import { idKey } from '../ids/types';
 import type { CiteRecord, SourceId, SourceResult } from '../model/record';
 import { mergeResults } from '../merge/merge';
-import { fetchCinii, findCrid } from './cinii';
+import { ChooseEntryError } from './choose';
+import { fetchCinii, findCrid, findSerialsByIssn } from './cinii';
 import { fetchCitoid } from './citoid';
 import { fetchCrossref } from './crossref';
 import { fetchHtmlMeta } from './html';
@@ -118,6 +119,19 @@ export async function resolveId(id: DetectedId, ctx: SourceContext): Promise<Res
       results = await settle([{ source: 'page', run: () => fetchHtmlMeta(`https://hdl.handle.net/${id.value}`, ctx) }], errors);
       for (const r of results) r.record.ids = { ...r.record.ids, hdl: id.value };
       order = ['user', 'page', 'citoid'];
+      break;
+    }
+    case 'issn': {
+      // ISSN は雑誌そのものを引く（誌名・ISSN が入り、記事題名は利用者が補う）。同じ ISSN の雑誌（サブシリーズ）が複数あれば候補から選ぶ
+      const found = await findSerialsByIssn(id.value, ctx);
+      if (!found.length) throw new Error(`CiNii Research に ISSN ${id.value} の雑誌が見つかりませんでした`);
+      if (found.length > 1)
+        throw new ChooseEntryError(
+          found.map((f) => ({ type: 'crid', value: f.crid, confidence: 'exact', label: `${f.title}${f.ncid ? `（${f.ncid}）` : ''}` })),
+          `ISSN ${id.value} の雑誌が複数あります。どれを出典にするか選んでください`,
+        );
+      results = await settle([{ source: 'cinii', run: () => fetchCinii(found[0].crid, ctx) }], errors);
+      order = ['user', 'cinii', 'citoid', 'page'];
       break;
     }
     case 'kotobank': {
