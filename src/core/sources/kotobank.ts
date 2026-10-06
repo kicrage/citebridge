@@ -87,7 +87,8 @@ export function parseKotobankPage(html: string): KotobankPage | undefined {
         heading,
         ...(topic ? { topic: norm(text(topic)) } : {}),
         ...(publisher ? { publisher } : {}),
-        snippet: [...text(desc.replace(/<div class="topic_path">[\s\S]*?<\/ul>\s*<\/div>/, ''))].slice(0, 120).join(''),
+        // 見分け用の抜粋。ルビ（<rt>読み</rt>と括弧 <rp>）は本文として読めなくなるので除く
+        snippet: [...text(desc.replace(/<div class="topic_path">[\s\S]*?<\/ul>\s*<\/div>/, '').replace(/<r[pt]>[\s\S]*?<\/r[pt]>/g, ''))].slice(0, 120).join(''),
         authors: parseWriters(text(desc)),
       });
     });

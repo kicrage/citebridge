@@ -71,9 +71,13 @@ const routes = [
   [/cir\.nii\.ac\.jp\/crid\/1390853649708396416\.json/, () => ({ body: FX('cir_1390853649708396416.json'), ct: 'application/json' })],
   [/ndlsearch\.ndl\.go\.jp\/api\/sru/, () => ({ body: FX('ndl_sru_jpno_90035836.xml'), ct: 'application/xml' })],
   [/da\.lib\.kobe-u\.ac\.jp\/da\/np\//, () => ({ body: `<!doctype html><html lang="ja"><head><meta charset="utf-8"><title>新聞記事文庫</title>
-    <meta name="citation_title" content="綿業の不振"><meta name="citation_publisher" content="大阪朝日新聞">
-    <meta name="citation_publication_date" content="1930/05/03"><meta property="og:site_name" content="大阪朝日新聞"><meta property="og:type" content="article">
-    </head><body><p id="t">紡績各社の操業短縮は本月より更に強化せらるべし</p></body></html>`, ct: 'text/html; charset=utf-8' })],
+    </head><body><p id="t">紡績各社の操業短縮は本月より更に強化せらるべし</p>
+    <table class="simple_data_block">
+      <tr><th class="md_776">タイトル</th><td class="md_776"><div class="metadata_value">綿業の不振</div></td></tr>
+      <tr><th class="md_788">新聞名</th><td class="md_788"><div class="metadata_value">大阪朝日新聞</div></td></tr>
+      <tr><th class="md_955">出版日</th><td class="md_955"><div class="metadata_value">1930-05-03</div></td></tr>
+    </table></body></html>`, ct: 'text/html; charset=utf-8' })],
+  [/kotobank\.jp\/word\//, () => ({ body: FX('kotobank_864282.html'), ct: 'text/html; charset=utf-8' })],
   [/ja\.wikipedia\.org\/w\/index\.php/, () => ({ body: FAKE_EDIT, ct: 'text/html; charset=utf-8' })],
 ];
 const requested = [];
@@ -181,9 +185,48 @@ await panel.click('button:has-text("この一節で出典を作る")');
 await panel.waitForTimeout(500);
 assert.match(
   await panel.locator('.cb-code textarea').inputValue(),
-  /^\{\{Cite news ja \|title=綿業の不振 \|newspaper=大阪朝日新聞 \|page=2 \|date=1930-05-03 \|url=https:\/\/hdl\.handle\.net\/20\.500\.14094\/0100012345 \|access-date=\d{4}-\d{2}-\d{2}\}\}$/,
+  /^\{\{Cite news ja \|title=綿業の不振 \|newspaper=大阪朝日新聞 \|page=2 \|date=1930-05-03 \|url=https:\/\/hdl\.handle\.net\/20\.500\.14094\/0100012345 \|access-date=\d{4}-\d{2}-\d{2} \|via=神戸大学経済経営研究所 新聞記事文庫\}\}$/,
 );
 await shot(panel, '7-from-passage');
+
+// 6b) コトバンク: 1 ページに複数の辞書の項目が並ぶ。#w-… を選択範囲・URL・画面位置から決める（実 DOM で確認）
+const KB = 'https://kotobank.jp/word/%E5%B9%B3%E9%87%8E%E9%83%B7-864282';
+const kb = await ctx.newPage();
+await kb.goto(KB);
+const kbTab = await panel.evaluate(async () => (await chrome.tabs.query({ url: 'https://kotobank.jp/*' }))[0].id);
+const capKb = (withSelection) => panel.evaluate(([id, sel]) => chrome.runtime.sendMessage({ type: 'capture-tab', tabId: id, withSelection: sel }), [kbTab, withSelection]);
+// a) 選択範囲がある項目（改訂新版 世界大百科事典）
+await kb.evaluate(() => {
+  const r = document.createRange();
+  r.selectNodeContents(document.querySelector('article.sekaidaihyakka section.description p'));
+  getSelection().removeAllRanges();
+  getSelection().addRange(r);
+});
+let c = await capKb(true);
+assert.equal(c.ok, true, JSON.stringify(c));
+assert.equal(c.recordKey, 'kotobank:平野郷-864282#w-1199559', '選択範囲の項目の #w- を使う');
+// b) 選択なし・URL に #w- なし → 画面に見えている項目（先頭のマイペディア）
+await kb.evaluate(() => getSelection().removeAllRanges());
+c = await capKb(false);
+assert.equal(c.recordKey, 'kotobank:平野郷-864282#w-864282', '画面位置から項目を決める');
+// c) URL に #w- があれば、選択が無いときはそれを使う
+await kb.goto(`${KB}#w-3354299`);
+await kb.evaluate(() => getSelection().removeAllRanges());
+c = await capKb(false);
+assert.equal(c.recordKey, 'kotobank:平野郷-864282#w-3354299', 'URL の #w- を使う');
+await kb.close();
+// d) サイドパネルに #w- なしの URL を入れると、辞書名つきの候補が出る
+await panel.bringToFront();
+await panel.click('.cdx-tabs__list >> text=作成'); // 取り込むとクリップボードのタブに移っている
+await panel.fill('input[placeholder^="例"]', KB);
+await panel.click('button:has-text("取得")');
+await panel.waitForSelector('button:has-text("改訂新版 世界大百科事典（脇田 修）")', { timeout: 15000 });
+await shot(panel, '7b-kotobank-candidates');
+await panel.click('button:has-text("改訂新版 世界大百科事典（脇田 修）")');
+await panel.waitForTimeout(800);
+const kbWt = await panel.locator('.cb-code textarea').inputValue();
+assert.match(kbWt, /^\{\{Cite encyclopedia ja \|last1=脇田 \|first1=修 \|title=平野郷 \|encyclopedia=改訂新版 世界大百科事典 \|publisher=平凡社 \|url=https:\/\/kotobank\.jp\/word\/%E5%B9%B3%E9%87%8E%E9%83%B7-864282#w-1199559 \|access-date=\d{4}-\d{2}-\d{2} \|via=コトバンク\}\}$/);
+await shot(panel, '7c-kotobank');
 
 // 7) 記事の出典タブ：wiki タブを前面にして読み込み、空欄補完
 await wiki.bringToFront();

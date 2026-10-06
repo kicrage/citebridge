@@ -16,7 +16,7 @@ jawiki 向けの出典テンプレート生成 Chrome 拡張（WXT + Vue 3 + Cod
 - src/core/: UI 非依存の純粋関数（ids, sources, merge, templates, wikitext, transforms）。すべて Vitest 対象
 - src/entrypoints/: background（取得・キャッシュ・取り込み）、wiki.content + wiki-main.content（MAIN world で jquery.textSelection により挿入）、sidepanel、popup
 - src/ui/: Vue コンポーネントと共有状態、src/db/: Dexie
-- tests/fixtures: API の録画レスポンス、tests/e2e/smoke.mjs: Chromium で通しのスモークテスト（API と編集画面は偽物）
+- tests/fixtures: API の録画レスポンス、tests/e2e/smoke.mjs: Chromium で通しのスモークテスト（API と編集画面は偽物）。`npm run build` のあと `CHROMIUM_PATH="C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" npm run e2e`（Edge 154 で拡張の読み込みまで動く。Playwright の Chromium は未導入。ブランド版 Chrome は --load-extension が効かない可能性）
 
 ## 次にやること（以前の環境では外部に接続できず保留していたもの）
 1. ~~NDL デジタルコレクション PID の書誌取得~~ → 済（2026-10-05）。src/core/sources/ndl.ts の `fetchNdldc` / `parseNdldcOai`。
@@ -44,3 +44,5 @@ jawiki 向けの出典テンプレート生成 Chrome 拡張（WXT + Vue 3 + Cod
    - 記事題名の無い雑誌の号（NDLDC の雑誌 PID）は title 必須エラーになる（利用者が補う前提で、check:parse では期待どおり扱い）。
    - 書誌ID・全国書誌番号・コトバンク（via=）・新聞記事文庫・Cite encyclopedia ja はエラーなし。NDL の {{国立国会図書館書誌ID|N}} は id.ndl.go.jp/bib/N → ndlonline で、0 埋めなしの短い番号（〜8 桁）は雑誌記事索引、9 桁以上は図書に解決される（fetchNdl もこの規則）。
 4. 実際の Chrome に .output/chrome-mv3 を読み込み、利用者サンドボックスの編集画面で挿入・Sfn・空欄補完を手動確認（保存はしない）。
+   - 済（2026-10-06）: 実 Chromium（Edge 154）に拡張を読み込んだスモークテストが通る。偽の API・編集画面で、DOI/CRID の取得・キャッシュ再利用・編集画面への Sfn 挿入と参考文献追記・クリップボード・ポップアップ・新聞記事文庫の取り込み（表の解析、via=）・記事の出典の空欄補完、コトバンク（実 DOM での選択範囲／URL の #w-／画面位置による項目判定、サイドパネルの候補ボタン）。スクリーンショットで UI も確認（候補ボタンは折り返して縦並びにした）。
+   - 未了（利用者の手作業）: ① 利用者自身の Chrome に chrome://extensions →「パッケージ化されていない拡張機能」で .output/chrome-mv3 を読み込む（host_permissions に dl.ndl.go.jp / kotobank.jp が増えているので再承認）。② 利用者サンドボックス（jawiki のログイン状態）の本物の編集画面で、挿入位置・Sfn・参考文献節への追記・空欄補完・VisualEditor でない通常のソース編集画面での動作を確認。保存はしない。③ 本物のコトバンク／NDL／新聞記事文庫のページで「閲覧中のページから取り込む」。
